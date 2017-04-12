@@ -1,0 +1,40 @@
+{% extends 'timetable/base.html' %}
+
+{% block content %}
+<div class="ui single line table">
+  <table>
+    <thead>
+      <tr>
+        <th>학년</th>
+        <th>교과목명</th>
+        <th>한글코드</th>
+        <th>학점</th>
+        <th>시간</th>
+        <th>담당교수</th>
+        <th>강좌번호</th>
+        <th>제한인원</th>
+        <th>시간(강의실)</th>
+        <th>비 고</th>
+      </tr>
+    </thead>
+    {% for item in items %}
+    <tr>
+      <td>{{item.grade}}</td>
+      <td>{{item.classname}}</td>
+      <td>{{item.krcode}}</td>
+      <td>{{item.credit}}</td>
+      <td>{{item.timeperweek}}</td>
+      <td>{{item.prof}}</td>
+      <td>{{item.classcode}}</td>
+      <td>{{item.limitstud}}</td>
+      <td>{{item.time}}</td>
+      {% if item.note %}
+      <td>{{item.note}}</td>
+      {% else %}
+      <td> </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock content %}
