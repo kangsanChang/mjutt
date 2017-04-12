@@ -16,7 +16,12 @@ def login(driver):
     inputElement.send_keys(os.environ['crawler_id'])
     inputElement = driver.find_element_by_name("userPW")
     inputElement.send_keys(os.environ['crawler_pw'])
-    inputElement.submit()
+    inputElement = driver.find_element_by_name("userPW")
+    #  submit() didn't working
+    # inputElement.submit()
+    submit = driver.find_element_by_xpath('//*[@id="myiweb"]/div[1]/div/div[2]/div[3]/div[1]/div/div[2]/div[1]/form/p[1]/input')
+    submit.click()
+
     WebDriverWait(driver, 15).until(EC.alert_is_present())  # alert 나올 시간 기다리기
     accept_alert(driver)
 
@@ -49,7 +54,7 @@ def insert_to_DB(data):
 
     cur = conn.cursor()
     SQL = "INSERT INTO classitem (grade, classname, krcode, credit, timeperweek, prof, classcode, limitstud, " \
-          "time, note) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+          "time, note, dept) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
     # testcode
     # print("DB 저장하는 query")
     # print(data)
@@ -82,7 +87,7 @@ def resize_page(driver):
     align_vertical.click()
 
 def create_item():
-    seq = ['grade', 'classname', 'krcode', 'credit', 'timeperweek', 'classcode', 'limit']
+    seq = ['grade', 'classname', 'krcode', 'credit', 'timeperweek', 'classcode', 'limit', 'dept']
     addlist = {'prof': [], 'time': [], 'note': []}
 
     dictionary = dict.fromkeys(seq, '')  # create dict and init with ''
@@ -96,10 +101,12 @@ def init_height():
     return dictionary
 
 
-def item_to_list(item):
+def item_to_list(item, dept):
+    item['dept'] = dept # 과 정보는 db에 넣기 전 여기서 넣고 바로 list로 보냄
     itemlist = [item['grade'], item['classname'], item['krcode'], item['credit'],
                 item['timeperweek'], "".join(item['prof']), item['classcode'],
-                item['limit'], ", ".join(item['time']), "".join(item['note'])]
+                item['limit'], ", ".join(item['time']), "".join(item['note']),
+                "".join(item['dept'])]
 
     return itemlist
 
@@ -112,7 +119,7 @@ item_height = init_height()
 
 # page_lastitem랑 첫 시작일 때 code랑  비교하기 위해서 따로 저장
 
-def crawling_page(driver, end=None):
+def crawling_page(driver, dept, end=None):
     global item, item_height, page_lastitem
 
     resize_page(driver)
@@ -141,19 +148,19 @@ def crawling_page(driver, end=None):
             continue
         elif pos[0] == "34":
             if text in ('전학년', '1학년', '2학년', '3학년', '4학년'):
-                fill_item(driver, pos, text, option)
+                fill_item(driver, dept, pos, text, option)
             elif text == '전학':
                 text = "전학년"
-                fill_item(driver, pos, text, option)
+                fill_item(driver, dept, pos, text, option)
             else:
                 # '2017 학년도 1학기   컴퓨터공학과' 같은 것 제거
                 continue
         else:
-            fill_item(driver, pos, text, option)
+            fill_item(driver, dept, pos, text, option)
 
     # 마지막 페이지 마지막 item 일 경우 : Insert to  Database
     if end:
-        insert_to_DB(item_to_list(item))
+        insert_to_DB(item_to_list(item, dept))
         # item = create_item()  # for Initialize when 자캠 - > 인캠
 
     # init
@@ -182,7 +189,7 @@ def compare_stack(height, option):
         # print(item['prof'])
 
 
-def fill_item(driver, pos, text, option):
+def fill_item(driver, dept, pos, text, option):
     global item, item_height, page_lastitem
     section = switch_to_classname(pos[0])  # covert css location to string key
     height = int(pos[1])  # y 좌표 int 형으로 가지고 있어야 비교 가능
@@ -191,7 +198,7 @@ def fill_item(driver, pos, text, option):
         # 페이지 넘어온 경우 prev 가 없으므로 print 못하고 그냥 item 덮어씌움
 
         if option['prev'] in ('time', 'note'):
-            insert_to_DB(item_to_list(item))
+            insert_to_DB(item_to_list(item, dept))
             item['prof'] = [] # init prof
             if option['note_init'] == True:
                 item['note'] = []  # 노트를 비워줌
@@ -211,7 +218,7 @@ def fill_item(driver, pos, text, option):
             item['prof'].append(text)
 
         elif option['prev'] in ('time', 'note'):
-            insert_to_DB(item_to_list(item))
+            insert_to_DB(item_to_list(item, dept))
             item['prof'] =[]
             if option['note_init'] == True:
                 item['note'] = []  # 노트를 비워줌
@@ -239,7 +246,7 @@ def fill_item(driver, pos, text, option):
             # 처음 page last item이 비어있는 상태가 아닌 차 있을 때
             # 마지막 code, 현재 code가 다른 경우
             # 마지막 item 은 그대로 출력해주고 현재 item은 그대로 저장해나가면 됨.
-            insert_to_DB(item_to_list(page_lastitem))
+            insert_to_DB(item_to_list(page_lastitem, dept))
 
             if option['note_init'] == True:
                 item['note'] = []  # 노트를 비워줌
@@ -253,7 +260,7 @@ def fill_item(driver, pos, text, option):
         elif option['prev'] in ('time', 'note'):
             # 한 교수가 한 과목에서 두개 이상의 강좌 할 경우
             # 이미 크롤러가 note에 대한 정보를 item에 담고 있음
-            insert_to_DB(item_to_list(item))
+            insert_to_DB(item_to_list(item, dept))
             if option['note_init'] == True:
                 item['note'] = []  # 노트를 비워줌
                 item_height['note'] = ''  # note 위치도 초기화
@@ -388,15 +395,15 @@ def crawl_timetable(driver, send_year, semester, dept):
 
         # 특정 page만 디버깅 해볼 경우
         # if i in (11,12,13):
-        #     crawling_page(driver)
+        #     crawling_page(driver, dept)
         # else:
         #     next_page = driver.find_element_by_xpath('//li[@id="crownix-toolbar-next"]/a')
         #     next_page.click()
 
         if i == endpage - 1:
-            crawling_page(driver, True)
+            crawling_page(driver, dept, True)
         else:
-            crawling_page(driver)
+            crawling_page(driver, dept)
             # Go to the next page
             next_page = driver.find_element_by_xpath('//li[@id="crownix-toolbar-next"]/a')
             next_page.click()

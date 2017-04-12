@@ -13,11 +13,11 @@ class Classitem(models.Model):
     limitstud = models.CharField(max_length=10, blank=True, null=True)
     time = models.CharField(max_length=200, blank=True, null=True)
     note = models.CharField(max_length=200, blank=True, null=True)
-
+    dept = models.CharField(max_length=100, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'classitem'
 
 
     def __str__(self):
-        return self.classname + " / " + self.prof +  " / " + self.classcode
+        return self.dept + " / " + self.classname + " / " + self.prof +  " / " + self.classcode
