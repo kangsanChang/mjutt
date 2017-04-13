@@ -6,3 +6,9 @@ class ClassitemForm(forms.ModelForm):
     class Meta:
         model = Classitem
         exclude = ()
+
+class SearchForm(forms.ModelForm):
+
+    class Meta:
+        model = Classitem
+        exclude = ()
