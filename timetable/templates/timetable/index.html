@@ -1,11 +1,10 @@
 {% extends 'timetable/base.html' %}
 
 {% block content %}
-<div class="container">
-  <div class="search-window">
-    <div class="ui form container">
-
-      <div class="field">
+<div class="search-window">
+  <div class="ui form container">
+    <div class="inline fields">
+      <div class="four wide field">
         <label>학과선택</label>
         <select class="ui search dropdown">
           <option value="">Select Dept</option>
@@ -73,9 +72,10 @@
           <option value='16810'>법학과</option>
           <option value='18510'>디지털콘텐츠디자인학과</option>
           <option value='18520'>융합소프트웨어학부</option>
+        </select>
       </div>
 
-      <div class="field">
+      <div class="six wide field">
         <label>Grade</label>
 
         <div class="ui checkbox">
@@ -104,53 +104,50 @@
         </div>
       </div>
 
-      <div class="ui submit button">
+      <div class="ui small submit button">
         <i class="search icon"></i>
         Find
       </div>
     </div>
   </div>
-
-  <div class="ui divider"></div>
-  <div class="result-box">
-    <div class="ui single line table">
-      <table>
-        <thead>
-          <tr>
-            <th>학년</th>
-            <th>교과목명</th>
-            <th>한글코드</th>
-            <th>학과</th>
-            <th>학점</th>
-            <th>시간</th>
-            <th>담당교수</th>
-            <th>강좌번호</th>
-            <th>제한인원</th>
-            <th>시간(강의실)</th>
-            <th>비 고</th>
-          </tr>
-        </thead>
-        {% for item in items %}
-        <tr>
-          <td>{{item.grade}}</td>
-          <td>{{item.classname}}</td>
-          <td>{{item.krcode}}</td>
-          <td>{{item.dept}}</td>
-          <td>{{item.credit}}</td>
-          <td>{{item.timeperweek}}</td>
-          <td>{{item.prof}}</td>
-          <td>{{item.classcode}}</td>
-          <td>{{item.limitstud}}</td>
-          <td>{{item.time}}</td>
-          {% if item.note %}
-          <td>{{item.note}}</td>
-          {% else %}
-          <td> </td>
-          {% endif %}
-        </tr>
-        {% endfor %}
-      </table>
-    </div>
-  </div>
-  {% endblock content %}
 </div>
+
+<div class="result-box">
+  <table class="ui table">
+    <thead>
+      <tr>
+        <th>학년</th>
+        <th class="two wide">교과목명</th>
+        <th>한글코드</th>
+        <th>학과</th>
+        <th>학점</th>
+        <th>시간</th>
+        <th>담당교수</th>
+        <th>강좌번호</th>
+        <th>제한인원</th>
+        <th class="three wide">시간(강의실)</th>
+        <th>비 고</th>
+      </tr>
+    </thead>
+    {% for item in items %}
+    <tr>
+      <td>{{item.grade}}</td>
+      <td>{{item.classname}}</td>
+      <td>{{item.krcode}}</td>
+      <td>{{item.dept}}</td>
+      <td>{{item.credit}}</td>
+      <td>{{item.timeperweek}}</td>
+      <td>{{item.prof}}</td>
+      <td>{{item.classcode}}</td>
+      <td>{{item.limitstud}}</td>
+      <td>{{item.time}}</td>
+      {% if item.note %}
+      <td>{{item.note}}</td>
+      {% else %}
+      <td> </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock content %}
