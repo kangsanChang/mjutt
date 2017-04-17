@@ -5,7 +5,6 @@ from django.db.models import Q
 from .models import Classitem
 from .forms import ClassitemForm
 from django.http import HttpResponse
-from .switcher import switch_to_deptname
 
 
 def index(request):

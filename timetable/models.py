@@ -1,5 +1,5 @@
 from django.db import models
-
+from .switcher import switch_to_deptname
 # Create your models here.
 
 class Classitem(models.Model):
@@ -17,6 +17,9 @@ class Classitem(models.Model):
     class Meta:
         managed = False
         db_table = 'classitem'
+
+    def get_deptname(self):
+        return switch_to_deptname(self.dept)
 
 
     def __str__(self):

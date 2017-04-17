@@ -4,78 +4,84 @@
 <div class="search-window">
   <div class="ui form container">
     <div class="inline fields">
-      <div class="four wide field">
-        <label>학과선택</label>
-        <select class="ui search dropdown">
-          <option value="">Select Dept</option>
-          <option value='10000'>자연캠퍼스 교양</option>
-          <option value='20000'>인문캠퍼스 교양</option>
-          <option value='12000'>공과대학</option>
-          <option value='16400'>사회과학대학</option>
-          <option value='16600'>경영대학</option>
-          <option value='11910'>수학과</option>
-          <option value='11915'>물리학과</option>
-          <option value='11920'>화학과</option>
-          <option value='11940'>식품영양학과</option>
-          <option value='11960'>생명과학정보학부</option>
-          <option value='12250'>화학공학과</option>
-          <option value='12361'>신소재공학과</option>
-          <option value='12370'>환경생명공학과</option>
-          <option value='12371'>환경에너지공학과</option>
-          <option value='12450'>토목환경공학과</option>
-          <option value='12500'>교통공학과</option>
-          <option value='12611'>컴퓨터소프트웨어학과</option>
-          <option value='12701'>기계공학과</option>
-          <option value='12755'>산업경영공학과</option>
-          <option value='12831'>정보공학과</option>
-          <option value='12832'>통신공학과</option>
-          <option value='12901'>정보통신공학과</option>
-          <option value='12900'>전기공학과</option>
-          <option value='12908'>전자공학과</option>
-          <option value='12913'>컴퓨터공학과</option>
-          <option value='13720'>의상디자인학과</option>
-          <option value='13725'>체육학부</option>
-          <option value='13730'>체육학부 경기지도학전공</option>
-          <option value='13735'>바둑학과</option>
-          <option value='13750'>음악학부</option>
-          <option value='13781'>디자인학부</option>
-          <option value='13793'>영화뮤지컬학부 영화전공</option>
-          <option value='13794'>영화뮤지컬학부 뮤지컬공연전공</option>
-          <option value='18012'>건축학부</option>
-          <option value='18013'>건축학부 건축학전공</option>
-          <option value='18014'>건축학부 전통건축전공</option>
-          <option value='18015'>공간디자인학과</option>
-          <option value='18016'>건축학부 공간디자인전공</option>
-          <option value='14120'>국어국문학과</option>
-          <option value='14130'>영어영문학과</option>
-          <option value='14140'>중어중문학과</option>
-          <option value='14150'>일어일문학과</option>
-          <option value='16445'>아동학과</option>
-          <option value='16450'>청소년지도학과</option>
-          <option value='14190'>사학과</option>
-          <option value='14200'>문헌정보학과</option>
-          <option value='14210'>아랍지역학과</option>
-          <option value='14212'>미술사학과</option>
-          <option value='14240'>철학과</option>
-          <option value='14250'>문예창작학과</option>
-          <option value='16610'>경영학과</option>
-          <option value='16615'>경영학부 경영학전공</option>
-          <option value='16620'>경영학부 경영정보전공</option>
-          <option value='16410'>행정학과</option>
-          <option value='16420'>경제학과</option>
-          <option value='16425'>정치외교학과</option>
-          <option value='16430'>북한학과</option>
-          <option value='16440'>디지털미디어학과</option>
-          <option value='16640'>경영정보학과</option>
-          <option value='16650'>국제통상학과</option>
-          <option value='16660'>부동산학과</option>
-          <option value='16810'>법학과</option>
-          <option value='18510'>디지털콘텐츠디자인학과</option>
-          <option value='18520'>융합소프트웨어학부</option>
-        </select>
+      <div class="field">
+        <div style="width: 250px">
+          <label>학과</label>
+          <div class="ui fluid search selection dropdown">
+            <input type="hidden" name="dept">
+            <i class="dropdown icon"></i>
+            <div class="default text">Choose Dept</div>
+            <div class="menu">
+            <div class="item" data-value='10000'>자연캠퍼스 교양</div>
+            <div class="item" data-value='20000'>인문캠퍼스 교양</div>
+            <div class="item" data-value='12000'>공과대학</div>
+            <div class="item" data-value='16400'>사회과학대학</div>
+            <div class="item" data-value='16600'>경영대학</div>
+            <div class="item" data-value='11910'>수학과</div>
+            <div class="item" data-value='11915'>물리학과</div>
+            <div class="item" data-value='11920'>화학과</div>
+            <div class="item" data-value='11940'>식품영양학과</div>
+            <div class="item" data-value='11960'>생명과학정보학부</div>
+            <div class="item" data-value='12250'>화학공학과</div>
+            <div class="item" data-value='12361'>신소재공학과</div>
+            <div class="item" data-value='12370'>환경생명공학과</div>
+            <div class="item" data-value='12371'>환경에너지공학과</div>
+            <div class="item" data-value='12450'>토목환경공학과</div>
+            <div class="item" data-value='12500'>교통공학과</div>
+            <div class="item" data-value='12611'>컴퓨터소프트웨어학과</div>
+            <div class="item" data-value='12701'>기계공학과</div>
+            <div class="item" data-value='12755'>산업경영공학과</div>
+            <div class="item" data-value='12831'>정보공학과</div>
+            <div class="item" data-value='12832'>통신공학과</div>
+            <div class="item" data-value='12901'>정보통신공학과</div>
+            <div class="item" data-value='12900'>전기공학과</div>
+            <div class="item" data-value='12908'>전자공학과</div>
+            <div class="item" data-value='12913'>컴퓨터공학과</div>
+            <div class="item" data-value='13720'>의상디자인학과</div>
+            <div class="item" data-value='13725'>체육학부</div>
+            <div class="item" data-value='13730'>체육학부 경기지도학전공</div>
+            <div class="item" data-value='13735'>바둑학과</div>
+            <div class="item" data-value='13750'>음악학부</div>
+            <div class="item" data-value='13781'>디자인학부</div>
+            <div class="item" data-value='13793'>영화뮤지컬학부 영화전공</div>
+            <div class="item" data-value='13794'>영화뮤지컬학부 뮤지컬공연전공</div>
+            <div class="item" data-value='18012'>건축학부</div>
+            <div class="item" data-value='18013'>건축학부 건축학전공</div>
+            <div class="item" data-value='18014'>건축학부 전통건축전공</div>
+            <div class="item" data-value='18015'>공간디자인학과</div>
+            <div class="item" data-value='18016'>건축학부 공간디자인전공</div>
+            <div class="item" data-value='14120'>국어국문학과</div>
+            <div class="item" data-value='14130'>영어영문학과</div>
+            <div class="item" data-value='14140'>중어중문학과</div>
+            <div class="item" data-value='14150'>일어일문학과</div>
+            <div class="item" data-value='16445'>아동학과</div>
+            <div class="item" data-value='16450'>청소년지도학과</div>
+            <div class="item" data-value='14190'>사학과</div>
+            <div class="item" data-value='14200'>문헌정보학과</div>
+            <div class="item" data-value='14210'>아랍지역학과</div>
+            <div class="item" data-value='14212'>미술사학과</div>
+            <div class="item" data-value='14240'>철학과</div>
+            <div class="item" data-value='14250'>문예창작학과</div>
+            <div class="item" data-value='16610'>경영학과</div>
+            <div class="item" data-value='16615'>경영학부 경영학전공</div>
+            <div class="item" data-value='16620'>경영학부 경영정보전공</div>
+            <div class="item" data-value='16410'>행정학과</div>
+            <div class="item" data-value='16420'>경제학과</div>
+            <div class="item" data-value='16425'>정치외교학과</div>
+            <div class="item" data-value='16430'>북한학과</div>
+            <div class="item" data-value='16440'>디지털미디어학과</div>
+            <div class="item" data-value='16640'>경영정보학과</div>
+            <div class="item" data-value='16650'>국제통상학과</div>
+            <div class="item" data-value='16660'>부동산학과</div>
+            <div class="item" data-value='16810'>법학과</div>
+            <div class="item" data-value='18510'>디지털콘텐츠디자인학과</div>
+            <div class="item" data-value='18520'>융합소프트웨어학부</div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="six wide field">
+      <div class="field">
         <label>Grade</label>
 
         <div class="ui checkbox">
@@ -106,48 +112,47 @@
 
       <div class="ui small submit button">
         <i class="search icon"></i>
-        Find
       </div>
     </div>
   </div>
 </div>
 
 <div class="result-box">
-  <table class="ui table">
-    <thead>
+  <div class="ui grid container">
+    <table class="ui table">
+      <thead>
+        <tr>
+          <th>학년</th>
+          <th class="two wide">교과목명</th>
+          <th>학과</th>
+          <th>학점</th>
+          <th>시간</th>
+          <th>담당교수</th>
+          <th>강좌번호</th>
+          <th>제한인원</th>
+          <th class="three wide">시간(강의실)</th>
+          <th>비 고</th>
+        </tr>
+      </thead>
+      {% for item in items %}
       <tr>
-        <th>학년</th>
-        <th class="two wide">교과목명</th>
-        <th>한글코드</th>
-        <th>학과</th>
-        <th>학점</th>
-        <th>시간</th>
-        <th>담당교수</th>
-        <th>강좌번호</th>
-        <th>제한인원</th>
-        <th class="three wide">시간(강의실)</th>
-        <th>비 고</th>
+        <td>{{item.grade}}</td>
+        <td>{{item.classname}}</td>
+        <td>{{item.get_deptname}}</td>
+        <td>{{item.credit}}</td>
+        <td>{{item.timeperweek}}</td>
+        <td>{{item.prof}}</td>
+        <td>{{item.classcode}}</td>
+        <td>{{item.limitstud}}</td>
+        <td>{{item.time}}</td>
+        {% if item.note %}
+        <td>{{item.note}}</td>
+        {% else %}
+        <td> </td>
+        {% endif %}
       </tr>
-    </thead>
-    {% for item in items %}
-    <tr>
-      <td>{{item.grade}}</td>
-      <td>{{item.classname}}</td>
-      <td>{{item.krcode}}</td>
-      <td>{{item.dept}}</td>
-      <td>{{item.credit}}</td>
-      <td>{{item.timeperweek}}</td>
-      <td>{{item.prof}}</td>
-      <td>{{item.classcode}}</td>
-      <td>{{item.limitstud}}</td>
-      <td>{{item.time}}</td>
-      {% if item.note %}
-      <td>{{item.note}}</td>
-      {% else %}
-      <td> </td>
-      {% endif %}
-    </tr>
-    {% endfor %}
-  </table>
+      {% endfor %}
+    </table>
+  </div>
 </div>
 {% endblock content %}
