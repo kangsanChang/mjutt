@@ -3,14 +3,31 @@ from django.shortcuts import render, get_object_or_404
 import re
 from django.db.models import Q
 from .models import Classitem
-from .forms import ClassitemForm
+from .forms import SearchForm
+from .switcher import switch_to_gradename
 from django.http import HttpResponse
 
 
 def index(request):
+    # render filtered table
     if request.method == 'POST':
-        # render filtered table
-        print("aaa")
+
+        form = SearchForm(request.POST)
+
+        if form.is_valid():
+            dept = request.POST['dept']
+            if request.POST.getlist('grade') != []:
+                grades = request.POST.getlist('grade')
+                results = Classitem.objects.filter(dept=dept)
+                lis=[]
+                for x in grades:
+                    lis.append(switch_to_gradename(x))
+                results = Classitem.objects.filter(dept=dept).filter(grade__in=lis)
+            else:
+                results = Classitem.objects.filter(dept=dept)
+
+            return render(request, "timetable/index.html", {"items" : results})
+
     else:
-        items = Classitem.objects.all()
-    return render(request, "timetable/index.html", {"items" : items})
+        # GET method
+        return render(request, "timetable/index.html", {})

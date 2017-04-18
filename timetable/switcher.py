@@ -65,3 +65,12 @@ def switch_to_deptname(x):
         '18510': '디지털콘텐츠디자인학과',
         '18520': '융합소프트웨어학부',
     }.get(x, ' ')  # default
+
+def switch_to_gradename(x):
+    return {
+        '0': '전학년',
+        '1': '1학년',
+        '2': '2학년',
+        '3': '3학년',
+        '4': '4학년',
+    }.get(x, ' ')  # default

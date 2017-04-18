@@ -2,16 +2,17 @@
 
 {% block content %}
 <div class="search-window">
-  <div class="ui form container">
+  <form class="ui form container segment" method="POST">
+    {%csrf_token%}
     <div class="inline fields">
       <div class="field">
         <div style="width: 250px">
-          <label>학과</label>
           <div class="ui fluid search selection dropdown">
             <input type="hidden" name="dept">
             <i class="dropdown icon"></i>
             <div class="default text">Choose Dept</div>
             <div class="menu">
+            <div class="item" data-value='12913'>컴퓨터공학과</div>
             <div class="item" data-value='10000'>자연캠퍼스 교양</div>
             <div class="item" data-value='20000'>인문캠퍼스 교양</div>
             <div class="item" data-value='12000'>공과대학</div>
@@ -36,7 +37,6 @@
             <div class="item" data-value='12901'>정보통신공학과</div>
             <div class="item" data-value='12900'>전기공학과</div>
             <div class="item" data-value='12908'>전자공학과</div>
-            <div class="item" data-value='12913'>컴퓨터공학과</div>
             <div class="item" data-value='13720'>의상디자인학과</div>
             <div class="item" data-value='13725'>체육학부</div>
             <div class="item" data-value='13730'>체육학부 경기지도학전공</div>
@@ -82,43 +82,42 @@
       </div>
 
       <div class="field">
+
         <label>Grade</label>
-
         <div class="ui checkbox">
-        <input tabindex="0" class="hidden" type="checkbox">
-        <label>전학년</label>
+          <input name="grade" type="checkbox" value="0">
+          <label>전학년</label>
         </div>
-
         <div class="ui checkbox">
-        <input tabindex="1" class="hidden" type="checkbox">
-        <label>1학년</label>
+          <input name="grade" type="checkbox" value="1">
+          <label>1학년</label>
         </div>
-
         <div class="ui checkbox">
-        <input tabindex="2" class="hidden" type="checkbox">
-        <label>2학년</label>
+          <input name="grade" type="checkbox" value="2">
+          <label>2학년</label>
         </div>
-
         <div class="ui checkbox">
-        <input tabindex="3" class="hidden" type="checkbox">
-        <label>3학년</label>
+          <input name="grade" type="checkbox" value="3">
+          <label>3학년</label>
         </div>
-
         <div class="ui checkbox">
-        <input tabindex="4" class="hidden" type="checkbox">
-        <label>4학년</label>
+          <input name="grade" type="checkbox" value="4">
+          <label>4학년</label>
         </div>
       </div>
 
-      <div class="ui small submit button">
+      <button class="ui button" type="submit">
         <i class="search icon"></i>
-      </div>
+      </button>
+
     </div>
-  </div>
+  </form>
 </div>
 
+<div class="ui hidden divider"></div>
+
 <div class="result-box">
-  <div class="ui grid container">
+  <div class="ui fluid container">
     <table class="ui table">
       <thead>
         <tr>
