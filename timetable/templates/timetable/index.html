@@ -2,15 +2,15 @@
 
 {% block content %}
 <div class="search-window">
-  <form class="ui form container segment" method="POST">
+  <form class="ui form container segment" id="search-form" method="POST">
     {%csrf_token%}
     <div class="inline fields">
       <div class="field">
         <div style="width: 250px">
           <div class="ui fluid search selection dropdown">
-            <input type="hidden" name="dept">
+            <input type="hidden" name="dept" id="id_dropdown">
             <i class="dropdown icon"></i>
-            <div class="default text">Choose Dept</div>
+            <div class="default text">학과 선택</div>
             <div class="menu">
             <div class="item" data-value='12913'>컴퓨터공학과</div>
             <div class="item" data-value='10000'>자연캠퍼스 교양</div>
@@ -83,25 +83,25 @@
 
       <div class="field">
 
-        <label>Grade</label>
+        <label>학년</label>
         <div class="ui checkbox">
-          <input name="grade" type="checkbox" value="0">
+          <input name="grade" type="checkbox" value="0" {% if '0' in vals.checkbox %}checked=""{% endif %} >
           <label>전학년</label>
         </div>
         <div class="ui checkbox">
-          <input name="grade" type="checkbox" value="1">
+          <input name="grade" type="checkbox" value="1" {% if '1' in vals.checkbox %}checked=""{% endif %} >
           <label>1학년</label>
         </div>
         <div class="ui checkbox">
-          <input name="grade" type="checkbox" value="2">
+          <input name="grade" type="checkbox" value="2" {% if '2' in vals.checkbox %}checked=""{% endif %} >
           <label>2학년</label>
         </div>
         <div class="ui checkbox">
-          <input name="grade" type="checkbox" value="3">
+          <input name="grade" type="checkbox" value="3" {% if '3' in vals.checkbox %}checked=""{% endif %} >
           <label>3학년</label>
         </div>
         <div class="ui checkbox">
-          <input name="grade" type="checkbox" value="4">
+          <input name="grade" type="checkbox" value="4" {% if '4' in vals.checkbox %}checked=""{% endif %} >
           <label>4학년</label>
         </div>
       </div>
@@ -154,4 +154,16 @@
     </table>
   </div>
 </div>
+
 {% endblock content %}
+
+{% block javascript %}
+
+  {% if vals.dropdown != '' %}
+  <script>
+    $('.ui.dropdown').dropdown(
+      'set selected', {{vals.dropdown}}
+    );
+  </script>
+  {% endif %}
+{% endblock javascript %}

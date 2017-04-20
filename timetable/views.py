@@ -13,6 +13,9 @@ def index(request):
     if request.method == 'POST':
 
         form = SearchForm(request.POST)
+        vals = {'checkbox':'', 'dropdown':''}
+        vals['checkbox'] = request.POST.getlist('grade')
+        vals['dropdown'] = request.POST['dept']
 
         if form.is_valid():
             dept = request.POST['dept']
@@ -26,7 +29,7 @@ def index(request):
             else:
                 results = Classitem.objects.filter(dept=dept)
 
-            return render(request, "timetable/index.html", {"items" : results})
+            return render(request, "timetable/index.html", {"items" : results, "vals" : vals})
 
     else:
         # GET method
