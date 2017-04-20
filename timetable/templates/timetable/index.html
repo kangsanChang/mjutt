@@ -1,157 +1,268 @@
 {% extends 'timetable/base.html' %}
 
 {% block content %}
-<div class="search-window">
-  <form class="ui form container segment" id="search-form" method="POST">
-    {%csrf_token%}
-    <div class="inline fields">
-      <div class="field">
-        <div style="width: 250px">
-          <div class="ui fluid search selection dropdown">
-            <input type="hidden" name="dept" id="id_dropdown">
-            <i class="dropdown icon"></i>
-            <div class="default text">학과 선택</div>
-            <div class="menu">
-            <div class="item" data-value='12913'>컴퓨터공학과</div>
-            <div class="item" data-value='10000'>자연캠퍼스 교양</div>
-            <div class="item" data-value='20000'>인문캠퍼스 교양</div>
-            <div class="item" data-value='12000'>공과대학</div>
-            <div class="item" data-value='16400'>사회과학대학</div>
-            <div class="item" data-value='16600'>경영대학</div>
-            <div class="item" data-value='11910'>수학과</div>
-            <div class="item" data-value='11915'>물리학과</div>
-            <div class="item" data-value='11920'>화학과</div>
-            <div class="item" data-value='11940'>식품영양학과</div>
-            <div class="item" data-value='11960'>생명과학정보학부</div>
-            <div class="item" data-value='12250'>화학공학과</div>
-            <div class="item" data-value='12361'>신소재공학과</div>
-            <div class="item" data-value='12370'>환경생명공학과</div>
-            <div class="item" data-value='12371'>환경에너지공학과</div>
-            <div class="item" data-value='12450'>토목환경공학과</div>
-            <div class="item" data-value='12500'>교통공학과</div>
-            <div class="item" data-value='12611'>컴퓨터소프트웨어학과</div>
-            <div class="item" data-value='12701'>기계공학과</div>
-            <div class="item" data-value='12755'>산업경영공학과</div>
-            <div class="item" data-value='12831'>정보공학과</div>
-            <div class="item" data-value='12832'>통신공학과</div>
-            <div class="item" data-value='12901'>정보통신공학과</div>
-            <div class="item" data-value='12900'>전기공학과</div>
-            <div class="item" data-value='12908'>전자공학과</div>
-            <div class="item" data-value='13720'>의상디자인학과</div>
-            <div class="item" data-value='13725'>체육학부</div>
-            <div class="item" data-value='13730'>체육학부 경기지도학전공</div>
-            <div class="item" data-value='13735'>바둑학과</div>
-            <div class="item" data-value='13750'>음악학부</div>
-            <div class="item" data-value='13781'>디자인학부</div>
-            <div class="item" data-value='13793'>영화뮤지컬학부 영화전공</div>
-            <div class="item" data-value='13794'>영화뮤지컬학부 뮤지컬공연전공</div>
-            <div class="item" data-value='18012'>건축학부</div>
-            <div class="item" data-value='18013'>건축학부 건축학전공</div>
-            <div class="item" data-value='18014'>건축학부 전통건축전공</div>
-            <div class="item" data-value='18015'>공간디자인학과</div>
-            <div class="item" data-value='18016'>건축학부 공간디자인전공</div>
-            <div class="item" data-value='14120'>국어국문학과</div>
-            <div class="item" data-value='14130'>영어영문학과</div>
-            <div class="item" data-value='14140'>중어중문학과</div>
-            <div class="item" data-value='14150'>일어일문학과</div>
-            <div class="item" data-value='16445'>아동학과</div>
-            <div class="item" data-value='16450'>청소년지도학과</div>
-            <div class="item" data-value='14190'>사학과</div>
-            <div class="item" data-value='14200'>문헌정보학과</div>
-            <div class="item" data-value='14210'>아랍지역학과</div>
-            <div class="item" data-value='14212'>미술사학과</div>
-            <div class="item" data-value='14240'>철학과</div>
-            <div class="item" data-value='14250'>문예창작학과</div>
-            <div class="item" data-value='16610'>경영학과</div>
-            <div class="item" data-value='16615'>경영학부 경영학전공</div>
-            <div class="item" data-value='16620'>경영학부 경영정보전공</div>
-            <div class="item" data-value='16410'>행정학과</div>
-            <div class="item" data-value='16420'>경제학과</div>
-            <div class="item" data-value='16425'>정치외교학과</div>
-            <div class="item" data-value='16430'>북한학과</div>
-            <div class="item" data-value='16440'>디지털미디어학과</div>
-            <div class="item" data-value='16640'>경영정보학과</div>
-            <div class="item" data-value='16650'>국제통상학과</div>
-            <div class="item" data-value='16660'>부동산학과</div>
-            <div class="item" data-value='16810'>법학과</div>
-            <div class="item" data-value='18510'>디지털콘텐츠디자인학과</div>
-            <div class="item" data-value='18520'>융합소프트웨어학부</div>
+<div class="ui grid">
+  <div class="left floated eleven wide column">
+    <div class="ui container segment" id="search-box">
+      <div class="search-form">
+        <form class="ui form container segment" id="search-form" method="POST">
+          {%csrf_token%}
+          <div class="inline fields">
+            <div class="field">
+              <div style="width: 250px">
+                <div class="ui fluid search selection dropdown">
+                  <input type="hidden" name="dept" id="id_dropdown">
+                  <i class="dropdown icon"></i>
+                  <div class="default text">학과 선택</div>
+                  <div class="menu">
+                  <div class="item" data-value='12913'>컴퓨터공학과</div>
+                  <div class="item" data-value='10000'>자연캠퍼스 교양</div>
+                  <div class="item" data-value='20000'>인문캠퍼스 교양</div>
+                  <div class="item" data-value='12000'>공과대학</div>
+                  <div class="item" data-value='16400'>사회과학대학</div>
+                  <div class="item" data-value='16600'>경영대학</div>
+                  <div class="item" data-value='11910'>수학과</div>
+                  <div class="item" data-value='11915'>물리학과</div>
+                  <div class="item" data-value='11920'>화학과</div>
+                  <div class="item" data-value='11940'>식품영양학과</div>
+                  <div class="item" data-value='11960'>생명과학정보학부</div>
+                  <div class="item" data-value='12250'>화학공학과</div>
+                  <div class="item" data-value='12361'>신소재공학과</div>
+                  <div class="item" data-value='12370'>환경생명공학과</div>
+                  <div class="item" data-value='12371'>환경에너지공학과</div>
+                  <div class="item" data-value='12450'>토목환경공학과</div>
+                  <div class="item" data-value='12500'>교통공학과</div>
+                  <div class="item" data-value='12611'>컴퓨터소프트웨어학과</div>
+                  <div class="item" data-value='12701'>기계공학과</div>
+                  <div class="item" data-value='12755'>산업경영공학과</div>
+                  <div class="item" data-value='12831'>정보공학과</div>
+                  <div class="item" data-value='12832'>통신공학과</div>
+                  <div class="item" data-value='12901'>정보통신공학과</div>
+                  <div class="item" data-value='12900'>전기공학과</div>
+                  <div class="item" data-value='12908'>전자공학과</div>
+                  <div class="item" data-value='13720'>의상디자인학과</div>
+                  <div class="item" data-value='13725'>체육학부</div>
+                  <div class="item" data-value='13730'>체육학부 경기지도학전공</div>
+                  <div class="item" data-value='13735'>바둑학과</div>
+                  <div class="item" data-value='13750'>음악학부</div>
+                  <div class="item" data-value='13781'>디자인학부</div>
+                  <div class="item" data-value='13793'>영화뮤지컬학부 영화전공</div>
+                  <div class="item" data-value='13794'>영화뮤지컬학부 뮤지컬공연전공</div>
+                  <div class="item" data-value='18012'>건축학부</div>
+                  <div class="item" data-value='18013'>건축학부 건축학전공</div>
+                  <div class="item" data-value='18014'>건축학부 전통건축전공</div>
+                  <div class="item" data-value='18015'>공간디자인학과</div>
+                  <div class="item" data-value='18016'>건축학부 공간디자인전공</div>
+                  <div class="item" data-value='14120'>국어국문학과</div>
+                  <div class="item" data-value='14130'>영어영문학과</div>
+                  <div class="item" data-value='14140'>중어중문학과</div>
+                  <div class="item" data-value='14150'>일어일문학과</div>
+                  <div class="item" data-value='16445'>아동학과</div>
+                  <div class="item" data-value='16450'>청소년지도학과</div>
+                  <div class="item" data-value='14190'>사학과</div>
+                  <div class="item" data-value='14200'>문헌정보학과</div>
+                  <div class="item" data-value='14210'>아랍지역학과</div>
+                  <div class="item" data-value='14212'>미술사학과</div>
+                  <div class="item" data-value='14240'>철학과</div>
+                  <div class="item" data-value='14250'>문예창작학과</div>
+                  <div class="item" data-value='16610'>경영학과</div>
+                  <div class="item" data-value='16615'>경영학부 경영학전공</div>
+                  <div class="item" data-value='16620'>경영학부 경영정보전공</div>
+                  <div class="item" data-value='16410'>행정학과</div>
+                  <div class="item" data-value='16420'>경제학과</div>
+                  <div class="item" data-value='16425'>정치외교학과</div>
+                  <div class="item" data-value='16430'>북한학과</div>
+                  <div class="item" data-value='16440'>디지털미디어학과</div>
+                  <div class="item" data-value='16640'>경영정보학과</div>
+                  <div class="item" data-value='16650'>국제통상학과</div>
+                  <div class="item" data-value='16660'>부동산학과</div>
+                  <div class="item" data-value='16810'>법학과</div>
+                  <div class="item" data-value='18510'>디지털콘텐츠디자인학과</div>
+                  <div class="item" data-value='18520'>융합소프트웨어학부</div>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <div class="field">
+
+              <label>학년</label>
+              <div class="ui checkbox">
+                <input name="grade" type="checkbox" value="0" {% if '0' in vals.checkbox %}checked=""{% endif %} >
+                <label>전학년</label>
+              </div>
+              <div class="ui checkbox">
+                <input name="grade" type="checkbox" value="1" {% if '1' in vals.checkbox %}checked=""{% endif %} >
+                <label>1학년</label>
+              </div>
+              <div class="ui checkbox">
+                <input name="grade" type="checkbox" value="2" {% if '2' in vals.checkbox %}checked=""{% endif %} >
+                <label>2학년</label>
+              </div>
+              <div class="ui checkbox">
+                <input name="grade" type="checkbox" value="3" {% if '3' in vals.checkbox %}checked=""{% endif %} >
+                <label>3학년</label>
+              </div>
+              <div class="ui checkbox">
+                <input name="grade" type="checkbox" value="4" {% if '4' in vals.checkbox %}checked=""{% endif %} >
+                <label>4학년</label>
+              </div>
+            </div>
+
+            <button class="ui button" type="submit">
+              <i class="search icon"></i>
+            </button>
+
           </div>
-        </div>
+        </form>
       </div>
 
-      <div class="field">
+      <div class="ui hidden divider"></div>
 
-        <label>학년</label>
-        <div class="ui checkbox">
-          <input name="grade" type="checkbox" value="0" {% if '0' in vals.checkbox %}checked=""{% endif %} >
-          <label>전학년</label>
-        </div>
-        <div class="ui checkbox">
-          <input name="grade" type="checkbox" value="1" {% if '1' in vals.checkbox %}checked=""{% endif %} >
-          <label>1학년</label>
-        </div>
-        <div class="ui checkbox">
-          <input name="grade" type="checkbox" value="2" {% if '2' in vals.checkbox %}checked=""{% endif %} >
-          <label>2학년</label>
-        </div>
-        <div class="ui checkbox">
-          <input name="grade" type="checkbox" value="3" {% if '3' in vals.checkbox %}checked=""{% endif %} >
-          <label>3학년</label>
-        </div>
-        <div class="ui checkbox">
-          <input name="grade" type="checkbox" value="4" {% if '4' in vals.checkbox %}checked=""{% endif %} >
-          <label>4학년</label>
+      <div class="result-box">
+        <div class="ui container" id="result-box">
+          <table class="ui selectable very compact blue table" id="class-table">
+            <thead>
+              <tr>
+                <th>학년</th>
+                <th class="two wide">교과목명</th>
+                <th>학과</th>
+                <th>학점</th>
+                <th>시간</th>
+                <th>담당교수</th>
+                <th>강좌번호</th>
+                <th>제한인원</th>
+                <th class="three wide">시간(강의실)</th>
+                <th>비 고</th>
+              </tr>
+            </thead>
+            {% for item in items %}
+            <tr>
+              <td>{{item.grade}}</td>
+              <td>{{item.classname}}</td>
+              <td>{{item.get_deptname}}</td>
+              <td>{{item.credit}}</td>
+              <td>{{item.timeperweek}}</td>
+              <td>{{item.prof}}</td>
+              <td>{{item.classcode}}</td>
+              <td>{{item.limitstud}}</td>
+              <td>{{item.time}}</td>
+              {% if item.note %}
+              <td>{{item.note}}</td>
+              {% else %}
+              <td> </td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </table>
         </div>
       </div>
-
-      <button class="ui button" type="submit">
-        <i class="search icon"></i>
-      </button>
-
     </div>
-  </form>
-</div>
 
-<div class="ui hidden divider"></div>
+  </div>
+  <div class="right floated five wide column">
+    <div class="ui top attached tabular menu" id="timetable-tab">
+      <a class="item active" data-tab="first" id="timetable-tab">PLAN A</a>
+      <a class="item" data-tab="second" id="timetable-tab">PLAN B</a>
+      <a class="item" data-tab="third" id="timetable-tab">PLAN C</a>
+    </div>
+    <div class="ui bottom attached tab segment" data-tab="first">
+      <div class="ui container segment" id="timetable">
+        <table class="ui celled violet table">
+          <thead>
+            <tr>
+              <th>/</th>
+              <th>Mon</th>
+              <th>Tue</th>
+              <th>Wed</th>
+              <th>Thu</th>
+              <th>Fri</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
 
-<div class="result-box">
-  <div class="ui container" id="result-box">
-    <table class="ui selectable blue table" id="class-table">
-      <thead>
-        <tr>
-          <th>학년</th>
-          <th class="two wide">교과목명</th>
-          <th>학과</th>
-          <th>학점</th>
-          <th>시간</th>
-          <th>담당교수</th>
-          <th>강좌번호</th>
-          <th>제한인원</th>
-          <th class="three wide">시간(강의실)</th>
-          <th>비 고</th>
-        </tr>
-      </thead>
-      {% for item in items %}
-      <tr>
-        <td>{{item.grade}}</td>
-        <td>{{item.classname}}</td>
-        <td>{{item.get_deptname}}</td>
-        <td>{{item.credit}}</td>
-        <td>{{item.timeperweek}}</td>
-        <td>{{item.prof}}</td>
-        <td>{{item.classcode}}</td>
-        <td>{{item.limitstud}}</td>
-        <td>{{item.time}}</td>
-        {% if item.note %}
-        <td>{{item.note}}</td>
-        {% else %}
-        <td> </td>
-        {% endif %}
-      </tr>
-      {% endfor %}
-    </table>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ui bottom attached tab segment" data-tab="second">
+      Second
+    </div>
+    <div class="ui bottom attached tab segment" data-tab="third">
+      Third
+    </div>
   </div>
 </div>
 

@@ -6,6 +6,7 @@
     <title>MJUTT - Time to MJU</title>
     <link rel="stylesheet" type="text/css" href="{% static 'timetable/semantic/semantic.css'%}">
     <link rel="stylesheet" type="text/css" href="{% static 'timetable/style.css' %}">
+    <link rel="stylesheet" type="" href="{% static 'timetable/style.css' %}">
     <!-- use semantic.min.css <- deploy -->
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -23,9 +24,10 @@
     <script>
       $('.ui.dropdown').dropdown();
       $('.ui.checkbox').checkbox();
+      $('#timetable-tab .menu .item').tab();
     </script>
 
     {% block javascript %}{% endblock %}
-    
+
   </body>
 </html>
