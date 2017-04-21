@@ -3,9 +3,9 @@
 {% block content %}
 <div class="ui grid">
   <div class="left floated eleven wide column">
-    <div class="ui container segment" id="search-box">
+    <div class="ui fluid container segment" id="search-box">
       <div class="search-form">
-        <form class="ui form container segment" id="search-form" method="POST">
+        <form class="ui fluid form container segment" id="search-form" method="POST">
           {%csrf_token%}
           <div class="inline fields">
             <div class="field">
@@ -109,6 +109,13 @@
               </div>
             </div>
 
+            <div class="field">
+              <div class="ui search">
+                <input class="prompt" type="text" placeholder="Common passwords...">
+                <div class="results"></div>
+              </div>
+            </div>
+
             <button class="ui button" type="submit">
               <i class="search icon"></i>
             </button>
@@ -120,20 +127,20 @@
       <div class="ui hidden divider"></div>
 
       <div class="result-box">
-        <div class="ui container" id="result-box">
+        <div class="ui fluid container" id="result-box">
           <table class="ui selectable very compact blue table" id="class-table">
             <thead>
               <tr>
-                <th>학년</th>
+                <th class="one wide">학년</th>
                 <th class="two wide">교과목명</th>
-                <th>학과</th>
-                <th>학점</th>
-                <th>시간</th>
-                <th>담당교수</th>
-                <th>강좌번호</th>
-                <th>제한인원</th>
+                <th class="two wide">학과</th>
+                <th class="one wide">학점</th>
+                <th class="one wide">시간</th>
+                <th class="one wide">담당교수</th>
+                <th class="one wide">강좌번호</th>
+                <th class="one wide">제한인원</th>
                 <th class="three wide">시간(강의실)</th>
-                <th>비 고</th>
+                <th class="three wide">비 고</th>
               </tr>
             </thead>
             {% for item in items %}
@@ -166,22 +173,21 @@
       <a class="item" data-tab="second" id="timetable-tab">PLAN B</a>
       <a class="item" data-tab="third" id="timetable-tab">PLAN C</a>
     </div>
-    <div class="ui bottom attached tab segment" data-tab="first">
-      <div class="ui container segment" id="timetable">
-        <table class="ui celled violet table">
+    <div class="ui bottom attached tab segment active" data-tab="first">
+      <table class="ui celled violet table">
           <thead>
             <tr>
               <th>/</th>
-              <th>Mon</th>
-              <th>Tue</th>
-              <th>Wed</th>
-              <th>Thu</th>
-              <th>Fri</th>
+              <th>월요일</th>
+              <th>화요일</th>
+              <th>수요일</th>
+              <th>목요일</th>
+              <th>금요일</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>1</td>
+              <td>1교시<br>(09~10)</td>
               <td class="selectable"></td>
               <td class="selectable"></td>
               <td class="selectable"></td>
@@ -189,7 +195,7 @@
               <td class="selectable"></td>
             </tr>
             <tr>
-              <td>2</td>
+              <td>2교시<br>(10~11)</td>
               <td class="selectable"></td>
               <td class="selectable"></td>
               <td class="selectable"></td>
@@ -197,7 +203,7 @@
               <td class="selectable"></td>
             </tr>
             <tr>
-              <td>3</td>
+              <td>3교시<br>(11~12)</td>
               <td class="selectable"></td>
               <td class="selectable"></td>
               <td class="selectable"></td>
@@ -205,7 +211,7 @@
               <td class="selectable"></td>
             </tr>
             <tr>
-              <td>4</td>
+              <td>4교시<br>(12~13)</td>
               <td class="selectable"></td>
               <td class="selectable"></td>
               <td class="selectable"></td>
@@ -213,7 +219,7 @@
               <td class="selectable"></td>
             </tr>
             <tr>
-              <td>5</td>
+              <td>5교시<br>(13~14)</td>
               <td class="selectable"></td>
               <td class="selectable"></td>
               <td class="selectable"></td>
@@ -221,7 +227,7 @@
               <td class="selectable"></td>
             </tr>
             <tr>
-              <td>6</td>
+              <td>6교시<br>(14~15)</td>
               <td class="selectable"></td>
               <td class="selectable"></td>
               <td class="selectable"></td>
@@ -229,7 +235,7 @@
               <td class="selectable"></td>
             </tr>
             <tr>
-              <td>7</td>
+              <td>7교시<br>(15~16)</td>
               <td class="selectable"></td>
               <td class="selectable"></td>
               <td class="selectable"></td>
@@ -237,7 +243,7 @@
               <td class="selectable"></td>
             </tr>
             <tr>
-              <td>8</td>
+              <td>8교시<br>(16~17)</td>
               <td class="selectable"></td>
               <td class="selectable"></td>
               <td class="selectable"></td>
@@ -245,7 +251,7 @@
               <td class="selectable"></td>
             </tr>
             <tr>
-              <td>9</td>
+              <td>9교시<br>(17~18)</td>
               <td class="selectable"></td>
               <td class="selectable"></td>
               <td class="selectable"></td>
@@ -255,13 +261,184 @@
 
           </tbody>
         </table>
-      </div>
     </div>
     <div class="ui bottom attached tab segment" data-tab="second">
-      Second
+      <table class="ui celled orange table">
+          <thead>
+            <tr>
+              <th>/</th>
+              <th>월요일</th>
+              <th>화요일</th>
+              <th>수요일</th>
+              <th>목요일</th>
+              <th>금요일</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1교시<br>(09~10)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>2교시<br>(10~11)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>3교시<br>(11~12)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>4교시<br>(12~13)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>5교시<br>(13~14)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>6교시<br>(14~15)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>7교시<br>(15~16)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>8교시<br>(16~17)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>9교시<br>(17~18)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+
+          </tbody>
+        </table>
     </div>
     <div class="ui bottom attached tab segment" data-tab="third">
-      Third
+      <table class="ui celled olive table">
+          <thead>
+            <tr>
+              <th>/</th>
+              <th>월요일</th>
+              <th>화요일</th>
+              <th>수요일</th>
+              <th>목요일</th>
+              <th>금요일</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1교시<br>(09~10)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>2교시<br>(10~11)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>3교시<br>(11~12)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>4교시<br>(12~13)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>5교시<br>(13~14)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>6교시<br>(14~15)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>7교시<br>(15~16)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>8교시<br>(16~17)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>9교시<br>(17~18)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+
+          </tbody>
+        </table>
     </div>
   </div>
 </div>

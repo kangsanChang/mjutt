@@ -1,8 +1,9 @@
 
 body {
-  padding:1rem;
+  padding:10px;
 }
 
-table #result-table {
-  background-color: yellow;
+.result-box {
+  height: 800px;
+  overflow:auto;
 }

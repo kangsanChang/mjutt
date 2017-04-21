@@ -3,6 +3,7 @@ body {
   padding:1rem;
 }
 
-table #result-table {
-  background-color: yellow;
+#class-table tbody{
+  height: 500px;
+  overflow:auto;
 }
