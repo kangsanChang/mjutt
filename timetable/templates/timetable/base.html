@@ -25,8 +25,24 @@
       $('.ui.dropdown').dropdown();
       $('.ui.checkbox').checkbox();
       $('.tabular.menu .item').tab();
-    </script>
+      $('.table-row.clicked').popup({
+        popup : $('.custom.popup'),
+        position : "top center",
+      });
 
+    </script>
+    <script>
+    $('.table-row').hover(function(){
+      $(this).addClass("hover");
+    }, function(){
+      $(this).removeClass("hover");
+    });
+
+    $('.table-row').click(function(event){
+      $('.table-row').not(this).removeClass('clicked');
+      $(this).toggleClass("clicked");
+    });
+    </script>
     {% block javascript %}{% endblock %}
 
   </body>

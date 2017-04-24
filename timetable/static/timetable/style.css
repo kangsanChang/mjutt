@@ -7,3 +7,15 @@ body {
   height: 800px;
   overflow:auto;
 }
+
+.checkbox{
+  margin-left:10px;
+}
+
+.clicked {
+  background-color: #b3b3ff !important;
+}
+
+.hover {
+  background-color: #e6e6ff;
+}
