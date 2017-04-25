@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <title>MJUTT - Time to MJU</title>
     <link rel="stylesheet" type="text/css" href="{% static 'timetable/semantic/semantic.css'%}">
-    <link rel="stylesheet" type="text/css" href="{% static 'timetable/style.css' %}">
-    <link rel="stylesheet" type="" href="{% static 'timetable/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'timetable/css/style.css' %}">
+    <link rel="stylesheet" type="" href="{% static 'timetable/css/style.css' %}">
     <!-- use semantic.min.css <- deploy -->
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -25,12 +25,8 @@
       $('.ui.dropdown').dropdown();
       $('.ui.checkbox').checkbox();
       $('.tabular.menu .item').tab();
-      $('.table-row.clicked').popup({
-        popup : $('.custom.popup'),
-        position : "top center",
-      });
-
     </script>
+
     <script>
     $('.table-row').hover(function(){
       $(this).addClass("hover");
@@ -42,6 +38,40 @@
       $('.table-row').not(this).removeClass('clicked');
       $(this).toggleClass("clicked");
     });
+
+    $('#submit').click(function(e){
+      e.preventDefault();
+      console.log("submit clicked");
+
+      var mycheckboxes = new Array();
+      $("input:checked").each(function(){
+        mycheckboxes.push($(this).val());
+      });
+
+      console.log(mycheckboxes);
+      console.log($('#id_dropdown').val());
+      $.ajax({
+        type:'POST',
+        url:'/',
+        data:{
+          csrfmiddlewaretoken : '{{csrf_token}}',
+          dept:$('#id_dropdown').val(),
+          grade:mycheckboxes,
+          classname:$('#classname').val(), // 수정 필요
+        },
+        success:function(){
+          console.log("success!");
+        }
+      });
+    });
+
+    // $('#add-item').click(function(){ // when click is placed
+    //   $.ajax({ //create an ajax call.
+    //     data: $()
+    //   });
+    // });
+
+
     </script>
     {% block javascript %}{% endblock %}
 

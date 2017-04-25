@@ -7,9 +7,12 @@ body {
   height: 800px;
   overflow:auto;
 }
-
-.checkbox{
+.checkbox {
   margin-left:10px;
+  margin-right:0px !important;
+}
+.checkbox label {
+  padding-left: 20px !important;
 }
 
 .clicked {
