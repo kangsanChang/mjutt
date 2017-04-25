@@ -1,6 +1,9 @@
 {% extends 'timetable/base.html' %}
 
 {% block content %}
+
+{% if error_message %} <p id="error-msg"><strong>{{ error_message }}</strong></p> {% endif %}
+
 <div class="ui grid">
   <div class="left floated eleven wide column">
     <div class="ui fluid container segment" id="search-box">
@@ -11,7 +14,7 @@
             <div class="field">
               <div style="width: 220px">
                 <div class="ui fluid search selection dropdown">
-                  <input type="hidden" name="dept" id="id_dropdown" id="dept">
+                  <input type="hidden" name="dept" id="id_dropdown">
                   <i class="dropdown icon"></i>
                   <div class="default text">학과 선택</div>
                   <div class="menu">
@@ -469,11 +472,4 @@
 
 {% block javascript %}
 
-  {% if vals.dropdown != '' %}
-  <script>
-    // $('.ui.dropdown').dropdown(
-    //   'set selected', {{vals.dropdown}}
-    // );
-  </script>
-  {% endif %}
 {% endblock javascript %}
