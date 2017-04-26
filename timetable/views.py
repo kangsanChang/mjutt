@@ -1,12 +1,11 @@
-from django.shortcuts import render, get_object_or_404, render_to_response
+from django.shortcuts import render, get_object_or_404
 # Create your views here.
 import re
-from django.db.models import Q
 from .models import Classitem
 from .forms import SearchForm
 from .switcher import switch_to_gradename
-from django.http import HttpResponse
-
+from django.http import HttpResponse, JsonResponse
+from django.core import serializers
 
 def index(request):
     # render filtered table
@@ -72,9 +71,9 @@ def index(request):
                 #학과도 없는 경우 -> 에러처리
                 print("dept is empty")
 
-            print(results)
-            return render_to_response("timetable/index.html",{"items":results})
-
+            data = serializers.serialize('json',results) # query set to json
+            # return JsonResponse(data, safe=False) # dictionary 아닌 type도 보내려면 false
+            return HttpResponse({"items":results})
 
         else:
             print("not ajax")

@@ -40,39 +40,77 @@
       $(this).toggleClass("clicked");
     });
 
+    // Ajax
     $('#submit').click(function(e){
       e.preventDefault();
-      console.log("submit clicked");
-
+      // Collect checkbox value
       var mycheckboxes = new Array();
       $("input:checked").each(function(){
         mycheckboxes.push($(this).val());
       });
 
-      console.log(mycheckboxes);
-      console.log($('#id_dropdown').val());
       $.ajax({
         type:'POST',
         url:'/',
+        dataType: "json",
         data:{
           csrfmiddlewaretoken : '{{csrf_token}}',
           dept:$('#id_dropdown').val(),
           grade:mycheckboxes,
-          classname:$('#classname').val(), // 수정 필요
+          classname:$('#classname').val(),
         },
         success: function(data){
           console.log("SUCCESS");
           console.log(data);
+          rowdata = $.parseJSON(data);
+          console.log(rowdata);
+          $.each(rowdata, function(i, val){
+            $('#table-body').empty().append(
+              $('<tr class="table-row">\
+              <td>'+rowdata[]+'</td>\
+              <td>'+rowdata[]+'</td>\
+              <td>'+rowdata[]+'</td>\
+              <td>'+rowdata[]+'</td>\
+              <td>'+rowdata[]+'</td>\
+              <td>'+rowdata[]+'</td>\
+              <td>'+rowdata[]+'</td>\
+              <td>'+rowdata[]+'</td>\
+              <td>'+rowdata[]+'</td>\
+              </tr>')
+            )
+            // <tr class="table-row">
+            //   <td>{{item.grade}}</td>
+            //   <td>{{item.classname}}</td>
+            //   <td>{{item.get_deptname}}</td>
+            //   <td>{{item.credit}}</td>
+            //   <td>{{item.timeperweek}}</td>
+            //   <td>{{item.prof}}</td>
+            //   <td>{{item.classcode}}</td>
+            //   <td>{{item.limitstud}}</td>
+            //   <td>{{item.time}}</td>
+            //   {% if item.note %}
+            //   <td>{{item.note}}</td>
+            //   {% else %}
+            //   <td> </td>
+            //   {% endif %}
+            // </tr>
+          });
+        },
+        beforeSend:function(){
+          $('#search-form').addClass("loading")
+        },
+        complete:function(){
+          $('#search-form').removeClass("loading")
         },
         failure: function(data){
           console.log("FAIL");
           console.log(data);
-        },
+        }
       });
     });
 
-    // $('#add-item').click(function(){ // when click is placed
-    //   $.ajax({ //create an ajax call.
+    // $('#add-item').click(function(){
+    //   $.ajax({
     //     data: $()
     //   });
     // });
