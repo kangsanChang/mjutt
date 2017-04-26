@@ -151,10 +151,9 @@
               <tr>
                 <th class="one wide">학년</th>
                 <th class="two wide">교과목명</th>
-                <th class="two wide">학과</th>
                 <th class="one wide">학점</th>
                 <th class="one wide">시간</th>
-                <th class="one wide">담당교수</th>
+                <th class="two wide">담당교수</th>
                 <th class="one wide">강좌번호</th>
                 <th class="one wide">제한인원</th>
                 <th class="three wide">시간(강의실)</th>
@@ -162,26 +161,7 @@
               </tr>
             </thead>
             <tbody id="table-body">
-
             </tbody>
-            {% for item in items %}
-            <tr class="table-row">
-              <td>{{item.grade}}</td>
-              <td>{{item.classname}}</td>
-              <td>{{item.get_deptname}}</td>
-              <td>{{item.credit}}</td>
-              <td>{{item.timeperweek}}</td>
-              <td>{{item.prof}}</td>
-              <td>{{item.classcode}}</td>
-              <td>{{item.limitstud}}</td>
-              <td>{{item.time}}</td>
-              {% if item.note %}
-              <td>{{item.note}}</td>
-              {% else %}
-              <td> </td>
-              {% endif %}
-            </tr>
-            {% endfor %}
           </table>
         </div>
       </div>

@@ -67,13 +67,17 @@ def index(request):
                 else:
                     # 학과만 있는 경우
                     results = Classitem.objects.filter(dept=dept)
+            elif classname!='':
+                # 과목이름만 있는 경우
+                print("hello")
             else:
                 #학과도 없는 경우 -> 에러처리
                 print("dept is empty")
+                return render(request, "timetable/index.html", {"error_message":"입력 조건이 필요합니다"})
 
             data = serializers.serialize('json',results) # query set to json
-            # return JsonResponse(data, safe=False) # dictionary 아닌 type도 보내려면 false
-            return HttpResponse({"items":results})
+            return JsonResponse(data, safe=False) # dictionary 아닌 type을 보내려면 false
+            # return HttpResponse({"items":results})
 
         else:
             print("not ajax")

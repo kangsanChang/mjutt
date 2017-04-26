@@ -29,15 +29,17 @@
     </script>
 
     <script>
-    $('.table-row').hover(function(){
-      $(this).addClass("hover");
-    }, function(){
-      $(this).removeClass("hover");
-    });
+    $(document).ready(function(){
+      $('.table-row').hover(function(){
+        $(this).addClass("hover");
+      }, function(){
+        $(this).removeClass("hover");
+      });
 
-    $('.table-row').click(function(event){
-      $('.table-row').not(this).removeClass('clicked');
-      $(this).toggleClass("clicked");
+      $('.table-row').click(function(event){
+        $('.table-row').not(this).removeClass('clicked');
+        $(this).toggleClass("clicked");
+      });
     });
 
     // Ajax
@@ -64,36 +66,21 @@
           console.log(data);
           rowdata = $.parseJSON(data);
           console.log(rowdata);
+          $('#table-body').empty()
           $.each(rowdata, function(i, val){
-            $('#table-body').empty().append(
+            $('#table-body').append(
               $('<tr class="table-row">\
-              <td>'+rowdata[]+'</td>\
-              <td>'+rowdata[]+'</td>\
-              <td>'+rowdata[]+'</td>\
-              <td>'+rowdata[]+'</td>\
-              <td>'+rowdata[]+'</td>\
-              <td>'+rowdata[]+'</td>\
-              <td>'+rowdata[]+'</td>\
-              <td>'+rowdata[]+'</td>\
-              <td>'+rowdata[]+'</td>\
+              <td>'+rowdata[i].fields['grade']+'</td>\
+              <td>'+rowdata[i].fields['classname']+'</td>\
+              <td>'+rowdata[i].fields['credit']+'</td>\
+              <td>'+rowdata[i].fields['timeperweek']+'</td>\
+              <td>'+rowdata[i].fields['prof']+'</td>\
+              <td>'+rowdata[i].fields['classcode']+'</td>\
+              <td>'+rowdata[i].fields['limitstud']+'</td>\
+              <td>'+rowdata[i].fields['time']+'</td>\
+              <td>'+rowdata[i].fields['note']+'</td>\
               </tr>')
             )
-            // <tr class="table-row">
-            //   <td>{{item.grade}}</td>
-            //   <td>{{item.classname}}</td>
-            //   <td>{{item.get_deptname}}</td>
-            //   <td>{{item.credit}}</td>
-            //   <td>{{item.timeperweek}}</td>
-            //   <td>{{item.prof}}</td>
-            //   <td>{{item.classcode}}</td>
-            //   <td>{{item.limitstud}}</td>
-            //   <td>{{item.time}}</td>
-            //   {% if item.note %}
-            //   <td>{{item.note}}</td>
-            //   {% else %}
-            //   <td> </td>
-            //   {% endif %}
-            // </tr>
           });
         },
         beforeSend:function(){
