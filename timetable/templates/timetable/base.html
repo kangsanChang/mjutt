@@ -80,6 +80,15 @@
             $('.table-row').click(function(event){
               $('.table-row').not(this).removeClass('clicked');
               $(this).toggleClass("clicked");
+
+              classname = $(this)[0].children[1].innerHTML;
+              prof = $(this)[0].children[4].innerHTML;
+              classtime = $(this)[0].children[7].innerHTML;
+              console.log(classname);
+              console.log(prof);
+              console.log(classtime);
+              // var exp = "\(.*\)"
+              // console.log(classtime.match(\(.*\));
             });
           });
 
