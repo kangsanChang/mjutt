@@ -1,86 +1,45 @@
 from django.shortcuts import render, get_object_or_404
 # Create your views here.
-import re
 from .models import Classitem
-from .forms import SearchForm
 from .switcher import switch_to_gradename
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
-
+from django.db.models import Q # for search with partial words
 def index(request):
     # render filtered table
     if request.method == 'POST':
-    # if request.is_ajax():
-    # form = SearchForm(request.POST)
-    # vals = {'checkbox':'', 'dropdown':'', 'classname':''}
-    # vals['checkbox'] = request.POST.getlist('grade')
-    # vals['dropdown'] = request.POST['dept']
-    # vals['classname'] = request.POST['classname']
-    # if form.is_valid():
-    #     dept = request.POST['dept']
-    #     if request.POST.getlist('grade') != []:
-    #         grades = request.POST.getlist('grade')
-    #         results = Classitem.objects.filter(dept=dept)
-    #         lis=[]
-    #         for x in grades:
-    #             lis.append(switch_to_gradename(x))
-    #         results = Classitem.objects.filter(dept=dept).filter(grade__in=lis)
-    #     else:
-    #         results = Classitem.objects.filter(dept=dept)
-    #
-    #     return render(request, "timetable/index.html", {"items" : results, "vals" : vals})
-
-
         if request.is_ajax():
-            print("dept: ")
             dept = request.POST.get('dept')
-            print(dept)
-            print("grade: ")
             grades = request.POST.getlist('grade[]')
-            print(grades)
-            classname = request.POST['classname']
-            print("Classname:")
-            print(classname)
-            print(request.POST.get('csrfmiddlewaretoken'))
-
+            searchtext = request.POST['searchtext']
 
             if dept != "":
-
                 if grades != []:
-                    # db에서 찾기 위해 학년 코드를 이름으로 변경 "n학년"
-                    grade_list=[]
-                    for x in grades:
-                        grade_list.append(switch_to_gradename(x))
-
-                    if classname != '':
-                        #학과, 학년, 과목이름이 있는 경우
-                        print("class name not empty")
-
+                    if searchtext != '':
+                        results = Classitem.objects.filter(dept=dept).filter(grade__in=grades).filter(Q(classname__icontains=searchtext) | Q(prof__icontains=searchtext))
                     else:
                         # 학과랑, 학년만 있는 경우
-                        results = Classitem.objects.filter(dept=dept).filter(grade__in=grade_list)
+                        results = Classitem.objects.filter(dept=dept).filter(grade__in=grades)
 
-                elif classname != '' :
-                    # 학과랑 과목이름이 있는 경우
-                    # 과목이름 검색 필요
-                    print('hello')
+                elif searchtext != '' :
+                    # 학과랑 검색어 있는 경우
+                    results=Classitem.objects.filter(dept=dept).filter(Q(classname__icontains=searchtext) | Q(prof__icontains=searchtext))
                 else:
                     # 학과만 있는 경우
                     results = Classitem.objects.filter(dept=dept)
-            elif classname!='':
+            elif searchtext!='':
                 # 과목이름만 있는 경우
-                print("hello")
+                results = Classitem.objects.filter(Q(classname__icontains=searchtext) | Q(prof__icontains=searchtext))
             else:
-                #학과도 없는 경우 -> 에러처리
+                #학과나 검색어중 하나도 없는 경우(아무것도 없거나 학년만 체크) -> 에러처리
                 print("dept is empty")
-                return render(request, "timetable/index.html", {"error_message":"입력 조건이 필요합니다"})
+                return HttpResponse({"error_message":"입력 조건이 더 필요합니다"})
 
             data = serializers.serialize('json',results) # query set to json
             return JsonResponse(data, safe=False) # dictionary 아닌 type을 보내려면 false
-            # return HttpResponse({"items":results})
 
         else:
-            print("not ajax")
+            print("not ajax call")
     else:
         # GET method
         return render(request, "timetable/index.html", {})

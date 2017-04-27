@@ -88,25 +88,24 @@
             </div>
 
             <div class="field">
-
               <div class="ui checkbox">
-                <input name="grade" type="checkbox" value="0" id='grade'{% if '0' in vals.checkbox %}checked=""{% endif %} >
+                <input name="grade" type="checkbox" value="전학년" id='grade'>
                 <label>전학년</label>
               </div>
               <div class="ui checkbox">
-                <input name="grade" type="checkbox" value="1" id='grade'{% if '1' in vals.checkbox %}checked=""{% endif %} >
+                <input name="grade" type="checkbox" value="1학년" id='grade'>
                 <label>1학년</label>
               </div>
               <div class="ui checkbox">
-                <input name="grade" type="checkbox" value="2" id='grade'{% if '2' in vals.checkbox %}checked=""{% endif %} >
+                <input name="grade" type="checkbox" value="2학년" id='grade'>
                 <label>2학년</label>
               </div>
               <div class="ui checkbox">
-                <input name="grade" type="checkbox" value="3" id='grade'{% if '3' in vals.checkbox %}checked=""{% endif %} >
+                <input name="grade" type="checkbox" value="3학년" id='grade'>
                 <label>3학년</label>
               </div>
               <div class="ui checkbox">
-                <input name="grade" type="checkbox" value="4" id='grade'{% if '4' in vals.checkbox %}checked=""{% endif %} >
+                <input name="grade" type="checkbox" value="4학년" id='grade'>
                 <label>4학년</label>
               </div>
             </div>
@@ -114,7 +113,7 @@
             <div class="field">
               <div style="width: 250px">
                 <div class="ui fluid search">
-                  <input class="prompt" type="text" id="classname" placeholder="강좌명 검색">
+                  <input class="prompt" type="text" id="classname" placeholder="강좌명 또는 교수명으로 검색">
                   <div class="results"></div>
                 </div>
               </div>
@@ -134,7 +133,16 @@
                 추가
               </div>
               <div class="visible content">
-                <i class="add square icon"></i>
+                <i class="plus icon"></i>
+              </div>
+            </button>
+
+            <button class="ui vertical animated button" type="submit" id="submit">
+              <div class="hidden content">
+                로드맵
+              </div>
+              <div class="visible content">
+                <i class="map signs icon"></i>
               </div>
             </button>
 
@@ -259,6 +267,30 @@
               <td class="selectable"></td>
               <td class="selectable"></td>
             </tr>
+            <tr>
+              <td>10교시<br>(18~19)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>11교시<br>(19~20)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>12교시<br>(20~21)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
 
           </tbody>
         </table>
@@ -348,7 +380,30 @@
               <td class="selectable"></td>
               <td class="selectable"></td>
             </tr>
-
+            <tr>
+              <td>10교시<br>(18~19)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>11교시<br>(19~20)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>12교시<br>(20~21)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
           </tbody>
         </table>
     </div>
@@ -437,7 +492,30 @@
               <td class="selectable"></td>
               <td class="selectable"></td>
             </tr>
-
+            <tr>
+              <td>10교시<br>(18~19)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>11교시<br>(19~20)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
+            <tr>
+              <td>12교시<br>(20~21)</td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+              <td class="selectable"></td>
+            </tr>
           </tbody>
         </table>
     </div>
@@ -452,7 +530,3 @@
 </div>
 
 {% endblock content %}
-
-{% block javascript %}
-
-{% endblock javascript %}
