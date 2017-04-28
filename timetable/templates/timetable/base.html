@@ -46,7 +46,7 @@
           csrfmiddlewaretoken : '{{csrf_token}}',
           dept:$('#id_dropdown').val(),
           grade:mycheckboxes,
-          searchtext:$('#classname').val(),
+          searchtext:$('#search').val(),
         },
         success: function(data){
 
@@ -65,6 +65,7 @@
               <td>'+rowdata[i].fields['limitstud']+'</td>\
               <td>'+rowdata[i].fields['time']+'</td>\
               <td>'+rowdata[i].fields['note']+'</td>\
+              <td id="check"></td>\
               </tr>')
             )
           });
@@ -79,7 +80,10 @@
 
             $('.table-row').click(function(event){
               $('.table-row').not(this).removeClass('clicked');
+              $('#check').empty();
               $(this).toggleClass("clicked");
+              $(this).children('#check').append($('<i class="large green \
+              checkmark icon"></i> <i class="large red close icon">'));
 
               classname = $(this)[0].children[1].innerHTML;
               prof = $(this)[0].children[4].innerHTML;
@@ -87,8 +91,26 @@
               console.log(classname);
               console.log(prof);
               console.log(classtime);
-              // var exp = "\(.*\)"
-              // console.log(classtime.match(\(.*\));
+              timepattern = /.\d{2}:\d{2}-\d{2}:\d{2}/g;
+              classroompattern = /\w\d{4,5}/g;
+              console.log(classtime.match(timepattern));
+              console.log(classtime.match(classroompattern));
+              time = classtime.match(timepattern);
+              classroom = classtime.match(classroompattern);
+
+              daypattern = /(월|화|수|목|금)/;
+              days = [];
+              $.each(time, function(index, value){
+                day= value.match(daypattern);
+                days.push(day[0]); // new value to array, append()는 html에 추가할때 사용, day가 array라서 index붙임
+              });
+              console.log(days);
+
+              hourpattern = //;
+              hours = [];
+              $.each(time, function(index, value){
+                hour = value.match
+              });
             });
           });
 
