@@ -80,31 +80,47 @@
 
             $('.table-row').click(function(event){
               $('.table-row').not(this).removeClass('clicked');
-              $('#check').empty();
+              $('#check *').remove();
               $(this).toggleClass("clicked");
-              $(this).children('#check').append($('<i class="large green \
-              checkmark icon"></i> <i class="large red close icon">'));
+
+              // clicked 인 경우 add/delete icon 추가
+              // clicked 가 없어진 경우 (toggle) icon 삭제
+              if($(this).hasClass("clicked")){
+                $(this).children('#check').append($('<button class="ui button" \
+                onclick="check_insert()"><i class="large green checkmark icon">\
+                </i></button>'));
+              }else{
+                $('#check *').remove();
+              }
 
               classname = $(this)[0].children[1].innerHTML;
               prof = $(this)[0].children[4].innerHTML;
-              classtime = $(this)[0].children[7].innerHTML;
+              classtime = $(this)[0].children[7].innerHTML.split(","); //["월13:00-14:50 (Y5420)", "수13:00-14:50 (Y5420)"]
               console.log(classname);
               console.log(prof);
               console.log(classtime);
-              timepattern = /.\d{2}:\d{2}-\d{2}:\d{2}/g;
-              classroompattern = /\w\d{4,5}/g;
-              console.log(classtime.match(timepattern));
-              console.log(classtime.match(classroompattern));
-              time = classtime.match(timepattern);
-              classroom = classtime.match(classroompattern);
 
               daypattern = /(월|화|수|목|금)/;
+              timepattern = /\d{2}:\d{2}/g;
+              classroompattern = /\w\d{4,5}/g;
+
               days = [];
-              $.each(time, function(index, value){
+              times=[];
+              classrooms=[];
+
+              $.each(classtime, function(index, value){
                 day= value.match(daypattern);
-                days.push(day[0]); // new value to array, append()는 html에 추가할때 사용, day가 array라서 index붙임
+                time = value.match(timepattern);
+                classroom = value.match(classroompattern);
+
+                days.push(day[0]); // push() method : new value to array, append()는 html에 추가할때 사용, day가 array라서 index붙임
+                times.push(time);
+                classrooms.push(classroom[0]);
               });
               console.log(days);
+              console.log(times); // [["13:00", "14:50"], ["13:00", "14:50"]]
+              console.log(classrooms); // ["Y5420", "Y5420"]
+
 
               hourpattern = //;
               hours = [];
