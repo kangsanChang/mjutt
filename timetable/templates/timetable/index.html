@@ -198,7 +198,7 @@
           <tbody>
             <tr>
               <td>1교시<br>(09~10)</td>
-              <td id="09-Mon"></td>
+              <td class="full" id="09-Mon"></td>
               <td id="09-Tue"></td>
               <td id="09-Wed"></td>
               <td id="09-Thu"></td>
@@ -531,7 +531,11 @@
 
 <script>
   function check_insert(){
-    prompt("추가하시겠습니까?");
+    if(confirm("추가하시겠습니까?")){
+      alert("add");
+    }else{
+      alert("close");
+    }
   }
 </script>
 {% endblock content %}
