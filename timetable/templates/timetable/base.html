@@ -74,8 +74,10 @@
           $(document).ready(function(){
             $('.table-row').hover(function(){
               $(this).addClass("hover");
+              time_finder($(this));
             }, function(){
               $(this).removeClass("hover");
+              $("td").removeClass("hover");
             });
 
             $('.table-row').click(function(event){
@@ -92,50 +94,6 @@
               }else{
                 $('#check *').remove();
               }
-
-              classname = $(this)[0].children[1].innerHTML;
-              prof = $(this)[0].children[4].innerHTML;
-              classtime = $(this)[0].children[7].innerHTML.split(","); //["월13:00-14:50 (Y5420)", "수13:00-14:50 (Y5420)"]
-              console.log(classname);
-              console.log(prof);
-              console.log(classtime);
-
-              daypattern = /(월|화|수|목|금)/;
-              timepattern = /\d{2}:\d{2}/g;
-              classroompattern = /\w\d{3,5}/g;
-
-              days = [];
-              times=[];
-              classrooms=[];
-
-              $.each(classtime, function(index, value){
-                if(value=="미입력"){
-                  days.push("empty");
-                  times.push("empty");
-                  classrooms.push("empty");
-                }else{
-                  day= value.match(daypattern);
-                  time = value.match(timepattern);
-                  classroom = value.match(classroompattern);
-                  days.push(day[0]); // push() method : new value to array, append()는 html에 추가할때 사용, day가 array라서 index붙임
-                  times.push(time);
-                  if(classroom == null){
-                    classrooms.push("empty");
-                  }else{
-                    classrooms.push(classroom[0]);
-                  }
-                }
-              });
-              console.log(days); // 월,화,수,목,금 or 'empty'
-              console.log(times); // [["13:00", "14:50"], ["13:00", "14:50"]] or 'empty'
-              console.log(classrooms); // ["Y5420", "Y5420"] or 'empty'
-
-
-              hourpattern = //;
-              hours = [];
-              $.each(time, function(index, value){
-                hour = value.match
-              });
             });
           });
 

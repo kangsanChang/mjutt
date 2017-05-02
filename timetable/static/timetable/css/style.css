@@ -24,41 +24,5 @@ body {
 }
 
 .full{
-  background-color: -webkit-linear-gradient(bottom, blue,red);
-  background-color: -o-linear-gradient(bottom, blue,red);
-  background-color: linear-gradient(to top, blue,red);
-}
-
-.p_5{
-  background-color: lightblue;
-}
-.p_10{
-  background-color: lightblue;
-}
-.p_15{
-  background-color: lightblue;
-}
-.p_20{
-  background-color: lightblue;
-}
-.p_25{
-  background-color: lightblue;
-}
-.p_30{
-  background-color: lightblue;
-}
-.p_35{
-  background-color: lightblue;
-}
-.p_40{
-  background-color: lightblue;
-}
-.p_45{
-  background-color: lightblue;
-}
-.p_50{
-  background-color: lightblue;
-}
-.p_55{
   background-color: lightblue;
 }

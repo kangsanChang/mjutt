@@ -23,40 +23,6 @@ body {
   background-color: #e6e6ff;
 }
 
-td .full{
-  background-color: green;
-}
-
-td .p_5{
-  background-color: green;
-}
-td .p_10{
-  background-color: green;
-}
-td .p_15{
-  background-color: green;
-}
-td .p_20{
-  background-color: green;
-}
-td .p_25{
-  background-color: green;
-}
-td .p_30{
-  background-color: green;
-}
-td .p_35{
-  background-color: green;
-}
-td .p_40{
-  background-color: green;
-}
-td .p_45{
-  background-color: green;
-}
-td .p_50{
-  background-color: green;
-}
-td .p_55{
-  background-color: green;
+.full{
+  background-color: lightblue;
 }
