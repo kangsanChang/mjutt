@@ -168,9 +168,9 @@
   <div class="right floated five wide column" id="my-timetable">
     <div class="ui top attached tabular menu" id="timetable-tab">
       <a class="item active" data-tab="first">PLAN A</a>
-    <div class="right menu">
-      <button type="button" class="ui basic button"><i class="add icon"></i>New Tab</button>
-    </div>
+      <div class="right menu" id="add-timetable">
+        <button type="button" class="ui basic button" onclick="add_timetable()"><i class="add icon"></i>New Tab</button>
+      </div>
     </div>
     <div class="ui bottom attached tab segment active" data-tab="first">
       <table class="ui celled violet table">
@@ -426,7 +426,7 @@
         }
       }
     });
-
+    // 시간 파싱 후 hover event 줌
     $.each(days, function(i,val){
       // make string like "09-under30-Mon"
       if(days=='empty'){
@@ -480,10 +480,8 @@
           // + time interval
           interval_cell_id = "#" + interval + "-" + "under30"+"-"+day_to_code(val);  // interval이 int 지만 알아서 형변환
           $(interval_cell_id).addClass("hover");
-          console.log("interval_cell_id = " + interval_cell_id);
           interval_cell_id = "#" + interval + "-"+ "over30" + "-" + day_to_code(val);
           $(interval_cell_id).addClass("hover");
-          console.log("interval_cell_id = " + interval_cell_id);
           interval += 1;
         }
 
@@ -497,9 +495,26 @@
     });
   }
   function add_timetable(){
-    $("#timetable-tab").append($('<a class="item" data-tab="second">PLAN B</a>'));
-    $("#my-timetable").append($('<div class="ui bottom attached tab segment active" data-tab="second">\
-      <table class="ui celled violet table">\
+    //tab 개수 구한 후 추가
+    switch ($('#timetable-tab').children('a').length) {
+      case 1:
+        data_tab = "second";
+        tab_html = "PLAN B";
+        color = "green";
+        break;
+      case 2:
+        data_tab = "third";
+        tab_html = "PLAN C";
+        color = "orange";
+        break;
+      default:
+        alert("더이상 추가할 수 없습니다.");
+        return;
+    }
+    $("#my-timetable").children($(".active")).removeClass("active");
+    $('<a class="item active" data-tab="'+data_tab+'">'+tab_html+'</a>').insertBefore($("#add-timetable"));
+    $("#my-timetable").append($('<div class="ui bottom attached tab segment active" data-tab="'+data_tab+'">\
+      <table class="ui celled '+color+' table">\
           <thead>\
             <tr>\
               <th>/</th>\
@@ -510,190 +525,220 @@
               <th>금요일</th>\
             </tr>\
           </thead>\
-          <tbody>\
-            <tr>\
-              <td rowspan="2">1교시<br>(09~10)</td>\
-              <td id="09-under30-Mon"></td>\
-              <td id="09-under30-Tue"></td>\
-              <td id="09-under30-Wed"></td>\
-              <td id="09-under30-Thu"></td>\
-              <td id="09-under30-Fri"></td>\
-            </tr>\
-            <tr>\
-              <td id="09-over30-Mon"></td>\
-              <td id="09-over30-Tue"></td>\
-              <td id="09-over30-Wed"></td>\
-              <td id="09-over30-Thu"></td>\
-              <td id="09-over30-Fri"></td>\
-            </tr>\
-            <tr>\
-              <td rowspan="2"> 2교시<br>(10~11)</td>\
-              <td id="10-under30-Mon"></td>\
-              <td id="10-under30-Tue"></td>\
-              <td id="10-under30-Wed"></td>\
-              <td id="10-under30-Thu"></td>\
-              <td id="10-under30-Fri"></td>\
-            </tr>\
-            <tr>\
-              <td id="10-over30-Mon"></td>\
-              <td id="10-over30-Tue"></td>\
-              <td id="10-over30-Wed"></td>\
-              <td id="10-over30-Thu"></td>\
-              <td id="10-over30-Fri"></td>\
-            </tr>\
-            <tr>\
-              <td rowspan="2"> 3교시<br>(11~12)</td>\
-              <td id="11-under30-Mon"></td>\
-              <td id="11-under30-Tue"></td>\
-              <td id="11-under30-Wed"></td>\
-              <td id="11-under30-Thu"></td>\
-              <td id="11-under30-Fri"></td>\
-            </tr>\
-            <tr>\
-              <td id="11-over30-Mon"></td>\
-              <td id="11-over30-Tue"></td>\
-              <td id="11-over30-Wed"></td>\
-              <td id="11-over30-Thu"></td>\
-              <td id="11-over30-Fri"></td>\
-            </tr>\
-            <tr>\
-              <td rowspan="2"> 4교시<br>(12~13)</td>\
-              <td id="12-under30-Mon"></td>\
-              <td id="12-under30-Tue"></td>\
-              <td id="12-under30-Wed"></td>\
-              <td id="12-under30-Thu"></td>\
-              <td id="12-under30-Fri"></td>\
-            </tr>\
-            <tr>\
-              <td id="12-over30-Mon"></td>\
-              <td id="12-over30-Tue"></td>\
-              <td id="12-over30-Wed"></td>\
-              <td id="12-over30-Thu"></td>\
-              <td id="12-over30-Fri"></td>\
-            </tr>\
-            <tr>\
-              <td rowspan="2"> 5교시<br>(13~14)</td>\
-              <td id="13-under30-Mon"></td>\\
-              <td id="13-under30-Tue"></td>\\\
-              <td id="13-under30-Wed"></td>\\\
-              <td id="13-under30-Thu"></td>\\\
-              <td id="13-under30-Fri"></td>\\\
-            </tr>\\
-            <tr>\
-              <td id="13-over30-Mon"></td>\
-              <td id="13-over30-Tue"></td>\\
-              <td id="13-over30-Wed"></td>\\\
-              <td id="13-over30-Thu"></td>\\\
-              <td id="13-over30-Fri"></td>\\\
-            </tr>\\
-            <tr>\
-              <td rowspan="2"> 6교시<br>(14~15)</td>\
-              <td id="14-under30-Mon"></td>\\
-              <td id="14-under30-Tue"></td>\\\
-              <td id="14-under30-Wed"></td>\\\
-              <td id="14-under30-Thu"></td>\\\
-              <td id="14-under30-Fri"></td>\\\
-            </tr>\\
-            <tr>\
-              <td id="14-over30-Mon"></td>\
-              <td id="14-over30-Tue"></td>\\
-              <td id="14-over30-Wed"></td>\\\
-              <td id="14-over30-Thu"></td>\\\
-              <td id="14-over30-Fri"></td>\\\
-            </tr>\\
-            <tr>\
-              <td rowspan="2"> 7교시<br>(15~16)</td>\
-              <td id="15-under30-Mon"></td>\\
-              <td id="15-under30-Tue"></td>\\\
-              <td id="15-under30-Wed"></td>\\\
-              <td id="15-under30-Thu"></td>\\\
-              <td id="15-under30-Fri"></td>\\\
-            </tr>\\
-            <tr>\
-              <td id="15-over30-Mon"></td>\
-              <td id="15-over30-Tue"></td>\\
-              <td id="15-over30-Wed"></td>\\\
-              <td id="15-over30-Thu"></td>\\\
-              <td id="15-over30-Fri"></td>\\\
-            </tr>\\
-            <tr>\
-              <td rowspan="2"> 8교시<br>(16~17)</td>\
-              <td id="16-under30-Mon"></td>\\
-              <td id="16-under30-Tue"></td>\\\
-              <td id="16-under30-Wed"></td>\\\
-              <td id="16-under30-Thu"></td>\\\
-              <td id="16-under30-Fri"></td>\\\
-            </tr>\\
-            <tr>\
-              <td id="16-over30-Mon"></td>\
-              <td id="16-over30-Tue"></td>\\
-              <td id="16-over30-Wed"></td>\\\
-              <td id="16-over30-Thu"></td>\\\
-              <td id="16-over30-Fri"></td>\\\
-            </tr>\\
-            <tr>\
-              <td rowspan="2"> 9교시<br>(17~18)</td>\
-              <td id="17-under30-Mon"></td>\\
-              <td id="17-under30-Tue"></td>\\\
-              <td id="17-under30-Wed"></td>\\\
-              <td id="17-under30-Thu"></td>\\\
-              <td id="17-under30-Fri"></td>\\\
-            </tr>\\
-            <tr>\
-              <td id="17-over30-Mon"></td>\
-              <td id="17-over30-Tue"></td>\\
-              <td id="17-over30-Wed"></td>\\\
-              <td id="17-over30-Thu"></td>\\\
-              <td id="17-over30-Fri"></td>\\\
-            </tr>\\
-            <tr>\
-              <td rowspan="2">10교시<br>(18~19)</td>\
-              <td id="18-under30-Mon"></td>\\
-              <td id="18-under30-Tue"></td>\\\
-              <td id="18-under30-Wed"></td>\\\
-              <td id="18-under30-Thu"></td>\\\
-              <td id="18-under30-Fri"></td>\\\
-            </tr>\\
-            <tr>\
-              <td id="18-over30-Mon"></td>\
-              <td id="18-over30-Tue"></td>\\
-              <td id="18-over30-Wed"></td>\\\
-              <td id="18-over30-Thu"></td>\\\
-              <td id="18-over30-Fri"></td>\\\
-            </tr>\\
-            <tr>\
-              <td rowspan="2">11교시<br>(19~20)</td>\
-              <td id="19-under30-Mon"></td>\\
-              <td id="19-under30-Tue"></td>\\\
-              <td id="19-under30-Wed"></td>\\\
-              <td id="19-under30-Thu"></td>\\\
-              <td id="19-under30-Fri"></td>\\\
-            </tr>\\
-            <tr>\
-              <td id="19-over30-Mon"></td>\
-              <td id="19-over30-Tue"></td>\\
-              <td id="19-over30-Wed"></td>\\\
-              <td id="19-over30-Thu"></td>\\\
-              <td id="19-over30-Fri"></td>\
-            </tr>\
-            <tr>\
-              <td rowspan="2">12교시<br>(20~21)</td>\
-              <td id="20-under30-Mon"></td>\
-              <td id="20-under30-Tue"></td>\
-              <td id="20-under30-Wed"></td>\
-              <td id="20-under30-Thu"></td>\
-              <td id="20-under30-Fri"></td>\
-            </tr>\
-            <tr>\
-              <td id="20-over30-Mon"></td>\
-              <td id="20-over30-Tue"></td>\
-              <td id="20-over30-Wed"></td>\
-              <td id="20-over30-Thu"></td>\
-              <td id="20-over30-Fri"></td>\
-            </tr>\
-          </tbody>\
-        </table>\
-    </div>'))
+          <tbody>'));
+    tbody_html="";
+    for(i=1; i<13; i++){
+      tbody_html +=
+      '<tr>\
+        <td rowspan="2">'+i+'교시<br>('+(i+8)+'~'+(i+9)+')</td>\
+        <td id="'+(i+8)+'-under30-Mon"></td>\
+        <td id="'+(i+8)+'-under30-Tue"></td>\
+        <td id="'+(i+8)+'-under30-Wed"></td>\
+        <td id="'+(i+8)+'-under30-Thu"></td>\
+        <td id="'+(i+8)+'-under30-Fri"></td>\
+      </tr>';
+    }
+    $("#my-timetable").append(tbody_html).append("</tbody>\
+      </table>\
+    </div>'");
+
   }
+    // $("#my-timetable").append($('<div class="ui bottom attached tab segment active" data-tab="second">\
+    //   <table class="ui celled violet table">\
+    //       <thead>\
+    //         <tr>\
+    //           <th>/</th>\
+    //           <th>월요일</th>\
+    //           <th>화요일</th>\
+    //           <th>수요일</th>\
+    //           <th>목요일</th>\
+    //           <th>금요일</th>\
+    //         </tr>\
+    //       </thead>\
+    //       <tbody>\
+    //         <tr>\
+    //           <td rowspan="2">1교시<br>(09~10)</td>\
+    //           <td id="09-under30-Mon"></td>\
+    //           <td id="09-under30-Tue"></td>\
+    //           <td id="09-under30-Wed"></td>\
+    //           <td id="09-under30-Thu"></td>\
+    //           <td id="09-under30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td id="09-over30-Mon"></td>\
+    //           <td id="09-over30-Tue"></td>\
+    //           <td id="09-over30-Wed"></td>\
+    //           <td id="09-over30-Thu"></td>\
+    //           <td id="09-over30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td rowspan="2"> 2교시<br>(10~11)</td>\
+    //           <td id="10-under30-Mon"></td>\
+    //           <td id="10-under30-Tue"></td>\
+    //           <td id="10-under30-Wed"></td>\
+    //           <td id="10-under30-Thu"></td>\
+    //           <td id="10-under30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td id="10-over30-Mon"></td>\
+    //           <td id="10-over30-Tue"></td>\
+    //           <td id="10-over30-Wed"></td>\
+    //           <td id="10-over30-Thu"></td>\
+    //           <td id="10-over30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td rowspan="2"> 3교시<br>(11~12)</td>\
+    //           <td id="11-under30-Mon"></td>\
+    //           <td id="11-under30-Tue"></td>\
+    //           <td id="11-under30-Wed"></td>\
+    //           <td id="11-under30-Thu"></td>\
+    //           <td id="11-under30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td id="11-over30-Mon"></td>\
+    //           <td id="11-over30-Tue"></td>\
+    //           <td id="11-over30-Wed"></td>\
+    //           <td id="11-over30-Thu"></td>\
+    //           <td id="11-over30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td rowspan="2"> 4교시<br>(12~13)</td>\
+    //           <td id="12-under30-Mon"></td>\
+    //           <td id="12-under30-Tue"></td>\
+    //           <td id="12-under30-Wed"></td>\
+    //           <td id="12-under30-Thu"></td>\
+    //           <td id="12-under30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td id="12-over30-Mon"></td>\
+    //           <td id="12-over30-Tue"></td>\
+    //           <td id="12-over30-Wed"></td>\
+    //           <td id="12-over30-Thu"></td>\
+    //           <td id="12-over30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td rowspan="2"> 5교시<br>(13~14)</td>\
+    //           <td id="13-under30-Mon"></td>\
+    //           <td id="13-under30-Tue"></td>\
+    //           <td id="13-under30-Wed"></td>\
+    //           <td id="13-under30-Thu"></td>\
+    //           <td id="13-under30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td id="13-over30-Mon"></td>\
+    //           <td id="13-over30-Tue"></td>\
+    //           <td id="13-over30-Wed"></td>\
+    //           <td id="13-over30-Thu"></td>\
+    //           <td id="13-over30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td rowspan="2"> 6교시<br>(14~15)</td>\
+    //           <td id="14-under30-Mon"></td>\
+    //           <td id="14-under30-Tue"></td>\
+    //           <td id="14-under30-Wed"></td>\
+    //           <td id="14-under30-Thu"></td>\
+    //           <td id="14-under30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td id="14-over30-Mon"></td>\
+    //           <td id="14-over30-Tue"></td>\
+    //           <td id="14-over30-Wed"></td>\
+    //           <td id="14-over30-Thu"></td>\
+    //           <td id="14-over30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td rowspan="2"> 7교시<br>(15~16)</td>\
+    //           <td id="15-under30-Mon"></td>\
+    //           <td id="15-under30-Tue"></td>\
+    //           <td id="15-under30-Wed"></td>\
+    //           <td id="15-under30-Thu"></td>\
+    //           <td id="15-under30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td id="15-over30-Mon"></td>\
+    //           <td id="15-over30-Tue"></td>\
+    //           <td id="15-over30-Wed"></td>\
+    //           <td id="15-over30-Thu"></td>\
+    //           <td id="15-over30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td rowspan="2"> 8교시<br>(16~17)</td>\
+    //           <td id="16-under30-Mon"></td>\
+    //           <td id="16-under30-Tue"></td>\
+    //           <td id="16-under30-Wed"></td>\
+    //           <td id="16-under30-Thu"></td>\
+    //           <td id="16-under30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td id="16-over30-Mon"></td>\
+    //           <td id="16-over30-Tue"></td>\
+    //           <td id="16-over30-Wed"></td>\
+    //           <td id="16-over30-Thu"></td>\
+    //           <td id="16-over30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td rowspan="2"> 9교시<br>(17~18)</td>\
+    //           <td id="17-under30-Mon"></td>\
+    //           <td id="17-under30-Tue"></td>\
+    //           <td id="17-under30-Wed"></td>\
+    //           <td id="17-under30-Thu"></td>\
+    //           <td id="17-under30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td id="17-over30-Mon"></td>\
+    //           <td id="17-over30-Tue"></td>\
+    //           <td id="17-over30-Wed"></td>\
+    //           <td id="17-over30-Thu"></td>\
+    //           <td id="17-over30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td rowspan="2">10교시<br>(18~19)</td>\
+    //           <td id="18-under30-Mon"></td>\
+    //           <td id="18-under30-Tue"></td>\
+    //           <td id="18-under30-Wed"></td>\
+    //           <td id="18-under30-Thu"></td>\
+    //           <td id="18-under30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td id="18-over30-Mon"></td>\
+    //           <td id="18-over30-Tue"></td>\
+    //           <td id="18-over30-Wed"></td>\
+    //           <td id="18-over30-Thu"></td>\
+    //           <td id="18-over30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td rowspan="2">11교시<br>(19~20)</td>\
+    //           <td id="19-under30-Mon"></td>\
+    //           <td id="19-under30-Tue"></td>\
+    //           <td id="19-under30-Wed"></td>\
+    //           <td id="19-under30-Thu"></td>\
+    //           <td id="19-under30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td id="19-over30-Mon"></td>\
+    //           <td id="19-over30-Tue"></td>\
+    //           <td id="19-over30-Wed"></td>\
+    //           <td id="19-over30-Thu"></td>\
+    //           <td id="19-over30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td rowspan="2">12교시<br>(20~21)</td>\
+    //           <td id="20-under30-Mon"></td>\
+    //           <td id="20-under30-Tue"></td>\
+    //           <td id="20-under30-Wed"></td>\
+    //           <td id="20-under30-Thu"></td>\
+    //           <td id="20-under30-Fri"></td>\
+    //         </tr>\
+    //         <tr>\
+    //           <td id="20-over30-Mon"></td>\
+    //           <td id="20-over30-Tue"></td>\
+    //           <td id="20-over30-Wed"></td>\
+    //           <td id="20-over30-Thu"></td>\
+    //           <td id="20-over30-Fri"></td>\
+    //         </tr>\
+    //       </tbody>\
+    //     </table>\
+    // </div>'))
+  // }
 </script>
 {% endblock content %}
