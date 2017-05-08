@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'timetable/css/style.css' %}">
     <link rel="stylesheet" type="" href="{% static 'timetable/css/style.css' %}">
     <!-- use semantic.min.css <- deploy -->
-    <link rel="stylesheet" href="{% static 'timetable/js/core.js' %}">
+    <script type="text/javascript" src="{% static 'timetable/js/core.js'%}"></script>
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
@@ -72,29 +72,7 @@
 
           // activate CSS
           $(document).ready(function(){
-            $('.table-row').hover(function(){
-              $(this).addClass("hover");
-              time_finder($(this));
-            }, function(){
-              $(this).removeClass("hover");
-              $("td").removeClass("hover");
-            });
-
-            $('.table-row').click(function(event){
-              $('.table-row').not(this).removeClass('clicked');
-              $('#check *').remove();
-              $(this).toggleClass("clicked");
-
-              // clicked 인 경우 add/delete icon 추가
-              // clicked 가 없어진 경우 (toggle) icon 삭제
-              if($(this).hasClass("clicked")){
-                $(this).children('#check').append($('<button class="ui button" \
-                onclick="check_insert()"><i class="large green checkmark icon">\
-                </i></button>'));
-              }else{
-                $('#check *').remove();
-              }
-            });
+            activateCSS();
           });
 
         // loading
@@ -113,6 +91,5 @@
     });
 
     </script>
-
   </body>
 </html>

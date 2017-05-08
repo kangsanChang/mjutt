@@ -29,29 +29,6 @@ def index(request):
                 print("dept is empty")
                 return HttpResponse({"error_message":"입력 조건이 더 필요합니다"})
 
-
-            # if dept != "":
-            #     if grades != []:
-            #         if searchtext != '':
-            #             results = Classitem.objects.filter(dept=dept).filter(grade__in=grades).filter(Q(classname__icontains=searchtext) | Q(prof__icontains=searchtext))
-            #         else:
-            #             # 학과랑, 학년만 있는 경우
-            #             results = Classitem.objects.filter(dept=dept).filter(grade__in=grades)
-            #
-            #     elif searchtext != '' :
-            #         # 학과랑 검색어 있는 경우
-            #         results=Classitem.objects.filter(dept=dept).filter(Q(classname__icontains=searchtext) | Q(prof__icontains=searchtext))
-            #     else:
-            #         # 학과만 있는 경우
-            #         results = Classitem.objects.filter(dept=dept)
-            # elif searchtext!='':
-            #     # 과목이름만 있는 경우
-            #     results = Classitem.objects.filter(Q(classname__icontains=searchtext) | Q(prof__icontains=searchtext))
-            # else:
-            #     #학과나 검색어중 하나도 없는 경우(아무것도 없거나 학년만 체크) -> 에러처리
-            #     print("dept is empty")
-            #     return HttpResponse({"error_message":"입력 조건이 더 필요합니다"})
-
             data = serializers.serialize('json',results) # query set to json
             return JsonResponse(data, safe=False) # dictionary 아닌 type을 보내려면 false
 

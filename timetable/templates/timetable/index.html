@@ -19,7 +19,6 @@
                   <div class="item" data-value='10000'>자연캠퍼스 교양</div>
                   <div class="item" data-value='20000'>인문캠퍼스 교양</div>
                   <div class="item" data-value='12000'>공과대학</div>
-                  <div class="item" data-value='16400'>사회과학대학</div>
                   <div class="item" data-value='16600'>경영대학</div>
                   <div class="item" data-value='11910'>수학과</div>
                   <div class="item" data-value='11915'>물리학과</div>
@@ -28,19 +27,14 @@
                   <div class="item" data-value='11960'>생명과학정보학부</div>
                   <div class="item" data-value='12250'>화학공학과</div>
                   <div class="item" data-value='12361'>신소재공학과</div>
-                  <div class="item" data-value='12370'>환경생명공학과</div>
                   <div class="item" data-value='12371'>환경에너지공학과</div>
                   <div class="item" data-value='12450'>토목환경공학과</div>
                   <div class="item" data-value='12500'>교통공학과</div>
-                  <div class="item" data-value='12611'>컴퓨터소프트웨어학과</div>
                   <div class="item" data-value='12701'>기계공학과</div>
                   <div class="item" data-value='12755'>산업경영공학과</div>
-                  <div class="item" data-value='12831'>정보공학과</div>
-                  <div class="item" data-value='12832'>통신공학과</div>
                   <div class="item" data-value='12901'>정보통신공학과</div>
                   <div class="item" data-value='12900'>전기공학과</div>
                   <div class="item" data-value='12908'>전자공학과</div>
-                  <div class="item" data-value='13720'>의상디자인학과</div>
                   <div class="item" data-value='13725'>체육학부</div>
                   <div class="item" data-value='13730'>체육학부 경기지도학전공</div>
                   <div class="item" data-value='13735'>바둑학과</div>
@@ -51,7 +45,6 @@
                   <div class="item" data-value='18012'>건축학부</div>
                   <div class="item" data-value='18013'>건축학부 건축학전공</div>
                   <div class="item" data-value='18014'>건축학부 전통건축전공</div>
-                  <div class="item" data-value='18015'>공간디자인학과</div>
                   <div class="item" data-value='18016'>건축학부 공간디자인전공</div>
                   <div class="item" data-value='14120'>국어국문학과</div>
                   <div class="item" data-value='14130'>영어영문학과</div>
@@ -66,12 +59,9 @@
                   <div class="item" data-value='14240'>철학과</div>
                   <div class="item" data-value='14250'>문예창작학과</div>
                   <div class="item" data-value='16610'>경영학과</div>
-                  <div class="item" data-value='16615'>경영학부 경영학전공</div>
-                  <div class="item" data-value='16620'>경영학부 경영정보전공</div>
                   <div class="item" data-value='16410'>행정학과</div>
                   <div class="item" data-value='16420'>경제학과</div>
                   <div class="item" data-value='16425'>정치외교학과</div>
-                  <div class="item" data-value='16430'>북한학과</div>
                   <div class="item" data-value='16440'>디지털미디어학과</div>
                   <div class="item" data-value='16640'>경영정보학과</div>
                   <div class="item" data-value='16650'>국제통상학과</div>
@@ -170,6 +160,9 @@
       <a class="item active" data-tab="first">PLAN A</a>
       <div class="right menu" id="add-timetable">
         <button type="button" class="ui basic button" onclick="add_timetable()"><i class="add icon"></i>New Tab</button>
+      </div>
+      <div class="menu" id="remove-timetable">
+        <button type="button" class="ui basic icon button" onclick="remove_timetable()"><i class="large trash icon"></i></button>
       </div>
     </div>
     <div class="ui bottom attached tab segment active" data-tab="first">
@@ -370,375 +363,4 @@
     </div>
   </div>
 </div>
-
-<div class="ui custom popup">
-  <div class="ui buttons">
-    <button class="ui positive button">Save</button>
-    <button class="ui button">Cancel</button>
-  </div>
-</div>
-
-<script>
-  function check_insert(){
-    if(confirm("추가하시겠습니까?")){
-      alert("add");
-    }else{
-      alert("close");
-    }
-  }
-  function day_to_code(day){
-    switch (day){
-      case '월' : ret = 'Mon'; break;
-      case '화' : ret = 'Tue'; break;
-      case '수' : ret = 'Wed'; break;
-      case '목' : ret = 'Thu'; break;
-      case '금' : ret = 'Fri'; break;
-    }
-    return ret;
-  }
-  function time_finder(elem){
-    classname = $(elem)[0].children[1].innerHTML;
-    prof = $(elem)[0].children[4].innerHTML;
-    classtime = $(elem)[0].children[7].innerHTML.split(","); //["월13:00-14:50 (Y5420)", "수13:00-14:50 (Y5420)"]
-    daypattern = /(월|화|수|목|금)/;
-    timepattern = /\d{2}:\d{2}/g;
-    classroompattern = /\w\d{3,5}/g;
-    days = [];
-    times=[];
-    classrooms=[];
-
-    // except empty
-    $.each(classtime, function(index, value){
-      if(value=="미입력"){
-        days.push("empty");
-        times.push("empty");
-        classrooms.push("empty");
-      }else{
-        day= value.match(daypattern);
-        time = value.match(timepattern);
-        classroom = value.match(classroompattern);
-        days.push(day[0]); // push() method : new value to array, append()는 html에 추가할때 사용, day가 array라서 index붙임
-        times.push(time);
-        if(classroom == null){
-          classrooms.push("empty");
-        }else{
-          classrooms.push(classroom[0]);
-        }
-      }
-    });
-    // 시간 파싱 후 hover event 줌
-    $.each(days, function(i,val){
-      // make string like "09-under30-Mon"
-      if(days=='empty'){
-        // pass
-      }else{
-        start_cell_id = "#";
-        end_cell_id = "#";
-        // start time : times[i][0] , end time:tiems[i][1]
-        shour = times[i][0].split(":")[0] // start hour
-        smin = times[i][0].split(":")[1] // start min
-        ehour = times[i][1].split(":")[0] // end hour
-        emin = times[i][1].split(":")[1] // end min
-
-        // fill start time
-        if(parseInt(smin) >= 30){
-          // 시작 시간이므로 30분도 포함해서 가야함
-          start_cell_id += shour + "-" + "over30" + "-" + day_to_code(val);
-          $(start_cell_id).addClass("hover");
-        }else{
-          start_cell_id += shour + "-" + "under30" + "-" + day_to_code(val);
-          $(start_cell_id).addClass("hover");
-        }
-        // fill end time
-        // 21시 넘는경우 끝까지 칠함
-        if(parseInt(ehour)>=21){
-          end_cell_id += "20-over30-"+day_to_code(val);
-          $(end_cell_id).addClass("hover");
-        }else{
-          if(parseInt(emin) > 30){
-            // 끝 시간이므로 30분일 경우 딱 거기까지 칠하면 됨
-            end_cell_id += ehour + "-" + "over30" + "-" + day_to_code(val);
-            $(end_cell_id).addClass("hover");
-          }else{
-            end_cell_id += ehour + "-" + "under30" + "-" + day_to_code(val);
-            $(end_cell_id).addClass("hover");
-          }
-        }
-      }
-
-      // fill interval 화15:00-17:50 (Y5411)
-      if (parseInt(shour)==parseInt(ehour)){
-        // pass
-      }else{
-        if(parseInt(smin)<30){
-          // + start hour-over case
-          interval_cell_id = "#" + shour + "-"+ "over30" + "-" + day_to_code(val);
-          $(interval_cell_id).addClass("hover");
-        }
-        interval = parseInt(shour) + 1;
-        while(interval != parseInt(ehour)){
-          // + time interval
-          interval_cell_id = "#" + interval + "-" + "under30"+"-"+day_to_code(val);  // interval이 int 지만 알아서 형변환
-          $(interval_cell_id).addClass("hover");
-          interval_cell_id = "#" + interval + "-"+ "over30" + "-" + day_to_code(val);
-          $(interval_cell_id).addClass("hover");
-          interval += 1;
-        }
-
-        if(parseInt(emin)>30){
-          // + end hour-under case
-          interval_cell_id = "#" + ehour + "-" + "under30"+"-"+day_to_code(val);
-          $(interval_cell_id).addClass("hover");
-        }
-
-      }
-    });
-  }
-  function add_timetable(){
-    //tab 개수 구한 후 추가
-    switch ($('#timetable-tab').children('a').length) {
-      case 1:
-        data_tab = "second";
-        tab_html = "PLAN B";
-        color = "green";
-        break;
-      case 2:
-        data_tab = "third";
-        tab_html = "PLAN C";
-        color = "orange";
-        break;
-      default:
-        alert("더이상 추가할 수 없습니다.");
-        return;
-    }
-    $("#my-timetable").children($(".active")).removeClass("active");
-    $('<a class="item active" data-tab="'+data_tab+'">'+tab_html+'</a>').insertBefore($("#add-timetable"));
-    $("#my-timetable").append($('<div class="ui bottom attached tab segment active" data-tab="'+data_tab+'">\
-      <table class="ui celled '+color+' table">\
-          <thead>\
-            <tr>\
-              <th>/</th>\
-              <th>월요일</th>\
-              <th>화요일</th>\
-              <th>수요일</th>\
-              <th>목요일</th>\
-              <th>금요일</th>\
-            </tr>\
-          </thead>\
-          <tbody>'));
-    tbody_html="";
-    for(i=1; i<13; i++){
-      tbody_html +=
-      '<tr>\
-        <td rowspan="2">'+i+'교시<br>('+(i+8)+'~'+(i+9)+')</td>\
-        <td id="'+(i+8)+'-under30-Mon"></td>\
-        <td id="'+(i+8)+'-under30-Tue"></td>\
-        <td id="'+(i+8)+'-under30-Wed"></td>\
-        <td id="'+(i+8)+'-under30-Thu"></td>\
-        <td id="'+(i+8)+'-under30-Fri"></td>\
-      </tr>';
-    }
-    $("#my-timetable").append(tbody_html).append("</tbody>\
-      </table>\
-    </div>'");
-
-  }
-    // $("#my-timetable").append($('<div class="ui bottom attached tab segment active" data-tab="second">\
-    //   <table class="ui celled violet table">\
-    //       <thead>\
-    //         <tr>\
-    //           <th>/</th>\
-    //           <th>월요일</th>\
-    //           <th>화요일</th>\
-    //           <th>수요일</th>\
-    //           <th>목요일</th>\
-    //           <th>금요일</th>\
-    //         </tr>\
-    //       </thead>\
-    //       <tbody>\
-    //         <tr>\
-    //           <td rowspan="2">1교시<br>(09~10)</td>\
-    //           <td id="09-under30-Mon"></td>\
-    //           <td id="09-under30-Tue"></td>\
-    //           <td id="09-under30-Wed"></td>\
-    //           <td id="09-under30-Thu"></td>\
-    //           <td id="09-under30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td id="09-over30-Mon"></td>\
-    //           <td id="09-over30-Tue"></td>\
-    //           <td id="09-over30-Wed"></td>\
-    //           <td id="09-over30-Thu"></td>\
-    //           <td id="09-over30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td rowspan="2"> 2교시<br>(10~11)</td>\
-    //           <td id="10-under30-Mon"></td>\
-    //           <td id="10-under30-Tue"></td>\
-    //           <td id="10-under30-Wed"></td>\
-    //           <td id="10-under30-Thu"></td>\
-    //           <td id="10-under30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td id="10-over30-Mon"></td>\
-    //           <td id="10-over30-Tue"></td>\
-    //           <td id="10-over30-Wed"></td>\
-    //           <td id="10-over30-Thu"></td>\
-    //           <td id="10-over30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td rowspan="2"> 3교시<br>(11~12)</td>\
-    //           <td id="11-under30-Mon"></td>\
-    //           <td id="11-under30-Tue"></td>\
-    //           <td id="11-under30-Wed"></td>\
-    //           <td id="11-under30-Thu"></td>\
-    //           <td id="11-under30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td id="11-over30-Mon"></td>\
-    //           <td id="11-over30-Tue"></td>\
-    //           <td id="11-over30-Wed"></td>\
-    //           <td id="11-over30-Thu"></td>\
-    //           <td id="11-over30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td rowspan="2"> 4교시<br>(12~13)</td>\
-    //           <td id="12-under30-Mon"></td>\
-    //           <td id="12-under30-Tue"></td>\
-    //           <td id="12-under30-Wed"></td>\
-    //           <td id="12-under30-Thu"></td>\
-    //           <td id="12-under30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td id="12-over30-Mon"></td>\
-    //           <td id="12-over30-Tue"></td>\
-    //           <td id="12-over30-Wed"></td>\
-    //           <td id="12-over30-Thu"></td>\
-    //           <td id="12-over30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td rowspan="2"> 5교시<br>(13~14)</td>\
-    //           <td id="13-under30-Mon"></td>\
-    //           <td id="13-under30-Tue"></td>\
-    //           <td id="13-under30-Wed"></td>\
-    //           <td id="13-under30-Thu"></td>\
-    //           <td id="13-under30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td id="13-over30-Mon"></td>\
-    //           <td id="13-over30-Tue"></td>\
-    //           <td id="13-over30-Wed"></td>\
-    //           <td id="13-over30-Thu"></td>\
-    //           <td id="13-over30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td rowspan="2"> 6교시<br>(14~15)</td>\
-    //           <td id="14-under30-Mon"></td>\
-    //           <td id="14-under30-Tue"></td>\
-    //           <td id="14-under30-Wed"></td>\
-    //           <td id="14-under30-Thu"></td>\
-    //           <td id="14-under30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td id="14-over30-Mon"></td>\
-    //           <td id="14-over30-Tue"></td>\
-    //           <td id="14-over30-Wed"></td>\
-    //           <td id="14-over30-Thu"></td>\
-    //           <td id="14-over30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td rowspan="2"> 7교시<br>(15~16)</td>\
-    //           <td id="15-under30-Mon"></td>\
-    //           <td id="15-under30-Tue"></td>\
-    //           <td id="15-under30-Wed"></td>\
-    //           <td id="15-under30-Thu"></td>\
-    //           <td id="15-under30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td id="15-over30-Mon"></td>\
-    //           <td id="15-over30-Tue"></td>\
-    //           <td id="15-over30-Wed"></td>\
-    //           <td id="15-over30-Thu"></td>\
-    //           <td id="15-over30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td rowspan="2"> 8교시<br>(16~17)</td>\
-    //           <td id="16-under30-Mon"></td>\
-    //           <td id="16-under30-Tue"></td>\
-    //           <td id="16-under30-Wed"></td>\
-    //           <td id="16-under30-Thu"></td>\
-    //           <td id="16-under30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td id="16-over30-Mon"></td>\
-    //           <td id="16-over30-Tue"></td>\
-    //           <td id="16-over30-Wed"></td>\
-    //           <td id="16-over30-Thu"></td>\
-    //           <td id="16-over30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td rowspan="2"> 9교시<br>(17~18)</td>\
-    //           <td id="17-under30-Mon"></td>\
-    //           <td id="17-under30-Tue"></td>\
-    //           <td id="17-under30-Wed"></td>\
-    //           <td id="17-under30-Thu"></td>\
-    //           <td id="17-under30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td id="17-over30-Mon"></td>\
-    //           <td id="17-over30-Tue"></td>\
-    //           <td id="17-over30-Wed"></td>\
-    //           <td id="17-over30-Thu"></td>\
-    //           <td id="17-over30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td rowspan="2">10교시<br>(18~19)</td>\
-    //           <td id="18-under30-Mon"></td>\
-    //           <td id="18-under30-Tue"></td>\
-    //           <td id="18-under30-Wed"></td>\
-    //           <td id="18-under30-Thu"></td>\
-    //           <td id="18-under30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td id="18-over30-Mon"></td>\
-    //           <td id="18-over30-Tue"></td>\
-    //           <td id="18-over30-Wed"></td>\
-    //           <td id="18-over30-Thu"></td>\
-    //           <td id="18-over30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td rowspan="2">11교시<br>(19~20)</td>\
-    //           <td id="19-under30-Mon"></td>\
-    //           <td id="19-under30-Tue"></td>\
-    //           <td id="19-under30-Wed"></td>\
-    //           <td id="19-under30-Thu"></td>\
-    //           <td id="19-under30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td id="19-over30-Mon"></td>\
-    //           <td id="19-over30-Tue"></td>\
-    //           <td id="19-over30-Wed"></td>\
-    //           <td id="19-over30-Thu"></td>\
-    //           <td id="19-over30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td rowspan="2">12교시<br>(20~21)</td>\
-    //           <td id="20-under30-Mon"></td>\
-    //           <td id="20-under30-Tue"></td>\
-    //           <td id="20-under30-Wed"></td>\
-    //           <td id="20-under30-Thu"></td>\
-    //           <td id="20-under30-Fri"></td>\
-    //         </tr>\
-    //         <tr>\
-    //           <td id="20-over30-Mon"></td>\
-    //           <td id="20-over30-Tue"></td>\
-    //           <td id="20-over30-Wed"></td>\
-    //           <td id="20-over30-Thu"></td>\
-    //           <td id="20-over30-Fri"></td>\
-    //         </tr>\
-    //       </tbody>\
-    //     </table>\
-    // </div>'))
-  // }
-</script>
 {% endblock content %}
