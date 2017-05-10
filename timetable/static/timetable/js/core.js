@@ -1,7 +1,6 @@
 function check_insert(){
   if(confirm("추가하시겠습니까?")){
     insert_classitem($(".clicked"));
-    insert_classitem($(".clicked")[0]);
   }else{
     alert("close");
   }
@@ -24,13 +23,16 @@ function random_color(){
   return colors[Math.floor(Math.random() * colors.length)];
 }
 
-function time_finder(elem){
+function time_parser(elem){
+  var row_dict = {};
   classname = $(elem)[0].children[1].innerHTML;
   prof = $(elem)[0].children[4].innerHTML;
   classtime = $(elem)[0].children[7].innerHTML.split(","); //["월13:00-14:50 (Y5420)", "수13:00-14:50 (Y5420)"]
+
   daypattern = /(월|화|수|목|금)/;
   timepattern = /\d{2}:\d{2}/g;
   classroompattern = /\w\d{3,5}/g;
+
   days = [];
   times=[];
   classrooms=[];
@@ -54,19 +56,31 @@ function time_finder(elem){
       }
     }
   });
-  // 시간 파싱 후 hover event 줌
-  $.each(days, function(i,val){
+
+  row_dict['classname'] = classname;
+  row_dict['prof'] = prof;
+  row_dict['classtime'] = classtime;
+  row_dict['days'] = days;
+  row_dict['times'] = times;
+  row_dict['classrooms'] = classrooms;
+
+  return row_dict;
+}
+
+function set_highlight(rowobj){
+  // row의 time parsing 된 dictionary 받아 hover event 줌
+  $.each(rowobj['days'], function(i,val){
     // make string like "09-under30-Mon"
-    if(days=='empty'){
+    if(rowobj['days']=='empty'){
       // pass
     }else{
       start_cell_id = "#";
       end_cell_id = "#";
       // start time : times[i][0] , end time:tiems[i][1]
-      shour = times[i][0].split(":")[0] // start hour
-      smin = times[i][0].split(":")[1] // start min
-      ehour = times[i][1].split(":")[0] // end hour
-      emin = times[i][1].split(":")[1] // end min
+      shour = rowobj['times'][i][0].split(":")[0] // start hour
+      smin = rowobj['times'][i][0].split(":")[1] // start min
+      ehour = rowobj['times'][i][1].split(":")[0] // end hour
+      emin = rowobj['times'][i][1].split(":")[1] // end min
 
       // fill start time
       if(parseInt(smin) >= 30){
@@ -118,20 +132,24 @@ function time_finder(elem){
         interval_cell_id = "#" + ehour + "-" + "under30" + "-" + day_to_code(val);
         $(interval_cell_id).addClass("hover");
       }
-
     }
   });
 }
 
 function insert_classitem(elem){
-  console.log(elem);
+  console.log(time_parser(elem));
+
+
+  //remove hover
+  elem.removeClass("hover");
+  $("td").removeClass("hover");
 }
 
 
 function activateCSS(){
   $('.table-row').hover(function(){
     $(this).addClass("hover");
-    time_finder($(this));
+    set_highlight(time_parser($(this)));
   }, function(){
     $(this).removeClass("hover");
     $("td").removeClass("hover");

@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 # Create your views here.
 from .models import Classitem
-from .switcher import switch_to_gradename
+from .switcher import all_dept
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 from django.db.models import Q # for search with partial words
+
 def index(request):
     # render filtered table
     if request.method == 'POST':
@@ -36,4 +37,7 @@ def index(request):
             print("not ajax call")
     else:
         # GET method
-        return render(request, "timetable/index.html", {})
+        depts = all_dept() # ordered dictionary
+        all_grade = ["전학년","1학년","2학년","3학년","4학년"]
+        return render(request, "timetable/index.html", {"depts":depts , "all_grade":all_grade})
+        # dictionary를 주고 tempalte 에서 .items 키워드를 이용하면 key와 value로 쪼갤 수 있음
