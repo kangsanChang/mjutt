@@ -152,7 +152,7 @@ function insert_classitem(elem){
 
 
 function activateCSS(){
-  $('.table-row').hover(function(){
+  $('#table-body .table-row').hover(function(){
     $(this).addClass("hover");
     set_highlight(time_parser($(this)),"hover");
   }, function(){
@@ -160,7 +160,7 @@ function activateCSS(){
     $("td").removeClass("hover");
   });
 
-  $('.table-row').click(function(event){
+  $('#table-body .table-row').click(function(event){
     $('.table-row').not(this).removeClass('clicked');
     $('#check *').remove();
     $(this).toggleClass("clicked");

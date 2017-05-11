@@ -65,7 +65,6 @@
       </div>
 
       <div class="ui hidden divider"></div>
-
       <div class="result-box">
         <div class="ui fluid container" id="result-box">
           <table class="ui very very compact blue table" id="class-table">
@@ -89,8 +88,51 @@
         </div>
       </div>
     </div>
-
   </div>
+
+  <div class="left floated six wide column">
+    <div class="table">
+      <!-- table의 row 생성 -->
+      {% for hour in hours %}
+
+      {% if forloop.first %}
+      <div class="table-row thead">
+        <div class="cell period thead">
+          <p> / </p>
+        </div>
+        {% for day in days %}
+        <div class="cell thead">
+          <p>{{day}}</p>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="table-row">
+
+        {% for day in days %}
+        {% if forloop.first %}
+        <div class="cell period p{{forloop.parentloop.counter}}">
+          <p><span class="period-text">{{forloop.parentloop.counter}}교시</span><br>
+          <span class="period-time">{{hours.{{forloop.parentloop.counter}}}} ~ {{hours.forloop.parentloop.counter}}</span></p>
+          여튼 .으로 접근하네
+
+        </div>
+        {% endif %}
+        <div class="cell {{hour}} {{day}}">
+          <p>sample</p>
+        </div>
+        {% endfor %}
+
+      </div>
+
+      {% endfor %}
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="ui grid">
   <div class="right floated six wide column" id="my-timetable">
     <div class="ui top attached tabular menu" id="timetable-tab">
       <a class="item active" data-tab="first">PLAN A</a>
@@ -299,19 +341,4 @@
     </div>
   </div>
 </div>
-</div>
-
-<div class="timeline">
-  {% for hour in hours%}
-  <div class="hour">
-		<span>{{hour}}:00</span>
-  </div>
-  {% if forloop.counter != hours|length %}
-  <div class="period">
-    <span>{{forloop.counter}}교시</span>
-  </div>
-  {% endif %}
-	{% endfor %}
-</div>
-
 {% endblock content %}
