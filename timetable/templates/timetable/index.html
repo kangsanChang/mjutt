@@ -299,4 +299,19 @@
     </div>
   </div>
 </div>
+</div>
+
+<div class="timeline">
+  {% for hour in hours%}
+  <div class="hour">
+		<span>{{hour}}:00</span>
+  </div>
+  {% if forloop.counter != hours|length %}
+  <div class="period">
+    <span>{{forloop.counter}}교시</span>
+  </div>
+  {% endif %}
+	{% endfor %}
+</div>
+
 {% endblock content %}

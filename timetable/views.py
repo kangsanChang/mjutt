@@ -39,5 +39,8 @@ def index(request):
         # GET method
         depts = all_dept() # ordered dictionary
         all_grade = ["전학년","1학년","2학년","3학년","4학년"]
-        return render(request, "timetable/index.html", {"depts":depts , "all_grade":all_grade})
+        days = ["Monday","Tuesday","Wednesday","Thursday","Friday"]
+        hours = ["09","10","11","12","13","14","15","16","17","18","19","20","21"]
+        minutes = ["00","30"]
+        return render(request, "timetable/index.html", {"depts":depts , "all_grade":all_grade , "hours":hours, "minutes":minutes})
         # dictionary를 주고 tempalte 에서 .items 키워드를 이용하면 key와 value로 쪼갤 수 있음

@@ -249,7 +249,6 @@ function remove_timetable(){
     $("#timetable-tab").children(".active").remove();
     $("#timetable-tab").siblings(".active").remove();
 
-    // $("[data-tab=xxxx]")
     $.each($("#timetable-tab").children('a'),function(index, value){
       if(index==0){
         $("#timetable-tab").children('a').eq(index).attr("data-tab","first");
