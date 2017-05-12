@@ -69,7 +69,7 @@ function time_parser(elem){
   row_dict['days'] = days;
   row_dict['times'] = times;
   row_dict['classrooms'] = classrooms;
-
+  console.log(row_dict);
   return row_dict;
 }
 

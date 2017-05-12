@@ -1,6 +1,6 @@
 {% extends 'timetable/base.html' %}
 {% block content %}
-
+{% load start_time end_time korean_day from custom_filters %}
 <div class="ui grid">
   <div class="left floated ten wide column">
     <div class="ui fluid container segment" id="search-box">
@@ -91,46 +91,88 @@
   </div>
 
   <div class="left floated six wide column">
-    <div class="table">
-      <!-- table의 row 생성 -->
-      {% for hour in hours %}
+    <div class="class-timetable">
+      <div class="table">
+        <!-- table의 row 생성 -->
+        {% for hour in hours %}
 
-      {% if forloop.first %}
-      <div class="table-row thead">
-        <div class="cell period thead">
-          <p> / </p>
-        </div>
-        {% for day in days %}
-        <div class="cell thead">
-          <p>{{day}}</p>
-        </div>
-        {% endfor %}
-      </div>
-      {% endif %}
-
-      <div class="table-row">
-
-        {% for day in days %}
         {% if forloop.first %}
-        <div class="cell period p{{forloop.parentloop.counter}}">
-          <p><span class="period-text">{{forloop.parentloop.counter}}교시</span><br>
-          <span class="period-time">{{hours.{{forloop.parentloop.counter}}}} ~ {{hours.forloop.parentloop.counter}}</span></p>
-          여튼 .으로 접근하네
-
+        <div class="table-row thead">
+          <div class="cell period thead">
+            <p> / </p>
+          </div>
+          {% for day in days %}
+          <div class="cell thead">
+            <p>{{days|korean_day:forloop.counter0}}</p>
+          </div>
+          {% endfor %}
         </div>
         {% endif %}
-        <div class="cell {{hour}} {{day}}">
-          <p>sample</p>
+
+        <div class="table-row">
+
+          {% for day in days %}
+          {% if forloop.first %}
+          <div class="cell period p{{forloop.parentloop.counter}}">
+            <p><span class="period-text">{{forloop.parentloop.counter}}교시</span><br>
+            <span class="period-time">{{hours|start_time:forloop.parentloop.counter0}}:00 ~ {{hours|end_time:forloop.parentloop.counter0}}:00</span></p>
+
+          </div>
+          {% endif %}
+          <div class="cell {{hour}} {{day}}">
+          </div>
+          {% endfor %}
+
         </div>
+
         {% endfor %}
 
-      </div>
+        <div class="classitem" id="1234">
+          <div class="content">
+            <p>자료구조 <br> 권동섭 <br> Y5437</p>
+          </div>
+        </div>
 
-      {% endfor %}
+      </div>
     </div>
+
+    <script>
+    // 미입력이나 없을 경우 exception handling 해야 함
+    // table boarder 색 희여멀건하게 해야 픽셀 조정해도 티안날듯
+      shour = "10";
+      smin = "30";
+      ehour = "12";
+      emin = "30";
+      day = "Mon";
+      interval_minute = (parseInt(ehour) - parseInt(shour))*60 + (parseInt(emin) - parseInt(smin));
+
+
+      cls_shour = ".";
+      cls_shour += shour;
+      cls_day = ".";
+      cls_day += day;
+      cell_width = $(cls_shour).filter(cls_day).width();
+      cell_height = $(cls_shour).filter(cls_day).height();
+
+      item_width = cell_width;
+      item_height = Math.round(cell_height * (interval_minute/60));
+      if(smin=="00"){
+        item_top = $(cls_shour).filter(cls_day).offset().top +1;
+      }else{
+        // smin이 있을때 top 위치 내려와야 함
+        item_top = $(cls_shour).filter(cls_day).offset().top +1;
+        smin_height = Math.round(cell_height *(smin/60));
+
+        item_top += smin_height;
+      }
+      item_left = $(cls_shour).filter(cls_day).offset().left + 2;
+
+      $("#1234.classitem").css("color","red").width(item_width).height(item_height).offset({top:item_top ,left:item_left});
+    </script>
   </div>
 </div>
-</div>
+
+
 
 <div class="ui grid">
   <div class="right floated six wide column" id="my-timetable">

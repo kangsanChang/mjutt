@@ -45,6 +45,16 @@ collapse : 서로 이웃하는 테이블이나 셀의 테두리선을 겹쳐서 
 separate : 기본값으로 서로 이웃하는 테이블이나 셀의 테두리선을 분리시켜 표현 합니다.
 */
 
+div.table{
+  position: relative; /*absoulte 로 classitem div 넣기 위함*/
+}
+
+
+div.classitem {
+  background-color: lightblue;
+  position: absolute;
+  z-index: 10;
+}
 
 .table-row {
     display: table-row;
@@ -59,11 +69,16 @@ separate : 기본값으로 서로 이웃하는 테이블이나 셀의 테두리�
   height: 70px;
 }
 
-.thead {
-
+.cell.thead {
+  height: 30px;
 }
 
  /* n교시는 컬럼은 width 10%만 */
-.period {
+.cell.period {
   width:10%;
+}
+
+span.period-time {
+  color:gray;
+  font-size: 7pt;
 }
