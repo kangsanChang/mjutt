@@ -69,8 +69,49 @@ function time_parser(elem){
   row_dict['days'] = days;
   row_dict['times'] = times;
   row_dict['classrooms'] = classrooms;
-  console.log(row_dict);
+// Object {classname: "C언어프로그래밍", prof: "주우석", classtime: Array(2), days: Array(2), times: Array(2)…}
+// classname : "C언어프로그래밍"
+// classrooms : Array(2)
+// 0 : "Y5445"
+// 1 : "Y5445"
+// length : 2
+
+// classtime : Array(2)
+// 0 : "월15:00-16:50 (Y5445)"
+// 1 : " 수15:00-16:50 (Y5445)"
+// length : 2
+
+// days : Array(2)
+// 0 : "월"
+// 1 : "수"
+// length : 2
+
+// prof : "주우석"
+// times : Array(2)
+// 0 : Array(2)
+  // 0 : "15:00"
+  // 1 : "16:50"
+  // length : 2
+// 1 : Array(2)
+  // 0 : "15:00"
+  // 1 : "16:50"
+  // length : 2
+// length : 2
+
   return row_dict;
+}
+
+function create_item(item){
+  // 시간 개수 만큼 element 생성해야 함
+  $.each(item["times"], function(i, val){
+    shour
+    smin
+    ehour
+    emin
+    days
+    interval_minute = (parseInt(ehour) - parseInt(shour))*60 + (parseInt(emin) - parseInt(smin));
+  });
+
 }
 
 function set_highlight(rowobj, option){

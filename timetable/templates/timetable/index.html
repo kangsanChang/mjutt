@@ -168,13 +168,35 @@
       item_left = $(cls_shour).filter(cls_day).offset().left + 2;
 
       $("#1234.classitem").css("color","red").width(item_width).height(item_height).offset({top:item_top ,left:item_left});
+      $(window).resize(function() { // window가 리사이즈 일어날떄 객체들 다시 포지션 조정 해줘야함
+        // 함수로 만들어라
+        cell_width = $(cls_shour).filter(cls_day).width();
+        cell_height = $(cls_shour).filter(cls_day).height();
+
+        item_width = cell_width;
+        item_height = Math.round(cell_height * (interval_minute/60));
+        if(smin=="00"){
+          item_top = $(cls_shour).filter(cls_day).offset().top +1;
+        }else{
+          // smin이 있을때 top 위치 내려와야 함
+          item_top = $(cls_shour).filter(cls_day).offset().top +1;
+          smin_height = Math.round(cell_height *(smin/60));
+
+          item_top += smin_height;
+        }
+        item_left = $(cls_shour).filter(cls_day).offset().left + 2;
+        $("#1234.classitem").css("color","red").width(item_width).height(item_height).offset({top:item_top ,left:item_left});
+
+      });
+
+
     </script>
   </div>
 </div>
 
 
 
-<div class="ui grid">
+<!-- <div class="ui grid">
   <div class="right floated six wide column" id="my-timetable">
     <div class="ui top attached tabular menu" id="timetable-tab">
       <a class="item active" data-tab="first">PLAN A</a>
@@ -382,5 +404,5 @@
         </table>
     </div>
   </div>
-</div>
+</div> -->
 {% endblock content %}
