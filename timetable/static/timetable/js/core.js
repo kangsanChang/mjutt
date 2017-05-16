@@ -24,7 +24,7 @@ function random_table_color(){
 }
 
 function random_item_color(){
-  var colors = new Array()
+  var colors = new Array();
   // selected라고 되어있는 element 찾아서 배열에서 중복되는 색 뺴준 후 랜덤 리턴.
 
 }
@@ -79,7 +79,7 @@ function time_parser(elem){
 // length : 2
 // classtime : Array(2)
 // 0 : "월15:00-16:50 (Y5445)"
-// 1 : " 수15:00-16:50 (Y5445)"
+// 1 : "수15:00-16:50 (Y5445)"
 // length : 2
 // days : Array(2)
 // 0 : "월"
@@ -100,21 +100,39 @@ function time_parser(elem){
   return row_dict;
 }
 
-// class ClassItem {
-//   constructor(item){
-//     this.classname = item['classname'];
-//     this.prof = item['prof'];
-//     this.classtime = item['classtime']; // array
-//     this.classcode = item['classcode'];
-//   }
-//
-//   get item_id(){
-//     return "#"+this.classcode;
-//   }
-//
-//
-//
-// }
+class CClassItem {
+  constructor(item){
+    this.item = item;
+    this.classname = item['classname'];
+    this.prof = item['prof'];
+    this.classtime = item['classtime']; // array
+    this.classcode = item['classcode'];
+  }
+
+  get item_id(){
+    return "#"+this.classcode;
+  }
+
+}
+
+class CClassElement extends CClassItem {
+  constructor(item, i){
+    this.day = item['days'][i];
+    this.shour = item["times"][i][0].split(":")[0]; // start hour
+    this.smin = item["times"][i][0].split(":")[1]; // start min
+    this.ehour = item["times"][i][1].split(":")[0]; // end hour
+    this.emin = item["times"][i][1].split(":")[1]; // end min
+    this.interval_minute = (parseInt(this.ehour) - parseInt(this.shour))*60 + (parseInt(this.emin) - parseInt(this.smin));
+    this.elem_top = "";
+    this.elem_left = "";
+    this.elem_width = "";
+    this.elem_height = "";
+  }
+
+  set position(){
+
+  }
+}
 
 
 function ClassItem(item){
@@ -123,18 +141,18 @@ function ClassItem(item){
   this.classtime = item['classtime']; // array
   this.classcode = item['classcode'];
 
+  this.toString = function(){
+    return classname + " / " + prof + " / " + classcode;
+  }
+
   this.getItemID = function(){
     return "#"+this.classcode;
   }
 }
 
-function ClassElement(item, i){
+function ClassElement(item){
   // 한 엘리먼트 값임! 한 강의엔 여러 엘리먼트(일반적으로2개)가 있음
   // Constructor
-
-  // inheritance
-  this.base = ClassItem;
-  this.base = ClassItem(item);
 
   // property
   this.day = item['days'][i];
@@ -149,12 +167,16 @@ function ClassElement(item, i){
   this.elem_height = "";
 }
 
+// inheritance
+ClassElement.prototype = new ClassItem();
+
 // method
 ClassElement.prototype.setPosition = function(){
-  this.elem_width = $("."+this.shour).filter("."+this.day).width();
+  this.elem_width = $("."+this.shour).filter("."+this.day).width();  // cell 한개 너비가 곧 elem의 너비
   cell_height = $("."+this.shour).filter("."+this.day).height();  // cell 한 개 높이
   this.elem_height = Math.round(cell_height * (this.interval_minute/60));
 
+  // top position정하기, start hour와 min에 영향을 받는다
   if(this.smin=="00"){
     this.elem_top = $("."+this.shour).filter("."+this.day).offset().top +1;
   }else{
@@ -168,6 +190,10 @@ ClassElement.prototype.setPosition = function(){
 }
 
 ClassElement.prototype.highlight_classitem = function(){
+  if(elem_height == ""){
+    console.log("element 의 위치가 설정되지 않았습니다.");
+    return;
+  }
 
 }
 
@@ -175,17 +201,16 @@ ClassElement.prototype.hover_classitem = function(){
 
 }
 
-var classitems = new Array
+var classitems = new Array();
 
-  // 시간 개수 만큼 element 생성해야 함
-  $.each(item["times"], function(i, val){
-    // val = item["times"][i]
-    item_id = "#" + item['classcode'];
-    var tag = '<div class"classitem" id="'+item_id+'"><div class="inner_content">\
-    <p>'+item["classname"]+'<br>'+item["prof"]+'<br>'+  (강의실) +'</p></div></div>';
-    get_element_detail(item, i)
-  });
-}
+// 시간 개수 만큼 element 생성해야 함
+$.each(item.times, function(i, val){
+  // val = item["times"][i]
+  item_id = "#" + item['classcode'];
+  var tag = '<div class"classitem" id="'+item_id+'"><div class="inner_content">\
+  <p>'+item["classname"]+'<br>'+item["prof"]+'<br>'+  '(강의실)' +'</p></div></div>';
+  get_element_detail(item, i);
+});
 
 function get_element_detail(item, i){
   // 한 강의의 i번째 수업의 시간을 파싱해서 highlight에 필요한 정보 리턴
