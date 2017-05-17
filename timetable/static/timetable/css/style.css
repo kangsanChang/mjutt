@@ -51,21 +51,64 @@ div.table{
 
 
 div.classitem {
-  background-color: lightblue;
+  border-color: inherit;
   position: absolute;
   z-index: 10;
+}
+
+/* colors */
+/*빨강*/
+.classitem_color_ec555a{
+  background-color: #ec555a;
+}
+/*밤색친구*/
+.classitem_color_c65353{
+  background-color: #c65353;
+}
+/*핑크*/
+.classitem_color_ffccce{
+  background-color: #ffccce;
+}
+/*주황*/
+.classitem_color_f56e3d{
+  background-color: #f56e3d;
+}
+/*노랑*/
+.classitem_color_f8d56d{
+  background-color: #f8d56d;
+}
+/*연초록*/
+.classitem_color_cfe19d{
+  background-color: #cfe19d;
+}
+/*초록*/
+.classitem_color_34a26b{
+  background-color: #34a26b;
+}
+/*조금어두운하늘*/
+.classitem_color_28bdbd{
+  background-color: #28bdbd;
+}
+/*파랑*/
+.classitem_color_4280d7{
+  background-color: #4280d7;
+}
+/*보라*/
+.classitem_color_e39dfb{
+  background-color: #e39dfb;
 }
 
 .table-row {
     display: table-row;
     border-collapse: collapse;
+    border: 1px solid #000;
 }
 
 .cell {
   display: table-cell;
   border-collapse: collapse;
   vertical-align:middle;
-  border: 1px solid black;
+  border: 1px solid grey;
   height: 70px;
 }
 
