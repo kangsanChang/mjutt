@@ -138,7 +138,7 @@ ClassElement.prototype.create_html= function(){
   $("#total_credit").append(total_credit());
 };
 
-ClassElement.prototype.setPosition = function(creating){
+ClassElement.prototype.setPosition = function(option){
   this.elem_width = $("."+this.shour).filter("."+this.day).width();  // cell 한개 너비가 곧 elem의 너비
   cell_height = $("."+this.shour).filter("."+this.day).height();  // cell 한 개 높이
   this.elem_height = Math.round(cell_height * (this.interval_minute/60));
@@ -154,24 +154,32 @@ ClassElement.prototype.setPosition = function(creating){
     // 10:30 시작이면 10시보다 한시간 cell의 1/2 높이만큼 멀어짐(top++)
   }
   this.elem_left = $("."+this.shour).filter("."+this.day).offset().left+ 1.5;
-  // console.log(" t - "+this.elem_top," l - "+this.elem_left," w - "+this.elem_width," h - "+this.elem_height);
 
-  if(creating===true){
+  if(option==="create"){
     var el = $(this.getItemCode()+".wait.classitem").width(this.elem_width).height(this.elem_height).offset({top:this.elem_top ,left:this.elem_left});
     el.addClass("classitem_color_"+this.elem_color);
     el.removeClass("wait");
-  }else{
+  }else if(option==="resize"){
     // resize case
     // .classitem만 찍으면 element 2개가 둘다 같은 포지션으로 감
     // 객체의 내용과 일치하는 html을 찾기위해 classitem으로 하면 월, 수 이런식으로 나오니 day와 shour로 이루어진 filter 하나 더 거름
     $(this.getItemCode()+".classitem").filter("."+this.day+this.shour).width(this.elem_width).height(this.elem_height).offset({top:this.elem_top ,left:this.elem_left});
+  }else{
+    // hover case
+    var hover_el = $(this.getItemCode()+".wait.classitem").width(this.elem_width).height(this.elem_height).offset({top:this.elem_top ,left:this.elem_left});
+    hover_el.addClass("hover");
+    hover_el.removeClass("wait");
   }
 
 };
-
-ClassElement.prototype.hover_classitem = function(){
-
-};
+function hover_classitem(elem){
+  row = time_parser(elem);
+  for(i=0 ; i< row.classtime.length ; i++){
+    el = new ClassElement(row,i); // elem 객체 생성
+    el.create_html();
+    el.setPosition();
+  }
+}
 
 function insert_classitem(elem){
   row = time_parser(elem);
@@ -183,7 +191,7 @@ function insert_classitem(elem){
     el.elem_color = bg_color;
     class_elems.push(el); // elems 에 넣음
     el.create_html();
-    el.setPosition(true);
+    el.setPosition("create");
   }
 
   //remove hover
@@ -208,17 +216,17 @@ function resize_classitem(){
   // elements와 $(".classitem")의 차이점은 elements 는 object가 있는 배열이고 , $()는 현재 시간표위에 있는 div 가져온거임.
   // selector로도 object를 가져오지만, classElemenet object가 아니어서 아무 정보가 없어서 셋팅 불가능
   $.each(class_elems, function(i, val){
-    val.setPosition(false);
+    val.setPosition("resize");
   });
 }
 
 function activateCSS(){
   $('#table-body .table-row').hover(function(){
     $(this).addClass("hover");
-    // set_highlight(time_parser($(this)),"hover");
+    hover_classitem($(this));
   }, function(){
     $(this).removeClass("hover");
-    $("td").removeClass("hover");
+    // 여기에 table hover remove 함수 추가
   });
 
   $('#table-body .table-row').click(function(event){
