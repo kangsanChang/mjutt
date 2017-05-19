@@ -1,147 +1,147 @@
 {% extends 'timetable/base.html' %}
 {% block content %}
 {% load start_time end_time korean_day from custom_filters %}
-<div class="ui grid">
-  <div class="left floated ten wide column">
-    <div class="ui fluid container segment" id="search-box">
-      <div class="search-form">
-        <form class="ui fluid form container segment" id="search-form" method="POST">
-          {%csrf_token%}
-          <div class="inline fields">
+<div class="body-wrapper">
+  <div class="ui grid">
+    <div class="left floated ten wide column">
+      <div class="ui fluid container segment" id="search-box">
+        <div class="search-form">
+          <form class="ui fluid form container segment" id="search-form" method="POST">
+            {%csrf_token%}
+            <div class="inline fields">
 
-            <div class="field">
-              <div style="width: 220px">
-                <div class="ui fluid search selection dropdown">
-                  <input type="hidden" name="dept" id="id_dropdown">
-                  <i class="dropdown icon"></i>
-                  <div class="default text">학과 선택</div>
-                  <div class="menu">
-                  {% for key, value in depts.items %}
-                  <div class="item" data-value="{{key}}">{{value}}</div>
-                  {% endfor %}
+              <div class="field">
+                <div style="width: 220px">
+                  <div class="ui fluid search selection dropdown">
+                    <input type="hidden" name="dept" id="id_dropdown">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">학과 선택</div>
+                    <div class="menu">
+                    {% for key, value in depts.items %}
+                    <div class="item" data-value="{{key}}">{{value}}</div>
+                    {% endfor %}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div class="field">
-              {% for grade in all_grade %}
-              <div class="ui checkbox">
-                <input name="grade" type="checkbox" value="{{grade}}" id='grade'>
-                <label>{{grade}}</label>
+              <div class="field">
+                {% for grade in all_grade %}
+                <div class="ui checkbox">
+                  <input name="grade" type="checkbox" value="{{grade}}" id='grade'>
+                  <label>{{grade}}</label>
+                </div>
+                {% endfor %}
               </div>
-              {% endfor %}
-            </div>
 
-            <div class="field">
-              <div style="width: 250px">
-                <div class="ui fluid search">
-                  <input class="prompt" type="text" id="search" placeholder="강좌명 또는 교수명으로 검색">
-                  <div class="results"></div>
+              <div class="field">
+                <div style="width: 250px">
+                  <div class="ui fluid search">
+                    <input class="prompt" type="text" id="search" placeholder="강좌명 또는 교수명으로 검색">
+                    <div class="results"></div>
+                  </div>
                 </div>
               </div>
+
+              <button class="ui vertical animated button" type="submit" id="submit">
+                <div class="hidden content">
+                  검색
+                </div>
+                <div class="visible content">
+                  <i class="search icon"></i>
+                </div>
+              </button>
+
+              <button class="ui vertical animated button" type="submit" id="submit">
+                <div class="hidden content">
+                  로드맵
+                </div>
+                <div class="visible content">
+                  <i class="map signs icon"></i>
+                </div>
+              </button>
+
             </div>
+          </form>
+        </div>
 
-            <button class="ui vertical animated button" type="submit" id="submit">
-              <div class="hidden content">
-                검색
-              </div>
-              <div class="visible content">
-                <i class="search icon"></i>
-              </div>
-            </button>
-
-            <button class="ui vertical animated button" type="submit" id="submit">
-              <div class="hidden content">
-                로드맵
-              </div>
-              <div class="visible content">
-                <i class="map signs icon"></i>
-              </div>
-            </button>
-
+        <div class="ui hidden divider"></div>
+        <div class="result-box">
+          <div class="ui fluid container" id="result-box">
+            <table class="ui very very compact blue table" id="class-table">
+              <thead>
+                <tr>
+                  <th class="one wide">학년</th>
+                  <th class="two wide">교과목명</th>
+                  <th class="one wide">학점</th>
+                  <th class="one wide">시간</th>
+                  <th class="one wide">담당교수</th>
+                  <th class="one wide">강좌번호</th>
+                  <th class="one wide">제한인원</th>
+                  <th class="three wide">시간(강의실)</th>
+                  <th class="three wide">비 고</th>
+                  <th class="one wide">check</th>
+                </tr>
+              </thead>
+              <tbody id="table-body">
+              </tbody>
+            </table>
           </div>
-        </form>
-      </div>
-
-      <div class="ui hidden divider"></div>
-      <div class="result-box">
-        <div class="ui fluid container" id="result-box">
-          <table class="ui very very compact blue table" id="class-table">
-            <thead>
-              <tr>
-                <th class="one wide">학년</th>
-                <th class="two wide">교과목명</th>
-                <th class="one wide">학점</th>
-                <th class="one wide">시간</th>
-                <th class="one wide">담당교수</th>
-                <th class="one wide">강좌번호</th>
-                <th class="one wide">제한인원</th>
-                <th class="three wide">시간(강의실)</th>
-                <th class="three wide">비 고</th>
-                <th class="one wide">check</th>
-              </tr>
-            </thead>
-            <tbody id="table-body">
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="left floated six wide column">
-    <div class="class-timetable">
-      <div class="table">
-        <!-- table의 row 생성 -->
-        {% for hour in hours %}
+    <div class="left floated six wide column">
+      <div class="class-timetable">
+        <div class="table">
+          <!-- table의 row 생성 -->
+          {% for hour in hours %}
 
-        {% if forloop.first %}
-        <div class="table-row thead">
-          <div class="cell period thead">
-            <p> / </p>
-          </div>
-          {% for day in days %}
-          <div class="cell thead">
-            <p>{{days|korean_day:forloop.counter0}}</p>
-          </div>
-          {% endfor %}
-        </div>
-        {% endif %}
-
-        <div class="table-row">
-
-          {% for day in days %}
           {% if forloop.first %}
-          <div class="cell period p{{forloop.parentloop.counter}}">
-            <p><span class="period-text">{{forloop.parentloop.counter}}교시</span><br>
-            <span class="period-time">{{hours|start_time:forloop.parentloop.counter0}}:00 ~ {{hours|end_time:forloop.parentloop.counter0}}:00</span></p>
-
+          <div class="table-row thead">
+            <div class="cell period thead">
+              <p> / </p>
+            </div>
+            {% for day in days %}
+            <div class="cell thead">
+              <p>{{days|korean_day:forloop.counter0}}</p>
+            </div>
+            {% endfor %}
           </div>
           {% endif %}
-          <div class="cell {{hour}} {{day}}">
+
+          <div class="table-row">
+
+            {% for day in days %}
+            {% if forloop.first %}
+            <div class="cell period p{{forloop.parentloop.counter}}">
+              <p><span class="period-text">{{forloop.parentloop.counter}}교시</span><br>
+              <span class="period-time">{{hours|start_time:forloop.parentloop.counter0}}:00 ~ {{hours|end_time:forloop.parentloop.counter0}}:00</span></p>
+
+            </div>
+            {% endif %}
+            <div class="cell {{hour}} {{day}}">
+            </div>
+            {% endfor %}
+
           </div>
+
           {% endfor %}
 
-        </div>
+          <div class="credits">
+            <h4>신청학점 : <span id="total_credit"></span> </h4>
+          </div>
 
-        {% endfor %}
-
-        <div class="classitems">
-        </div>
-
-        <div class="credits">
-          <p>신청학점 : <span id="total_credit"></span>
-          </p>
+          <div class="classitems"></div>
         </div>
       </div>
-    </div>
 
-    <script>
-    $(window).resize(function(){
-      resize_classitem();
-    });
-    </script>
+      <script>
+      $(window).resize(function(){
+        resize_classitem();
+      });
+      </script>
+    </div>
   </div>
 </div>
 

@@ -1,11 +1,27 @@
+//Global Variable
+
+used_colors = [];
+class_items = [];
+class_elems = []; // resize 시 elem의 포지션을 한번에 조정하기 위함
+
+function random_pop(arr){
+  rand_idx = Math.floor(Math.random() * arr.length);
+  return arr.splice(rand_idx, 1)[0]; //object 로 리턴하기 떄문에 0으로 접근
+}
+
+function target_pop(arr, t){
+  target_idx = arr.indexOf(t);
+  return arr.splice(target_idx, 1)[0]; //object 로 리턴하기 떄문에 0으로 접근
+}
+
 function check_insert(){
   if(confirm("추가하시겠습니까?")){
     insert_classitem($(".clicked"));
   }else{
-    alert("close");
+    return;
   }
 }
-
+// day는 classtime에서 파싱해서 가져온 한글을 code로 바꿔줌
 function day_to_code(day){
   switch (day){
     case '월' : ret = 'Mon'; break;
@@ -17,24 +33,24 @@ function day_to_code(day){
   return ret;
 }
 
-function random_table_color(){
-  var colors = new Array("red","orange","yellow","olive","green","teal","blue",
-  "violet","purple","pink","grey","black");
-  return colors[Math.floor(Math.random() * colors.length)];
-}
-
-function random_item_color(){
-  var colors = new Array()
-  // selected라고 되어있는 element 찾아서 배열에서 중복되는 색 뺴준 후 랜덤 리턴.
-
+function get_random_item_color(){
+  colors=["ec555a","c65353","ffccce","f56e3d","f8d56d","cfe19d","34a26b","28bdbd","4280d7","e39dfb"];
+  $.each(used_colors, function(i,val){
+    target_pop(colors, val);
+  });
+  extracted_color = random_pop(colors);
+  used_colors.push(extracted_color);
+  return extracted_color;
 }
 
 function time_parser(elem){
   var row_dict = {};
+  // element는 clicked 인 row이므로 무조건 1개라서 0으로 접근
   classname = $(elem)[0].children[1].innerHTML;
   prof = $(elem)[0].children[4].innerHTML;
+  credit = $(elem)[0].children[2].innerHTML;
   classtime = $(elem)[0].children[7].innerHTML.split(","); //["월13:00-14:50 (Y5420)", "수13:00-14:50 (Y5420)"]
-
+  classcode = $(elem)[0].children[5].innerText; // innerHTML은 trim이 안됨
   daypattern = /(월|화|수|목|금)/;
   timepattern = /\d{2}:\d{2}/g;
   classroompattern = /\w\d{3,5}/g;
@@ -55,7 +71,7 @@ function time_parser(elem){
       classroom = value.match(classroompattern);
       days.push(day[0]); // push() method : new value to array, append()는 html에 추가할때 사용, day가 array라서 index붙임
       times.push(time);
-      if(classroom == null){
+      if(classroom === null){
         classrooms.push("empty");
       }else{
         classrooms.push(classroom[0]);
@@ -63,101 +79,160 @@ function time_parser(elem){
     }
   });
 
-  row_dict['classname'] = classname;
-  row_dict['prof'] = prof;
-  row_dict['classtime'] = classtime;
-  row_dict['days'] = days;
-  row_dict['times'] = times;
-  row_dict['classrooms'] = classrooms;
-  console.log(row_dict);
+  // dict 접근법 2가지 dict['abc'] , dict.abc (linter에서는 dot notation을 쓰라함)
+
+  row_dict.classname = classname;
+  row_dict.prof = prof;
+  row_dict.credit = credit;
+  row_dict.classtime = classtime;
+  row_dict.days = days;
+  row_dict.times = times;
+  row_dict.classrooms = classrooms;
+  row_dict.classcode = classcode;
+
   return row_dict;
 }
 
-function set_highlight(rowobj, option){
-  // row의 time parsing 된 dictionary 받아 hover event 줌
-  $.each(rowobj['days'], function(i,val){
-    // make string like "09-under30-Mon"
-    if(rowobj['days']=='empty'){
-      // pass
-    }else{
-      start_cell_id = "#";
-      end_cell_id = "#";
-      // start time : times[i][0] , end time:tiems[i][1]
-      shour = rowobj['times'][i][0].split(":")[0] // start hour
-      smin = rowobj['times'][i][0].split(":")[1] // start min
-      ehour = rowobj['times'][i][1].split(":")[0] // end hour
-      emin = rowobj['times'][i][1].split(":")[1] // end min
+function ClassItem(item){
+  this.classname = item.classname;
+  this.prof = item.prof;
+  this.credit = item.credit;
+  this.classtime = item.classtime; // array
+  this.classcode = item.classcode;
+}
 
-      // fill start time
-      if(parseInt(smin) >= 30){
-        // 시작 시간이므로 30분도 포함해서 가야함
-        start_cell_id += shour + "-" + "over30" + "-" + day_to_code(val);
-        $(start_cell_id).addClass(option);
-      }else{
-        start_cell_id += shour + "-" + "under30" + "-" + day_to_code(val);
-        $(start_cell_id).addClass(option);
-      }
-      // fill end time
-      // 21시 넘는경우 끝까지 칠함
-      if(parseInt(ehour)>=21){
-        end_cell_id += "20-over30-"+day_to_code(val);
-        $(end_cell_id).addClass(option);
-      }else{
-        if(parseInt(emin) > 30){
-          // 끝 시간이므로 30분일 경우 딱 거기까지 칠하면 됨
-          end_cell_id += ehour + "-" + "over30" + "-" + day_to_code(val);
-          $(end_cell_id).addClass(option);
-        }else{
-          end_cell_id += ehour + "-" + "under30" + "-" + day_to_code(val);
-          $(end_cell_id).addClass(option);
-        }
-      }
-    }
+function ClassElement(item, i){
+  // 한 엘리먼트 값임! 한 강의엔 여러 엘리먼트(월,수 수업일 경우 : 2개)가 있음
+  // property
+  this.classname = item.classname;
+  this.prof = item.prof;
+  this.classcode = item.classcode;
+  this.classroom = item.classrooms[i];
+  this.credit = item.credit;
+  this.day = day_to_code(item.days[i]); // 월 -> Mon
+  this.shour = item.times[i][0].split(":")[0]; // start hour
+  this.smin = item.times[i][0].split(":")[1]; // start min
+  this.ehour = item.times[i][1].split(":")[0]; // end hour
+  this.emin = item.times[i][1].split(":")[1]; // end min
+  this.interval_minute = (parseInt(this.ehour) - parseInt(this.shour))*60 + (parseInt(this.emin) - parseInt(this.smin));
+  this.elem_top = "";
+  this.elem_left = "";
+  this.elem_width = "";
+  this.elem_height = "";
+  this.elem_color = "";
 
-    // fill interval 화15:00-17:50 (Y5411)
-    if (parseInt(shour)==parseInt(ehour)){
-      // pass
-    }else{
-      if(parseInt(smin)<30){
-        // + start hour-over case
-        interval_cell_id = "#" + shour + "-"+ "over30" + "-" + day_to_code(val);
-        $(interval_cell_id).addClass(option);
-      }
-      interval = parseInt(shour) + 1;
-      while(interval != parseInt(ehour)){
-        // + time interval
-        interval_cell_id = "#" + interval + "-" + "under30" + "-" + day_to_code(val);  // interval이 int 지만 알아서 형변환
-        $(interval_cell_id).addClass(option);
-        interval_cell_id = "#" + interval + "-" + "over30" + "-" + day_to_code(val);
-        $(interval_cell_id).addClass(option);
-        interval += 1;
-      }
+  this.getItemCode = function(){
+    return "."+this.classcode;
+  };
+}
 
-      if(parseInt(emin)>30){
-        // + end hour-under case
-        interval_cell_id = "#" + ehour + "-" + "under30" + "-" + day_to_code(val);
-        $(interval_cell_id).addClass(option);
-      }
-    }
-  });
+// method
+ClassElement.prototype.create_html= function(){
+  html = '<div class="classitem wait '+this.classcode+' '+this.day+this.shour+'"><div class="content">\
+  <strong>'+this.classname+'</strong><br>'+this.prof+'<br>'+this.classroom+'<br></div></div>';
+
+  $(".classitems").append(html);
+
+  // 현재 선택한 학점. (ClassItem 객체 이용)
+  $("#total_credit").empty();
+  $("#total_credit").append(total_credit());
+};
+
+ClassElement.prototype.setPosition = function(option){
+  this.elem_width = $("."+this.shour).filter("."+this.day).width();  // cell 한개 너비가 곧 elem의 너비
+  cell_height = $("."+this.shour).filter("."+this.day).height();  // cell 한 개 높이
+  this.elem_height = Math.round(cell_height * (this.interval_minute/60));
+
+  // top position정하기, start hour와 min에 영향을 받는다
+  if(this.smin=="00"){
+    this.elem_top = $("."+this.shour).filter("."+this.day).offset().top +1;
+  }else{
+    // smin이 있을때 top 위치 내려와야 함
+    this.elem_top = $("."+this.shour).filter("."+this.day).offset().top +1;
+    smin_height = Math.round(cell_height *(this.smin/60));
+    item_top += smin_height;
+    // 10:30 시작이면 10시보다 한시간 cell의 1/2 높이만큼 멀어짐(top++)
+  }
+  this.elem_left = $("."+this.shour).filter("."+this.day).offset().left+ 1.5;
+
+  if(option==="create"){
+    var el = $(this.getItemCode()+".wait.classitem").width(this.elem_width).height(this.elem_height).offset({top:this.elem_top ,left:this.elem_left});
+    el.addClass("classitem_color_"+this.elem_color);
+    el.removeClass("wait");
+  }else if(option==="resize"){
+    // resize case
+    // .classitem만 찍으면 element 2개가 둘다 같은 포지션으로 감
+    // 객체의 내용과 일치하는 html을 찾기위해 classitem으로 하면 월, 수 이런식으로 나오니 day와 shour로 이루어진 filter 하나 더 거름
+    $(this.getItemCode()+".classitem").filter("."+this.day+this.shour).width(this.elem_width).height(this.elem_height).offset({top:this.elem_top ,left:this.elem_left});
+  }else{
+    // hover case
+    var hover_el = $(this.getItemCode()+".wait.classitem").width(this.elem_width).height(this.elem_height).offset({top:this.elem_top ,left:this.elem_left});
+    hover_el.addClass("hover");
+    hover_el.removeClass("wait");
+    // class가 hover classitem 인 tag를 찾으면 됨
+
+  }
+
+};
+function hover_classitem(elem){
+  row = time_parser(elem);
+  for(i=0 ; i< row.classtime.length ; i++){
+    el = new ClassElement(row,i); // elem 객체 생성
+    el.create_html();
+    el.setPosition(); // parameter 없으면 hover case로 실행
+  }
 }
 
 function insert_classitem(elem){
   row = time_parser(elem);
-  set_highlight(row, "selected");
+  class_items.push(new ClassItem(row)); // 내 수업이 담긴 class_items 배열에 추가
+  bg_color = get_random_item_color();
+
+  for(i=0 ; i< row.classtime.length ; i++){
+    el = new ClassElement(row,i); // elem 객체 생성
+    el.elem_color = bg_color;
+    class_elems.push(el); // elems 에 넣음
+    el.create_html();
+    el.setPosition("create");
+  }
+
   //remove hover
   elem.removeClass("hover");
   $("td").removeClass("hover");
 }
 
+function total_credit(){
+  result = 0;
+  $.each(class_items, function(i, val){
+	result+=parseInt(val.credit);
+  });
+  return result;
+}
+
+// 이미 있는데 또 추가하려고 하는 경우
+function check_exist(){
+
+}
+
+function resize_classitem(){
+  // elements와 $(".classitem")의 차이점은 elements 는 object가 있는 배열이고 , $()는 현재 시간표위에 있는 div 가져온거임.
+  // selector로도 object를 가져오지만, classElemenet object가 아니어서 아무 정보가 없어서 셋팅 불가능
+  $.each(class_elems, function(i, val){
+    val.setPosition("resize");
+  });
+}
+
+function remove_classitem(op, target){
+
+}
 
 function activateCSS(){
   $('#table-body .table-row').hover(function(){
     $(this).addClass("hover");
-    set_highlight(time_parser($(this)),"hover");
+    hover_classitem($(this));
   }, function(){
     $(this).removeClass("hover");
-    $("td").removeClass("hover");
+    $(".classitem.hover").remove(); // hover item 삭제
   });
 
   $('#table-body .table-row').click(function(event){
@@ -175,99 +250,4 @@ function activateCSS(){
       $('#check *').remove();
     }
   });
-}
-
-
-function add_timetable(){
-  //tab 개수 구한 후 추가
-  switch ($('#timetable-tab').children('a').length) {
-    case 1:
-      data_tab = "second";
-      tab_html = "PLAN B";
-      color = random_table_color();
-      break;
-    case 2:
-      data_tab = "third";
-      tab_html = "PLAN C";
-      color = random_table_color();
-      break;
-    default:
-      alert("더이상 추가할 수 없습니다.");
-      return;
-  }
-  $("#timetable-tab").children($('a')).removeClass("active"); // tab 의 a 태그 에서 active 제거
-  $("#timetable-tab").siblings(".active").removeClass("active"); // tab 내용에서 active 제거
-  $('<a class="item active" data-tab="'+data_tab+'">'+tab_html+'</a>').insertBefore($("#add-timetable"));
-  $("#my-timetable").append($('<div class="ui bottom attached tab segment active" data-tab="'+data_tab+'">\
-    <table class="ui celled '+color+' table">\
-        <thead>\
-          <tr>\
-            <th>/</th>\
-            <th>월요일</th>\
-            <th>화요일</th>\
-            <th>수요일</th>\
-            <th>목요일</th>\
-            <th>금요일</th>\
-          </tr>\
-        </thead>\
-        <tbody>'));
-  tbody_html="";
-  for(i=1; i<13; i++){
-    hour = i+8;
-    if(hour.toString().length == 1){ // 9 시 이하면(한자리수 시간) 0 붙여줌
-      start="0"+hour;
-    }else{
-      start=hour;
-    }
-    end = hour+1;
-    tbody_html +=
-    '<tr>\
-      <td rowspan="2">'+i+'교시<br>('+start+'~'+end+')</td>\
-      <td id="'+start+'-under30-Mon"></td>\
-      <td id="'+start+'-under30-Tue"></td>\
-      <td id="'+start+'-under30-Wed"></td>\
-      <td id="'+start+'-under30-Thu"></td>\
-      <td id="'+start+'-under30-Fri"></td>\
-    </tr>\
-    <tr>\
-      <td id="'+start+'-over30-Mon"></td>\
-      <td id="'+start+'-over30-Tue"></td>\
-      <td id="'+start+'-over30-Wed"></td>\
-      <td id="'+start+'-over30-Thu"></td>\
-      <td id="'+start+'-over30-Fri"></td>\
-    </tr>\
-    ';
-  }
-  $("[data-tab="+data_tab+"]").children($("tbody")).append(tbody_html).append("</tbody>\
-    </table>\
-  </div>");
-
-  $('.tabular.menu .item').tab();  // Activate tab in semantic ui
-}
-
-
-function remove_timetable(){
-  if($("#timetable-tab").children(".active").attr("data-tab") == "first"){
-    alert("PLAN A는 삭제할 수 없습니다.");
-    return;
-  }else{
-    $("#timetable-tab").children(".active").remove();
-    $("#timetable-tab").siblings(".active").remove();
-
-    $.each($("#timetable-tab").children('a'),function(index, value){
-      if(index==0){
-        $("#timetable-tab").children('a').eq(index).attr("data-tab","first");
-        $("#timetable-tab").siblings().eq(index).attr("data-tab","first");
-        $("#timetable-tab").children('a').eq(index).text("PLAN A");
-      }
-      if(index==1){
-        $("#timetable-tab").children('a').eq(index).attr("data-tab","second");
-        $("#timetable-tab").siblings().eq(index).attr("data-tab","second");
-        $("#timetable-tab").children('a').eq(index).text("PLAN B");
-      }
-    });
-    $("#timetable-tab").children('a').eq(0).addClass("active");
-    $("#timetable-tab").siblings().eq(0).addClass("active");
-  }
-  $('.tabular.menu .item').tab();  // Activate tab in semantic ui
 }

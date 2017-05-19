@@ -1,6 +1,7 @@
 
-body {
-  padding:10px;
+div.body-wrapper {
+  margin-left: 30px;
+  margin-right: 30px;
 }
 header,footer {
   height: 30px;
@@ -56,6 +57,14 @@ div.classitem {
   z-index: 10;
 }
 
+div.classitem.hover{
+  box-shadow:inset 0px 0px 0px 2px #f00;
+  opacity: 0.7;
+}
+
+div.credits{
+  width:inherit;
+}
 /* colors */
 /*빨강*/
 .classitem_color_ec555a{

@@ -14,9 +14,17 @@ function target_pop(arr, t){
   return arr.splice(target_idx, 1)[0]; //object 로 리턴하기 떄문에 0으로 접근
 }
 
+function check_classcode_in_array(arr, val) {
+  return arr.some(arrVal => val.classcode === arrVal.classcode);
+  // 있으면 true 없으면 false를 return
+}
+
 function check_insert(){
   if(confirm("추가하시겠습니까?")){
-    insert_classitem($(".clicked"));
+    check = insert_classitem($(".clicked"));
+    if("error" === check ){
+      alert("시간표상에 이미 존재하는 수업입니다.");
+    }
   }else{
     return;
   }
@@ -169,23 +177,32 @@ ClassElement.prototype.setPosition = function(option){
     var hover_el = $(this.getItemCode()+".wait.classitem").width(this.elem_width).height(this.elem_height).offset({top:this.elem_top ,left:this.elem_left});
     hover_el.addClass("hover");
     hover_el.removeClass("wait");
+    // class가 hover classitem 인 tag를 찾으면 됨
+
   }
 
 };
+
 function hover_classitem(elem){
   row = time_parser(elem);
   for(i=0 ; i< row.classtime.length ; i++){
     el = new ClassElement(row,i); // elem 객체 생성
     el.create_html();
-    el.setPosition();
+    el.setPosition(); // parameter 없으면 hover case로 실행
   }
 }
 
 function insert_classitem(elem){
   row = time_parser(elem);
-  class_items.push(new ClassItem(row)); // 내 수업이 담긴 class_items 배열에 추가
-  bg_color = get_random_item_color();
+  object = new ClassItem(row);
 
+  if(check_classcode_in_array(class_items, object)){
+    return "error";
+  }else{
+    class_items.push(object); // 내 수업이 담긴 class_items 배열에 추가
+  }
+
+  bg_color = get_random_item_color();
   for(i=0 ; i< row.classtime.length ; i++){
     el = new ClassElement(row,i); // elem 객체 생성
     el.elem_color = bg_color;
@@ -196,7 +213,6 @@ function insert_classitem(elem){
 
   //remove hover
   elem.removeClass("hover");
-  $("td").removeClass("hover");
 }
 
 function total_credit(){
@@ -207,8 +223,9 @@ function total_credit(){
   return result;
 }
 
-// 이미 있는데 또 추가하려고 하는 경우
-function check_exist(){
+
+function check_overlapping(row){
+  // time overlapping
 
 }
 
@@ -220,13 +237,17 @@ function resize_classitem(){
   });
 }
 
+function remove_classitem(target){
+  
+}
+
 function activateCSS(){
   $('#table-body .table-row').hover(function(){
     $(this).addClass("hover");
     hover_classitem($(this));
   }, function(){
     $(this).removeClass("hover");
-    // 여기에 table hover remove 함수 추가
+    $(".classitem.hover").remove(); // hover item 삭제
   });
 
   $('#table-body .table-row').click(function(event){
