@@ -14,9 +14,9 @@ function target_pop(arr, t){
   return arr.splice(target_idx, 1)[0]; //object 로 리턴하기 떄문에 0으로 접근
 }
 
-function check_classcode_in_array(arr, val) {
-  return arr.some(arrVal => val.classcode === arrVal.classcode);
-  // 있으면 true 없으면 false를 return
+function check_same_value_in_array(arr, val, key) {
+  // arr[key]의 값과 내가 준 val 과 같으면 true 없으면 false
+  return arr.some(arrVal => val[key] === arrVal[key]);
 }
 
 function check_insert(){
@@ -147,22 +147,24 @@ ClassElement.prototype.create_html= function(){
 };
 
 ClassElement.prototype.setPosition = function(option){
+  //elem의 position (top, left, width, height) 설정
   this.elem_width = $("."+this.shour).filter("."+this.day).width();  // cell 한개 너비가 곧 elem의 너비
   cell_height = $("."+this.shour).filter("."+this.day).height();  // cell 한 개 높이
   this.elem_height = Math.round(cell_height * (this.interval_minute/60));
 
-  // top position정하기, start hour와 min에 영향을 받는다
-  if(this.smin=="00"){
-    this.elem_top = $("."+this.shour).filter("."+this.day).offset().top +1;
-  }else{
+  // top position정하기, start hour로 기본 위치를 정하고 min에 따라 vertical 로 이동한다.
+  this.elem_top = Math.round($("."+this.shour).filter("."+this.day).offset().top +1);
+  if(this.smin!="00"){
     // smin이 있을때 top 위치 내려와야 함
     this.elem_top = $("."+this.shour).filter("."+this.day).offset().top +1;
     smin_height = Math.round(cell_height *(this.smin/60));
     item_top += smin_height;
     // 10:30 시작이면 10시보다 한시간 cell의 1/2 높이만큼 멀어짐(top++)
   }
-  this.elem_left = $("."+this.shour).filter("."+this.day).offset().left+ 1.5;
+  this.elem_left = Math.round($("."+this.shour).filter("."+this.day).offset().left+ 2);
 
+  // 옵션에 따른 행동
+  // overlapping check하는 경우는 아래 if문들에 안걸리고 그냥 elem의 position만 설정해주고 나감.
   if(option==="create"){
     var el = $(this.getItemCode()+".wait.classitem").width(this.elem_width).height(this.elem_height).offset({top:this.elem_top ,left:this.elem_left});
     el.addClass("classitem_color_"+this.elem_color);
@@ -172,31 +174,44 @@ ClassElement.prototype.setPosition = function(option){
     // .classitem만 찍으면 element 2개가 둘다 같은 포지션으로 감
     // 객체의 내용과 일치하는 html을 찾기위해 classitem으로 하면 월, 수 이런식으로 나오니 day와 shour로 이루어진 filter 하나 더 거름
     $(this.getItemCode()+".classitem").filter("."+this.day+this.shour).width(this.elem_width).height(this.elem_height).offset({top:this.elem_top ,left:this.elem_left});
-  }else{
+  }else if(option==="hover"){
     // hover case
     var hover_el = $(this.getItemCode()+".wait.classitem").width(this.elem_width).height(this.elem_height).offset({top:this.elem_top ,left:this.elem_left});
     hover_el.addClass("hover");
     hover_el.removeClass("wait");
     // class가 hover classitem 인 tag를 찾으면 됨
-
   }
-
 };
 
 function hover_classitem(elem){
   row = time_parser(elem);
+  if(row.classtime[0] === "미입력"){return;}
+
   for(i=0 ; i< row.classtime.length ; i++){
     el = new ClassElement(row,i); // elem 객체 생성
     el.create_html();
-    el.setPosition(); // parameter 없으면 hover case로 실행
+    el.setPosition("hover");
   }
 }
 
 function insert_classitem(elem){
   row = time_parser(elem);
+  if(row.classtime[0] === "미입력"){
+    alert("시간 정보가 없습니다.");
+    //remove hover
+    elem.removeClass("hover");
+    return;
+  }
   object = new ClassItem(row);
+  if(check_time_overlapping(row)){
+    alert("시간이 겹칩니다.");
+    return;
+  }else{
+    console.log("시간이 안 겹칩니다.");
+  }
 
-  if(check_classcode_in_array(class_items, object)){
+  if(check_same_value_in_array(class_items, object, 'classcode')){
+    // object의
     return "error";
   }else{
     class_items.push(object); // 내 수업이 담긴 class_items 배열에 추가
@@ -223,9 +238,62 @@ function total_credit(){
   return result;
 }
 
+// class_elems 안에 있는 객체의 생긴 모양
+// ClassElement
+// classcode: "1168"
+// classname: "자기주도학습2"
+// classroom: "Y5441"
+// credit: "2"
+// day: "Tue"
+// ehour: "16"
+// elem_color: "c65353"
+// elem_height: 124
+// elem_left: 1472
+// elem_top: 480.9999694824219
+// elem_width: 126.26838159561157
+// emin: "50"
+// getItemCode: function()
+// interval_minute: 110
+// prof: "안희철"
+// shour: "15"
+// smin: "00"
 
-function check_overlapping(row){
-  // time overlapping
+function check_overlap(val){
+  // 한 수업의 각 요일(class_elems)에 대한 순회
+  // val은 순회 시 각 요소 값.
+  // index는 iteration 값과 동일
+  // some() 을 쓰는 배열 자체
+  // el은 넣을 시간, val은 class_elems에 있는 기존 시간들의 요소
+  if(val.day === el.day){
+    // 같은 요일일 때
+    el_bottom = el.elem_top + el.elem_height;
+    return (val.elem_top <= el.elem_top && el.elem_top <= val.elem_top + val.elem_height) || (val.elem_top <= el_bottom && el_bottom <= val.elem_top + val.elem_height);
+    // 넣을 넘의 top과 bottom의 위치 값이 비교하는 val의 top과 bottom 값 사이에 들어가면 true 아니면 false
+  }else{
+    return false;
+  }
+}
+
+function check_time_overlapping(row){
+  // 같은 classcode인지 확인 (같은 수업인지 확인)
+  // object = new ClassItem(row);
+  // if(check_same_value_in_array(class_items, object, 'classcode')){
+  //   // object의
+  //   return "error";
+  // }
+
+  // time overlapping 확인
+  // object의 elem (수업요일) 개수만큼 loop 돌림 .. 각 elem에서 겹치는 시간 비교하므로.
+  r = false;
+  for(i=0 ; i<row.classtime.length ; i++){
+    el = new ClassElement(row,i); // insert 할 elem의 ClassElement 객체 생성
+    el.setPosition();
+    if(class_elems !== []){
+      r = class_elems.some(check_overlap);
+    }
+  }
+  // 겹치면 r = true 아니면 r = false
+  return r;
 
 }
 
@@ -238,7 +306,7 @@ function resize_classitem(){
 }
 
 function remove_classitem(target){
-  
+
 }
 
 function activateCSS(){
