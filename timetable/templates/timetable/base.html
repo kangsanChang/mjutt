@@ -13,6 +13,7 @@
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
       crossorigin="anonymous"></script>
     <script type="text/javascript" src="{% static 'timetable/js/core.js'%}"></script>
+    <script type="text/javascript" src="{% static 'timetable/js/runtime_script.js'%}"></script>
     <script src="{% static 'timetable/semantic/semantic.js'%}"></script>
 
   </head>
@@ -29,70 +30,65 @@
     </footer>
 
     <script>
+    $(document).ready(function(){
+      // semantic-ui setting
       $('.ui.dropdown').dropdown();
       $('.ui.checkbox').checkbox();
       $('.tabular.menu .item').tab();
-    </script>
+      $('.ui.modal').modal();
 
-    <script>
-    // Ajax
-    $('#submit').click(function(e){
-      e.preventDefault();
-      // Collect checkbox value
-      var mycheckboxes = new Array();
-      $("input:checked").each(function(){
-        mycheckboxes.push($(this).val());
-      });
+      // Ajax
+      $('#submit').click(function(e){
+        e.preventDefault();
+        // Collect checkbox value
+        var mycheckboxes = [];
+        $("input:checked").each(function(){
+          mycheckboxes.push($(this).val());
+        });
 
-      $.ajax({
-        type:'POST',
-        url:'/',
-        dataType: "json",
-        data:{
-          csrfmiddlewaretoken : '{{csrf_token}}',
-          dept:$('#id_dropdown').val(),
-          grade:mycheckboxes,
-          searchtext:$('#search').val(),
-        },
-        success: function(data){
-
-          rowdata = $.parseJSON(data);
-          // render JSON data
-          $('#table-body').empty()
-          $.each(rowdata, function(i, val){
-            $('#table-body').append(
-              $('<tr class="table-row">\
-              <td>'+rowdata[i].fields['grade']+'</td>\
-              <td>'+rowdata[i].fields['classname']+'</td>\
-              <td>'+rowdata[i].fields['credit']+'</td>\
-              <td>'+rowdata[i].fields['timeperweek']+'</td>\
-              <td>'+rowdata[i].fields['prof']+'</td>\
-              <td>'+rowdata[i].fields['classcode']+'</td>\
-              <td>'+rowdata[i].fields['limitstud']+'</td>\
-              <td>'+rowdata[i].fields['time']+'</td>\
-              <td>'+rowdata[i].fields['note']+'</td>\
-              <td id="check"></td>\
-              </tr>')
-            )
-          });
-
-          // activate CSS
-          $(document).ready(function(){
-            activateCSS();
-          });
-
-        // loading
-        },
-        beforeSend:function(){
-          $('#search-form').addClass("loading")
-        },
-        complete:function(){
-          $('#search-form').removeClass("loading")
-        },
-        failure: function(data){
-          console.log("FAIL");
-          console.log(data);
-        }
+        $.ajax({
+          type:'POST',
+          url:'/',
+          dataType: "json",
+          data:{
+            csrfmiddlewaretoken : '{{csrf_token}}',
+            dept:$('#id_dropdown').val(),
+            grade:mycheckboxes,
+            searchtext:$('#search').val(),
+          },
+          success: function(data){
+            rowdata = $.parseJSON(data);
+            // render JSON data
+            $('#table-body').empty();
+            $.each(rowdata, function(i, val){
+              $('#table-body').append(
+                $('<tr class="table-row">\
+                <td>'+rowdata[i].fields.grade+'</td>\
+                <td>'+rowdata[i].fields.classname+'</td>\
+                <td>'+rowdata[i].fields.credit+'</td>\
+                <td>'+rowdata[i].fields.timeperweek+'</td>\
+                <td>'+rowdata[i].fields.prof+'</td>\
+                <td>'+rowdata[i].fields.classcode+'</td>\
+                <td>'+rowdata[i].fields.limitstud+'</td>\
+                <td>'+rowdata[i].fields.time+'</td>\
+                <td>'+rowdata[i].fields.note+'</td>\
+                <td id="check"></td>\
+                </tr>')
+              );
+            });
+          // loading
+          },
+          beforeSend:function(){
+            $('#search-form').addClass("loading");
+          },
+          complete:function(){
+            $('#search-form').removeClass("loading");
+          },
+          failure: function(data){
+            console.log("FAIL");
+            console.log(data);
+          }
+        });
       });
     });
     </script>

@@ -147,13 +147,13 @@ ClassElement.prototype.setPosition = function(option){
   cell_height = $("."+this.shour).filter("."+this.day).height();  // cell 한 개 높이
   this.elem_height = Math.round(cell_height * (this.interval_minute/60));
 
-  // top position정하기, start hour로 기본 위치를 정하고 min에 따라 vertical 로 이동한다.
+  // top position정하기, time table의 cell의 위치 기준으로 start hour로 기본 위치를 정하고 min에 따라 vertical 로 이동한다.
   this.pos_top = Math.round($("."+this.shour).filter("."+this.day).offset().top +1);
   if(this.smin!="00"){
     // smin이 있을때 top 위치 내려와야 함
-    this.pos_top = $("."+this.shour).filter("."+this.day).offset().top +1;
+    // this.pos_top = $("."+this.shour).filter("."+this.day).offset().top +1;
     smin_height = Math.round(cell_height *(this.smin/60));
-    item_top += smin_height;
+    this.pos_top += smin_height;
     // 10:30 시작이면 10시보다 한시간 cell의 1/2 높이만큼 멀어짐(top++)
   }
   this.pos_left = Math.round($("."+this.shour).filter("."+this.day).offset().left+ 2);
@@ -323,32 +323,4 @@ function resize_classitem(){
 
 function remove_classitem(target){
 
-}
-
-function activateCSS(){
-  $(document).ready(function(){
-    $('#table-body .table-row').hover(function(){
-      $(this).addClass("hover");
-      hover_classitem($(this));
-    }, function(){
-      $(this).removeClass("hover");
-      $(".classitem.hover").remove(); // hover item 삭제
-    });
-
-    $('#table-body .table-row').click(function(event){
-      $('.table-row').not(this).removeClass('clicked');
-      $('#check *').remove();
-      $(this).toggleClass("clicked");
-
-      // clicked 인 경우 add/delete icon 추가
-      // clicked 가 없어진 경우 (toggle) icon 삭제
-      if($(this).hasClass("clicked")){
-        $(this).children('#check').append($('<button class="ui icon button" \
-        onclick="check_insert()"><i class="large green checkmark icon">\
-        </i></button>'));
-      }else{
-        $('#check *').remove();
-      }
-    });
-  });
 }

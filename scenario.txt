@@ -1,14 +1,14 @@
+0. Custom 시간표 생성, Custom 시간표는 drag and drop 으로 빈 시간에 이동할 수 있게
+
 1. 토요일 처리해야 함
 
-2. 시간 겹칠 경우 -> 못한다고 alert 넣기
-
-3. 컬러 직접 바꾸고 싶을 경우 -> refresh 버튼 추가하기
+2. 컬러 직접 바꾸고 싶을 경우 -> refresh 버튼 추가하기
 여력이 되면 detail view 주고, popup 해서 elemenet 상세정보 띄우는 창에서 색도 수정 가능하게 해도 될듯
 
-4. empty일 경우 -> 시간 직접입력 or pass or 기타란에 넣기
+3. empty일 경우 -> 시간 직접입력 or pass or 기타란에 넣기
 
-5. 시간표 이미지로 저장하고 싶은 경우 -> export 네이버 캘린더
+(희망사항) 시간표 이미지로 저장하고 싶은 경우 -> export 네이버 캘린더
 
-6. FB, KAKAO 공유
+- FB, KAKAO 공유
 
-7. element 삭제하고 싶은 경우 -> table 위의 div(html)삭제 후 class_items, class_elems에서 삭제
+4. element 삭제하고 싶은 경우 -> table 위의 div(html)삭제 후 class_items, class_elems에서 삭제
