@@ -93,6 +93,24 @@
 
     <div class="left floated six wide column">
       <div class="class-timetable">
+        <div class="table_info">
+          <div class="ui fluid container segment">
+            <div class="ui compact right menu">
+              <a class="item">
+                <i class="file image outline icon"></i>
+                시간표 저장
+              </a>
+              <a class="item">
+                <i class="refresh icon"></i>
+                시간표 초기화
+              </a>
+              <a class="item">
+                <i class="plus icon"></i>
+                설정
+              </a>
+            </div>
+          </div>
+        </div>
         <div class="table">
           <!-- table의 row 생성 -->
           {% for hour in hours %}
@@ -123,17 +141,8 @@
             <div class="cell time-cell {{hour}} {{day}}">
             </div>
             {% endfor %}
-
           </div>
-
           {% endfor %}
-
-          <div class="credits">
-            <div class="ui left aligned segment">
-              <p>신청학점 :  <strong id="total_credit"></strong></p>
-            </div>
-          </div>
-
           <div class="classitems"></div>
 
         </div>
@@ -141,7 +150,7 @@
     </div>
 
     {% include "timetable/custom_schedule.html" %}
-
+    {% include "timetable/detail_modal.html" %}
   </div>
 </div>
 

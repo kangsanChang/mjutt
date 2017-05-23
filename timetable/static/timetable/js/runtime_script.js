@@ -1,5 +1,5 @@
 // runtime script when application running.
-// like hover event handler
+// like hover, click event handler
 $(document).ready(function(){
   $(window).resize(function(){
     resize_classitem();
@@ -41,20 +41,30 @@ $(document).ready(function(){
 
   // .time-cell click event
   $('.time-cell').click(function(e){
-    $('.ui.modal').modal('show');
+    $('.ui.modal#custom').modal('show');
   });
 
   // .classitem hover event (using box-shadow)
+  // 같은 id 인 놈을 찾아서 같이 highlight
   $(document).on("mouseover",'div.classitem',function(e){
-    $(this).addClass("box-shadow");
+    $("div.classitem."+this.id).addClass("box-shadow");
   }).on("mouseout",'div.classitem',function(e) {
-    $(this).removeClass("box-shadow");
+    $("div.classitem."+this.id).removeClass("box-shadow");
   });
 
   $(document).on("click","div.classitem" ,function(){
-	   a=this;
-     b=$(this);
-     console.log(this.id);
+     elem_id=this.id;
+     var obj;
+     $.each(class_items, function(i, val){
+    	if(val.classcode === elem_id){
+        obj = val;
+        return false; // jquery each의 escape
+    	}
+    });
+    detail_view(obj); // modal 실행하고 detail_html 의 return 값 html 넣기
   });
 
+  $(document).on("click", "div.ui.cancel.button", function(){
+    $("#custom_form").form('reset'); // form('reset') 은 default value 상태로, form(clear) 는 깨끗히 폼 다 비움
+  });
 });

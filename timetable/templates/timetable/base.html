@@ -19,14 +19,21 @@
   </head>
   <body>
     <header>
-      <p>MJUTT</p>
+      <div class="ui grid">
+        <div class="four column row">
+          <div class="left floated column"><h1>MJUTT</h1></div>
+          <div class="right floated column"><h3> 신청 학점 :  <strong id="total_credit"></strong></h3></div>
+        </div>
+      </div>
+
+
     </header>
     <div class="container">
       {% block content %}
       {% endblock %}
     </div>
     <footer>
-      <p>(c) 2017 kangsan Chang</p>
+      <h3>(c) 2017 kangsan Chang</h3>
     </footer>
 
     <script>

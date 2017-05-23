@@ -133,7 +133,7 @@ function ClassElement(item, i){
 // ClassElement Object's method
 ClassElement.prototype.create_html= function(){
   html = '<div class="classitem wait '+this.classcode+' '+this.day+this.shour+'" id="'+this.classcode+'"><div class="content">\
-  <strong>'+this.classname+'</strong><br>'+this.prof+'<br>'+this.classroom+'<br></div></div>';
+  <p><strong>'+this.classname+'</strong><br>'+this.prof+'<br>'+this.classroom+'</p></div></div>';
 
   $(".classitems").append(html);
 
@@ -326,6 +326,19 @@ function check_time_overlapping(row){
       }
     }
   }
+}
+
+function detail_view(item){
+  $('.ui.modal#detail').modal('show');
+  $('div.content').children('p.class_info').empty();
+  result="<ul>";
+  for (var i in item) {
+    if (item.hasOwnProperty(i)) {
+        result += "<li class='"+i+"'>"+ i + " : " + item[i] + "</li>\n";
+    }
+  }
+  result+="</ul>";
+  $('div.content').children('p.class_info').append(result);
 }
 
 function resize_classitem(){
