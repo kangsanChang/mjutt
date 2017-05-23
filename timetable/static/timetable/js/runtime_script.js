@@ -43,4 +43,18 @@ $(document).ready(function(){
   $('.time-cell').click(function(e){
     $('.ui.modal').modal('show');
   });
+
+  // .classitem hover event (using box-shadow)
+  $(document).on("mouseover",'div.classitem',function(e){
+    $(this).addClass("box-shadow");
+  }).on("mouseout",'div.classitem',function(e) {
+    $(this).removeClass("box-shadow");
+  });
+
+  $(document).on("click","div.classitem" ,function(){
+	   a=this;
+     b=$(this);
+     console.log(this.id);
+  });
+
 });

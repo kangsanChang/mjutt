@@ -129,125 +129,18 @@
           {% endfor %}
 
           <div class="credits">
-            <h4>신청학점 : <span id="total_credit"></span> </h4>
+            <div class="ui left aligned segment">
+              <p>신청학점 :  <strong id="total_credit"></strong></p>
+            </div>
           </div>
 
           <div class="classitems"></div>
+
         </div>
       </div>
     </div>
 
-    <div class="ui modal">
-      <div class="ui icon header">
-        Custom schedule
-      </div>
-      <div class="content">
-        <div class="ui form">
-          <div class="two fields">
-            <div class="field">
-              <label>Classname</label>
-              <input type="text" name="" placeholder="">
-            </div>
-            <div class="field">
-              <label>prof</label>
-              <input type="text" name="" value="">
-            </div>
-          </div>
-          <div class="four fields">
-            <label>Time</label>
-            <div class="field">
-              <div class="ui search selection dropdown">
-                <input type="hidden" name="" id="">
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                  <div class="item" data-value="">9</div>
-                  <div class="item" data-value="">10</div>
-                  <div class="item" data-value="">11</div>
-                  <div class="item" data-value="">12</div>
-                  <div class="item" data-value="">13</div>
-                  <div class="item" data-value="">14</div>
-                  <div class="item" data-value="">15</div>
-                  <div class="item" data-value="">16</div>
-                  <div class="item" data-value="">17</div>
-                  <div class="item" data-value="">18</div>
-                  <div class="item" data-value="">19</div>
-                  <div class="item" data-value="">20</div>
-                </div>
-              </div>
-            </div>
-            :
-            <div class="field">
-              <div class="ui search selection dropdown">
-                <input type="hidden" name="" id="">
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                  <div class="item" data-value="">9</div>
-                  <div class="item" data-value="">10</div>
-                  <div class="item" data-value="">11</div>
-                  <div class="item" data-value="">12</div>
-                  <div class="item" data-value="">13</div>
-                  <div class="item" data-value="">14</div>
-                  <div class="item" data-value="">15</div>
-                  <div class="item" data-value="">16</div>
-                  <div class="item" data-value="">17</div>
-                  <div class="item" data-value="">18</div>
-                  <div class="item" data-value="">19</div>
-                  <div class="item" data-value="">20</div>
-                </div>
-              </div>
-            </div>
-            ~
-            <div class="field">
-              <div class="ui search selection dropdown">
-                <input type="hidden" name="" id="">
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                  <div class="item" data-value="">9</div>
-                  <div class="item" data-value="">10</div>
-                  <div class="item" data-value="">11</div>
-                  <div class="item" data-value="">12</div>
-                  <div class="item" data-value="">13</div>
-                  <div class="item" data-value="">14</div>
-                  <div class="item" data-value="">15</div>
-                  <div class="item" data-value="">16</div>
-                  <div class="item" data-value="">17</div>
-                  <div class="item" data-value="">18</div>
-                  <div class="item" data-value="">19</div>
-                  <div class="item" data-value="">20</div>
-                </div>
-              </div>
-            </div>
-            :
-            <div class="field">
-              <div class="ui search selection dropdown">
-                <input type="hidden" name="" id="">
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                  <div class="item" data-value="">9</div>
-                  <div class="item" data-value="">10</div>
-                  <div class="item" data-value="">11</div>
-                  <div class="item" data-value="">12</div>
-                  <div class="item" data-value="">13</div>
-                  <div class="item" data-value="">14</div>
-                  <div class="item" data-value="">15</div>
-                  <div class="item" data-value="">16</div>
-                  <div class="item" data-value="">17</div>
-                  <div class="item" data-value="">18</div>
-                  <div class="item" data-value="">19</div>
-                  <div class="item" data-value="">20</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="actions">
-        <div class="ui green ok inverted button">
-          <i class="checkmark icon"></i>
-          Add
-        </div>
-      </div>
-    </div>
+    {% include "timetable/custom_schedule.html" %}
 
   </div>
 </div>

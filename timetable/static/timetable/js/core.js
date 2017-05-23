@@ -48,11 +48,17 @@ function get_random_item_color(){
 function time_parser(elem){
   var row_dict = {};
   // element는 clicked 인 row이므로 무조건 1개라서 0으로 접근
-  classname = $(elem)[0].children[1].innerHTML;
-  prof = $(elem)[0].children[4].innerHTML;
-  credit = $(elem)[0].children[2].innerHTML;
-  classtime = $(elem)[0].children[7].innerHTML.split(","); //["월13:00-14:50 (Y5420)", "수13:00-14:50 (Y5420)"]
-  classcode = $(elem)[0].children[5].innerText; // innerHTML은 trim이 안됨
+  row_dict.grade = $(elem)[0].children[0].innerHTML;
+  row_dict.classname = $(elem)[0].children[1].innerHTML;
+  row_dict.credit = $(elem)[0].children[2].innerHTML;
+  row_dict.timeperweek = $(elem)[0].children[3].innerHTML;
+  row_dict.prof = $(elem)[0].children[4].innerHTML;
+  row_dict.classcode = $(elem)[0].children[5].innerText; // innerHTML은 trim이 안됨
+  row_dict.limit = $(elem)[0].children[6].innerHTML;
+  row_dict.classtime = $(elem)[0].children[7].innerHTML.split(","); //["월13:00-14:50 (Y5420)", "수13:00-14:50 (Y5420)"]
+  row_dict.note = $(elem)[0].children[8].innerHTML;
+
+
   daypattern = /(월|화|수|목|금)/;
   timepattern = /\d{2}:\d{2}/g;
   classroompattern = /\w\d{3,5}/g;
@@ -61,8 +67,7 @@ function time_parser(elem){
   times=[];
   classrooms=[];
 
-  // except empty
-  $.each(classtime, function(index, value){
+  $.each(row_dict.classtime, function(index, value){
     if(value=="미입력"){
       days.push("empty");
       times.push("empty");
@@ -80,28 +85,24 @@ function time_parser(elem){
       }
     }
   });
-
-  // dict 접근법 2가지 dict['abc'] , dict.abc (linter에서는 dot notation을 쓰라함)
-
-  row_dict.classname = classname;
-  row_dict.prof = prof;
-  row_dict.credit = credit;
-  row_dict.classtime = classtime;
   row_dict.days = days;
   row_dict.times = times;
   row_dict.classrooms = classrooms;
-  row_dict.classcode = classcode;
 
   return row_dict;
 }
 
 // Define Custom objects
 function ClassItem(item){
+  this.grade = item.grade;
   this.classname = item.classname;
-  this.prof = item.prof;
   this.credit = item.credit;
-  this.classtime = item.classtime; // array
+  this.timeperweek = item.timeperweek;
+  this.prof = item.prof;
   this.classcode = item.classcode;
+  this.limit = item.limit;
+  this.classtime = item.classtime; // array
+  this.note = item.note;
 }
 
 function ClassElement(item, i){
@@ -131,7 +132,7 @@ function ClassElement(item, i){
 
 // ClassElement Object's method
 ClassElement.prototype.create_html= function(){
-  html = '<div class="classitem wait '+this.classcode+' '+this.day+this.shour+'"><div class="content">\
+  html = '<div class="classitem wait '+this.classcode+' '+this.day+this.shour+'" id="'+this.classcode+'"><div class="content">\
   <strong>'+this.classname+'</strong><br>'+this.prof+'<br>'+this.classroom+'<br></div></div>';
 
   $(".classitems").append(html);
@@ -192,7 +193,6 @@ function hover_classitem(elem){
 function check_insert(){
   if(confirm("추가하시겠습니까?")){
     check = insert_classitem($(".clicked"));
-    console.log(check);
     if("same_value" === check ){
       alert("시간표에 이미 존재하는 수업입니다.");
     }else if("time_info_error"===check){
@@ -245,6 +245,19 @@ function insert_classitem(elem){
   }
   // remove hover
   elem.removeClass("hover");
+}
+
+function create_virtual_row(){
+  // Object {classname: "자료구조", prof: "한승철", credit: "3", classtime: Array(2), classcode: "1133"…}
+  //   classcode:"1133"
+  //   classname:"자료구조"
+  //   classrooms:Array(2)
+  //   classtime:Array(2)
+  //   credit:"3"
+  //   days:Array(2)
+  //   prof:"한승철"
+  //   times:Array(2)
+  var v_row = {};
 }
 
 function total_credit(){
