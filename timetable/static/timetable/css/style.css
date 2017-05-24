@@ -1,12 +1,10 @@
 div.body-wrapper {
   margin: 30px;
 }
-header,footer {
-  height: 80px;
-  background-color: LightSalmon ;
-}
 
 footer{
+  height: 70px;
+  background-color: LightSalmon ;
   text-align: center;
 }
 
@@ -14,6 +12,9 @@ ul {
   list-style-type: none;
 }
 
+div.table_info{
+  margin-bottom: 10px;
+}
 /* 결과 창 크기 제한, overflow 시 자동 스크롤 */
 .result-box {
   height: 800px;
@@ -53,6 +54,10 @@ border-collapse는 테이블 또는 셀의 테두리선 표시방법을 지정�
 collapse : 서로 이웃하는 테이블이나 셀의 테두리선을 겹쳐서 표현 합니다.
 separate : 기본값으로 서로 이웃하는 테이블이나 셀의 테두리선을 분리시켜 표현 합니다.
 */
+
+.ui.container.segment{
+  margin-bottom: 10px;
+}
 
 div.table{
   position: relative; /*absoulte 로 classitem div 넣기 위함*/

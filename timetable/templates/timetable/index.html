@@ -3,7 +3,7 @@
 {% load start_time end_time korean_day from custom_filters %}
 <div class="body-wrapper">
   <div class="ui grid">
-    <div class="left floated ten wide column">
+    <div class="left floated nine wide column">
       <div class="ui fluid container segment" id="search-box">
         <div class="search-form">
           <form class="ui fluid form container segment" id="search-form" method="POST">
@@ -43,7 +43,7 @@
                 </div>
               </div>
 
-              <button class="ui vertical animated button" type="submit" id="submit">
+              <button class="ui vertical animated large button" type="submit" id="submit">
                 <div class="hidden content">
                   검색
                 </div>
@@ -52,20 +52,9 @@
                 </div>
               </button>
 
-              <button class="ui vertical animated button" type="submit" id="submit">
-                <div class="hidden content">
-                  로드맵
-                </div>
-                <div class="visible content">
-                  <i class="map signs icon"></i>
-                </div>
-              </button>
-
             </div>
           </form>
         </div>
-
-        <div class="ui hidden divider"></div>
         <div class="result-box">
           <div class="ui fluid container" id="result-box">
             <table class="ui very very compact blue table" id="class-table">
@@ -91,23 +80,44 @@
       </div>
     </div>
 
-    <div class="left floated six wide column">
+    <div class="left floated seven wide column">
       <div class="class-timetable">
         <div class="table_info">
-          <div class="ui fluid container segment">
-            <div class="ui compact right menu">
-              <a class="item">
-                <i class="file image outline icon"></i>
-                시간표 저장
-              </a>
-              <a class="item">
-                <i class="refresh icon"></i>
-                시간표 초기화
-              </a>
-              <a class="item">
-                <i class="plus icon"></i>
-                설정
-              </a>
+          <div class="ui menu">
+            <div class="item">
+              <h3> 신청 학점 :  <strong id="total_credit"></strong></h3>
+            </div>
+            <div class="right item">
+              <div class="ui buttons">
+
+                <button class="ui vertical animated basic button" onclick="custom_item" id="custom">
+                  <div class="hidden content">
+                    직접 추가
+                  </div>
+                  <div class="visible content">
+                    <i class="plus icon"></i>
+                  </div>
+                </button>
+
+                <button class="ui vertical animated basic button" onclick="check_timetable_initialize()" id="init">
+                  <div class="hidden content">
+                    초기화
+                  </div>
+                  <div class="visible content">
+                    <i class="refresh icon"></i>
+                  </div>
+                </button>
+
+                <button class="ui vertical animated basic button" onclick="" id="save">
+                  <div class="hidden content">
+                    저장
+                  </div>
+                  <div class="visible content">
+                    <i class="download icon"></i>
+                  </div>
+                </button>
+
+              </div>
             </div>
           </div>
         </div>
@@ -148,9 +158,6 @@
         </div>
       </div>
     </div>
-
-    {% include "timetable/custom_schedule.html" %}
-    {% include "timetable/detail_modal.html" %}
   </div>
 </div>
 

@@ -31,7 +31,6 @@ $(document).ready(function(){
     $(".classitem.hover").remove(); // hover item 삭제
   });
 
-
   // .time-cell hover event
   $('.time-cell').hover(function(){
     $(this).addClass("hover");

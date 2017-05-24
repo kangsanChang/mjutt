@@ -1,25 +1,60 @@
-<div class="ui modal" id="custom">
+<!-- detail view modal -->
+<div class="ui small modal" id="detail">
+  <div class="ui icon header">
+    Detail View
+  </div>
+  <div class="content">
+    <div class="class_info">
+      <ul>
+        <li class="grade">학년 : </li>
+        <li class="classname">교과목명 : </li>
+        <li class="credit">학점 : </li>
+        <li class="timeperweek">시간 : </li>
+        <li class="prof">담당교수 : </li>
+        <li class="classcode">강좌번호 : </li>
+        <li class="limit">제한인원 : </li>
+        <li class="classtime">시간(강의실) : </li>
+        <li class="note">비고 : </li>
+      </ul>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui horizontal list">
+      <div class="item">
+      </div>
+    </div>
+    <div class="ui red button" onclick="">
+      <i class="trash outline icon"></i>
+      Remove
+    </div>
+    <div class="ui cancel button">
+      <i class="delete icon"></i>
+      Close
+    </div>
+  </div>
+</div>
+
+<!-- custom schedule modal -->
+<div class="ui small modal" id="custom">
   <div class="ui icon header">
     Custom schedule
   </div>
   <div class="content">
     <form class="ui form" id="custom_form">
-      <div class="inline fields">
-        <div class="field">
-          <label>Classname</label>
-          <input type="text" name="" placeholder="">
-        </div>
-        <div class="field">
-          <label>classroom</label>
-          <input type="text" name="" value="">
-        </div>
-        <div class="field">
-          <label>prof</label>
-          <input type="text" name="" value="">
-        </div>
+      <label>과목 이름</label>
+      <div class="field">
+        <input type="text" name="" placeholder="">
       </div>
-      <div class="inline fields" style="width: 500px">
-      <label>Time</label>
+      <label>교실</label>
+      <div class="field">
+        <input type="text" name="" value="">
+      </div>
+      <label>담당 교수</label>
+      <div class="field">
+        <input type="text" name="" value="">
+      </div>
+      <label>수업 시간</label>
+      <div class="field">
         <div class="ui fluid selection dropdown">
           <input name="gender" value="default" type="hidden">
           <i class="dropdown icon"></i>

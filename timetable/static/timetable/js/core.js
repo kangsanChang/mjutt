@@ -6,6 +6,7 @@
 used_colors = [];
 class_items = [];
 class_elems = [];
+full_colors = ["ec555a","c65353","ffccce","f56e3d","f8d56d","cfe19d","34a26b","28bdbd","4280d7","e39dfb"];
 
 // 재사용 함수들
 function random_pop(arr){
@@ -36,7 +37,7 @@ function day_to_code(day){
 }
 
 function get_random_item_color(){
-  colors=["ec555a","c65353","ffccce","f56e3d","f8d56d","cfe19d","34a26b","28bdbd","4280d7","e39dfb"];
+  colors = full_colors;
   $.each(used_colors, function(i,val){
     target_pop(colors, val);
   });
@@ -178,6 +179,21 @@ ClassElement.prototype.setPosition = function(option){
     // class가 hover classitem 인 tag를 찾으면 됨
   }
 };
+
+function check_timetable_initialize(){
+  if(confirm("시간표를 초기화 하시겠습니까?")){
+    timetable_initialize();
+  }else{
+    return;
+  }
+}
+
+function timetable_initialize(){
+  used_colors = [];
+  class_items = [];
+  class_elems = [];
+  $(".classitems").children().remove();
+}
 
 function hover_classitem(elem){
   row = time_parser(elem);
@@ -331,14 +347,24 @@ function check_time_overlapping(row){
 function detail_view(item){
   $('.ui.modal#detail').modal('show');
   $('div.content').children('p.class_info').empty();
-  result="<ul>";
+  // 한글로 <li> xxx: </li> 만들어 놓고 <li> 갯수 가져와서 각 li 뒤에 append 하는거로 바꾸자
+
+  info_list = $('div.class_info').children('ul').children('li');
+
+  // info_list 는 array라 index로 접근해야 하는데 for in 에서는 못만들어서 만들어줌
+  loop_counter=0;
   for (var i in item) {
     if (item.hasOwnProperty(i)) {
-        result += "<li class='"+i+"'>"+ i + " : " + item[i] + "</li>\n";
+      info_list[loop_counter].append(item[i]);
     }
+    loop_counter++;
   }
-  result+="</ul>";
-  $('div.content').children('p.class_info').append(result);
+
+  color_list ="";
+  $.each(full_colors, function(i,val){
+    color_list += '<button class="color-box classitem_color_'+val+'" id="'+val+'"> <i class="paint brush icon"></i></button>';
+  });
+  $("div.horizontal.list").children(".item").append(color_list);
 }
 
 function resize_classitem(){
@@ -347,6 +373,7 @@ function resize_classitem(){
   });
 }
 
-function remove_classitem(target){
-
+function remove_classitem(id){
+  $('p.class_info').children('ul').children('li').filter(".classcode").text();
+// "classcode : 1139"
 }
