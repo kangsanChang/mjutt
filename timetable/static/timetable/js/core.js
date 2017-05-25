@@ -43,7 +43,8 @@ function get_matched_object_in_arr(arr, code){
  return ret;
 }
 
-function get_target_removed_array(arr, target_code){
+function get_matched_prop_removed_array(arr, target_code){
+  // slice 와는 다름! 이건 object 들이 있는 array에서 object 안의 property와 같은게 있을 경우 제거하고 나머지를 리턴
   ret = [];
   ret = arr.filter(function(obj){
     return obj.classcode !== target_code;
@@ -86,7 +87,7 @@ function prop_to_kor(p){
 }
 
 function get_random_item_color(){
-  colors = full_colors;
+  colors = full_colors.slice();
   $.each(used_colors, function(i,val){
     target_pop(colors, val);
   });
@@ -242,6 +243,7 @@ function timetable_initialize(){
   class_items = [];
   class_elems = [];
   $(".classitems").children().remove();
+  update_total_credit();
 }
 
 // hover event
@@ -432,8 +434,8 @@ function remove_classitem(code){
   item_color = get_matched_color_in_arr(code);
   target_pop(used_colors, item_color);
   // remove in array(class_items, classelems)
-  class_items = get_target_removed_array(class_items, code);
-  class_elems = get_target_removed_array(class_elems, code);
+  class_items = get_matched_prop_removed_array(class_items, code);
+  class_elems = get_matched_prop_removed_array(class_elems, code);
 
   $('div.classitem').filter("."+code).remove();
   $('.ui.modal#detail').modal('hide');
