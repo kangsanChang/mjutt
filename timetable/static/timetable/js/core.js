@@ -19,6 +19,39 @@ function target_pop(arr, t){
   return arr.splice(target_idx, 1)[0]; //object 로 리턴하기 떄문에 0으로 접근
 }
 
+function get_matched_color_in_arr(code){
+  //return matched object's color in class_elems
+  // class_item에는 color는 모르니까 같은 classcode로 elem 조회해서 해당 color 얻어냄
+  $.each(class_elems, function(i, val){
+   if(val.classcode === code){
+     ret = val.elem_color;
+     return false; // for breaking each loop
+   }
+ });
+ return ret;
+}
+
+function get_matched_object_in_arr(arr, code){
+  // param과 동일한 classcode를 가진 object 찾아서 return
+  // 일치하는 것을 찾으면 바로 break 후 리턴하므로, 사실상 하나만 return 하므로 class_items에만 써야함.
+  $.each(arr, function(i, val){
+   if(val.classcode === code){
+     ret = val;
+     return false; // for breaking each loop
+   }
+ });
+ return ret;
+}
+
+function get_target_removed_array(arr, target_code){
+  ret = [];
+  ret = arr.filter(function(obj){
+    return obj.classcode !== target_code;
+  });
+  // object.classcode과 target_code가 일치하는 것을 제외하고 모아서 만든 배열 : ret
+  return ret;
+}
+
 function check_same_value_in_array(arr, val, key) {
   // arr[key]의 값과 내가 준 val 과 같으면 true 없으면 false
   return arr.some(arrVal => val[key] === arrVal[key]);
@@ -32,6 +65,22 @@ function day_to_code(day){
     case '수' : ret = 'Wed'; break;
     case '목' : ret = 'Thu'; break;
     case '금' : ret = 'Fri'; break;
+  }
+  return ret;
+}
+
+function prop_to_kor(p){
+  // classtime에서 파싱해서 가져온 한글을 code로 바꿔줌
+  switch (p){
+    case 'grade' : ret = '학년'; break;
+    case 'classname' : ret = '교과목명'; break;
+    case 'credit' : ret = '학점'; break;
+    case 'timeperweek' : ret = '시간'; break;
+    case 'prof' : ret = '담당교수'; break;
+    case 'classcode' : ret = '강좌번호'; break;
+    case 'limit' : ret = '제한인원'; break;
+    case 'classtime' : ret = '시간(강의실)'; break;
+    case 'note' : ret = '비고'; break;
   }
   return ret;
 }
@@ -139,8 +188,7 @@ ClassElement.prototype.create_html= function(){
   $(".classitems").append(html);
 
   // 현재 선택한 학점. (ClassItem 객체 이용)
-  $("#total_credit").empty();
-  $("#total_credit").append(total_credit());
+  update_total_credit();
 };
 
 ClassElement.prototype.setPosition = function(option){
@@ -180,6 +228,7 @@ ClassElement.prototype.setPosition = function(option){
   }
 };
 
+// initialize용 함수. (refresh 버튼 누를 시)
 function check_timetable_initialize(){
   if(confirm("시간표를 초기화 하시겠습니까?")){
     timetable_initialize();
@@ -195,6 +244,7 @@ function timetable_initialize(){
   $(".classitems").children().remove();
 }
 
+// hover event
 function hover_classitem(elem){
   row = time_parser(elem);
   if(row.classtime[0] === "미입력"){return;}
@@ -206,6 +256,7 @@ function hover_classitem(elem){
   }
 }
 
+// insert
 function check_insert(){
   if(confirm("추가하시겠습니까?")){
     check = insert_classitem($(".clicked"));
@@ -276,12 +327,13 @@ function create_virtual_row(){
   var v_row = {};
 }
 
-function total_credit(){
+function update_total_credit(){
   result = 0;
   $.each(class_items, function(i, val){
 	result+=parseInt(val.credit);
   });
-  return result;
+  $("#total_credit").empty();
+  $("#total_credit").append(result);
 }
 
 function check_overlap(el){
@@ -345,20 +397,22 @@ function check_time_overlapping(row){
 }
 
 function detail_view(item){
+  //init
   $('.ui.modal#detail').modal('show');
-  $('div.content').children('p.class_info').empty();
-  // 한글로 <li> xxx: </li> 만들어 놓고 <li> 갯수 가져와서 각 li 뒤에 append 하는거로 바꾸자
+  $('div.class_info').html("");
 
-  info_list = $('div.class_info').children('ul').children('li');
-
-  // info_list 는 array라 index로 접근해야 하는데 for in 에서는 못만들어서 만들어줌
-  loop_counter=0;
+  // append html
+  html ="<ul>";
   for (var i in item) {
     if (item.hasOwnProperty(i)) {
-      info_list[loop_counter].append(item[i]);
+      html += "<li class='"+i+"''>"+prop_to_kor(i)+" : "+item[i]+"</li>";
     }
-    loop_counter++;
   }
+  html += "</ul>";
+  $('div.class_info').html(html);
+
+  // parameter로 classcode를 넘겨야 해서 modal에서는 button 만들기만하고 onclick은 여기서 줌.
+  $(".actions .button").filter("#remove_btn").attr("onclick", "remove_classitem('"+item.classcode+"')");
 
   color_list ="";
   $.each(full_colors, function(i,val){
@@ -373,7 +427,16 @@ function resize_classitem(){
   });
 }
 
-function remove_classitem(id){
-  $('p.class_info').children('ul').children('li').filter(".classcode").text();
-// "classcode : 1139"
+function remove_classitem(code){
+  // remove in array(used_colors)
+  item_color = get_matched_color_in_arr(code);
+  target_pop(used_colors, item_color);
+  // remove in array(class_items, classelems)
+  class_items = get_target_removed_array(class_items, code);
+  class_elems = get_target_removed_array(class_elems, code);
+
+  $('div.classitem').filter("."+code).remove();
+  $('.ui.modal#detail').modal('hide');
+
+  update_total_credit();
 }

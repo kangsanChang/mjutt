@@ -52,14 +52,8 @@ $(document).ready(function(){
   });
 
   $(document).on("click","div.classitem" ,function(){
-     elem_id=this.id;
-     var obj;
-     $.each(class_items, function(i, val){
-    	if(val.classcode === elem_id){
-        obj = val;
-        return false; // jquery each의 escape
-    	}
-    });
+    target=this.id;
+    var obj = get_matched_object_in_arr(class_items, target);
     detail_view(obj); // modal 실행하고 detail_html 의 return 값 html 넣기
   });
 
