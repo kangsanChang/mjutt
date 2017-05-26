@@ -54,7 +54,8 @@ $(document).ready(function(){
   $(document).on("click","div.classitem" ,function(){
     target=this.id;
     var obj = get_matched_object_in_arr(class_items, target);
-    detail_view(obj); // modal 실행하고 detail_html 의 return 값 html 넣기
+    detail_view(obj[0]); // modal 실행하고 detail_html 의 return 값 html 넣기
+    // get_mated.. 함수는 배열로 리턴하는데 item은 한개밖에 없으므로 0으로 접근
   });
 
   $(document).on("click", "div.ui.cancel.button", function(){

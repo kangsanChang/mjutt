@@ -34,10 +34,10 @@ function get_matched_color_in_arr(code){
 function get_matched_object_in_arr(arr, code){
   // param과 동일한 classcode를 가진 object 찾아서 return
   // 일치하는 것을 찾으면 바로 break 후 리턴하므로, 사실상 하나만 return 하므로 class_items에만 써야함.
+  var ret=[];
   $.each(arr, function(i, val){
    if(val.classcode === code){
-     ret = val;
-     return false; // for breaking each loop
+     ret.push(val); // for breaking each loop
    }
  });
  return ret;
@@ -110,9 +110,9 @@ function time_parser(elem){
   row_dict.note = $(elem)[0].children[8].innerHTML;
 
 
-  daypattern = /(월|화|수|목|금)/;
-  timepattern = /\d{2}:\d{2}/g;
-  classroompattern = /\w\d{3,5}/g;
+  var daypattern = /(월|화|수|목|금)/;
+  var timepattern = /\d{2}:\d{2}/g;
+  var classroompattern = /\w\d{3,5}/g;
 
   days = [];
   times=[];
@@ -124,9 +124,9 @@ function time_parser(elem){
       times.push("empty");
       classrooms.push("empty");
     }else{
-      day= value.match(daypattern);
-      time = value.match(timepattern);
-      classroom = value.match(classroompattern);
+      var day= value.match(daypattern);
+      var time = value.match(timepattern);
+      var classroom = value.match(classroompattern);
       days.push(day[0]); // push() method : new value to array, append()는 html에 추가할때 사용, day가 array라서 index붙임
       times.push(time);
       if(classroom === null){
@@ -195,7 +195,7 @@ ClassElement.prototype.create_html= function(){
 ClassElement.prototype.setPosition = function(option){
   //elem의 position (top, left, width, height) 설정
   this.elem_width = $("."+this.shour).filter("."+this.day).width();  // cell 한개 너비가 곧 elem의 너비
-  cell_height = $("."+this.shour).filter("."+this.day).height();  // cell 한 개 높이
+  var cell_height = $("."+this.shour).filter("."+this.day).height();  // cell 한 개 높이
   this.elem_height = Math.round(cell_height * (this.interval_minute/60));
 
   // top position정하기, time table의 cell의 위치 기준으로 start hour로 기본 위치를 정하고 min에 따라 vertical 로 이동한다.
@@ -203,7 +203,7 @@ ClassElement.prototype.setPosition = function(option){
   if(this.smin!="00"){
     // smin이 있을때 top 위치 내려와야 함
     // this.pos_top = $("."+this.shour).filter("."+this.day).offset().top +1;
-    smin_height = Math.round(cell_height *(this.smin/60));
+    var smin_height = Math.round(cell_height *(this.smin/60));
     this.pos_top += smin_height;
     // 10:30 시작이면 10시보다 한시간 cell의 1/2 높이만큼 멀어짐(top++)
   }
@@ -399,28 +399,46 @@ function check_time_overlapping(row){
 }
 
 function detail_view(item){
+  detail_item = item; // change_color에서 쓰기 위해 전역변수로 넘김
   //init
   $('.ui.modal#detail').modal('show');
   $('div.class_info').html("");
 
   // append html
   html ="<ul>";
-  for (var i in item) {
-    if (item.hasOwnProperty(i)) {
-      html += "<li class='"+i+"''>"+prop_to_kor(i)+" : "+item[i]+"</li>";
+  for (var i in detail_item) {
+    if (detail_item.hasOwnProperty(i)) {
+      html += "<li class='"+i+"''>"+prop_to_kor(i)+" : "+detail_item[i]+"</li>";
     }
   }
-  html += "</ul>";
-  $('div.class_info').html(html);
-
-  // parameter로 classcode를 넘겨야 해서 modal에서는 button 만들기만하고 onclick은 여기서 줌.
-  $(".actions .button").filter("#remove_btn").attr("onclick", "remove_classitem('"+item.classcode+"')");
 
   color_list ="";
   $.each(full_colors, function(i,val){
-    color_list += '<button class="color-box classitem_color_'+val+'" id="'+val+'"> <i class="paint brush icon"></i></button>';
+    color_list += '<div class="ui button color-box classitem_color_'+val+'" id="'+val+'"\
+    onclick="change_color('+val+')"></div>';
   });
-  $("div.horizontal.list").children(".item").append(color_list);
+  html += "<li class='color'>"+color_list+"</li>";
+  html += "</ul>";
+  $('div.class_info').html(html); // input in .class_info's children
+
+  // parameter로 classcode를 넘겨야 해서 modal에서는 button 만들기만하고 onclick은 여기서 줌.
+  $(".actions .button").filter("#remove_btn").attr("onclick", "remove_classitem('"+detail_item.classcode+"')");
+}
+
+function change_color(c){
+  color = '\"'+c+'\"';
+  var current_color = get_matched_color_in_arr("'"+detail_item.classcode+"'");
+  target_pop(used_colors, current_color);
+  used_colors.push(color);
+
+  // change in object
+  objs = get_matched_object_in_arr(class_elems,detail_item.classcode);
+  $.each(objs, function(i,val){
+    val.elem_color = color;
+  });
+  // change in html
+  $(".classitem").filter("."+detail_item.classcode).removeClass("classitem_color_"+current_color);
+  $(".classitem").filter("."+detail_item.classcode).addClass("classitem_color_"+color);
 }
 
 function resize_classitem(){

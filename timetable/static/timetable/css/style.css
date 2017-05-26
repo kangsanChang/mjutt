@@ -99,43 +99,43 @@ div.table_info div.ui.segment{
 /* colors */
 /*빨강*/
 .classitem_color_ec555a{
-  background-color: #ec555a;
+  background-color: #ec555a !important;
 }
 /*밤색친구*/
 .classitem_color_c65353{
-  background-color: #c65353;
+  background-color: #c65353 !important;
 }
 /*핑크*/
 .classitem_color_ffccce{
-  background-color: #ffccce;
+  background-color: #ffccce !important;
 }
 /*주황*/
 .classitem_color_f56e3d{
-  background-color: #f56e3d;
+  background-color: #f56e3d !important;
 }
 /*노랑*/
 .classitem_color_f8d56d{
-  background-color: #f8d56d;
+  background-color: #f8d56d !important;
 }
 /*연초록*/
 .classitem_color_cfe19d{
-  background-color: #cfe19d;
+  background-color: #cfe19d !important;
 }
 /*초록*/
 .classitem_color_34a26b{
-  background-color: #34a26b;
+  background-color: #34a26b !important;
 }
 /*조금어두운하늘*/
 .classitem_color_28bdbd{
-  background-color: #28bdbd;
+  background-color: #28bdbd !important;
 }
 /*파랑*/
 .classitem_color_4280d7{
-  background-color: #4280d7;
+  background-color: #4280d7 !important;
 }
 /*보라*/
 .classitem_color_e39dfb{
-  background-color: #e39dfb;
+  background-color: #e39dfb !important;
 }
 
 .table-row {
@@ -164,4 +164,14 @@ div.table_info div.ui.segment{
 span.period-time {
   color:gray;
   font-size: 7pt;
+}
+
+/*detail view*/
+.color-box{
+  float: left !important;
+  width: 15px !important;
+  height: 15px !important;
+  padding: 10px !important;
+  margin: 5px 10px 5px 0px !important; /* t,b = 5px , l=0 , r=10 */
+  border: 1px solid rgba(0,0,0, .2) !important;
 }
