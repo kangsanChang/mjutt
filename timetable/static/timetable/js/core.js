@@ -19,6 +19,7 @@ function day_to_code(day){
     case '수' : ret = 'Wed'; break;
     case '목' : ret = 'Thu'; break;
     case '금' : ret = 'Fri'; break;
+    case '토' : ret = "Sat"; break;
   }
   return ret;
 }
@@ -118,7 +119,7 @@ function time_parser(elem){
   row_dict.note = $(elem)[0].children[8].innerHTML;
 
 
-  var daypattern = /(월|화|수|목|금)/;
+  var daypattern = /(월|화|수|목|금|토)/;
   var timepattern = /\d{2}:\d{2}/g;
   var classroompattern = /\w\d{3,5}/g;
 
@@ -478,9 +479,23 @@ function exit_modal(){
   $('.ui.modal').modal('hide');
 }
 
+// Timetable view function.
 // resizer
 function resize_classitem(){
   $.each(class_elems, function(i, val){
     val.setPosition("resize");
+  });
+}
+
+//overflow checker
+// 다시 원래 크기가 되었을 때 변화하는 것 떄문에 사용할지 고민..
+function check_content_overflow(){
+  $(".classitem").each(function(i,val){
+    box_height = val.offsetHeight;
+    content_height = val.children[0].offsetHeight;
+
+    if(box_height < content_height){
+      $(val).find("br").replaceWith("/");
+    }
   });
 }

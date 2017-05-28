@@ -21,4 +21,5 @@ def korean_day(l,key):
         "Wed" : "수요일",
         "Thu" : "목요일",
         "Fri" : "금요일",
+        "Sat" : "토요일",
     }.get(value,' ')

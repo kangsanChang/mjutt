@@ -39,7 +39,7 @@ def index(request):
         # GET method
         depts = all_dept() # ordered dictionary
         all_grade = ["전학년","1학년","2학년","3학년","4학년"]
-        days = ["Mon","Tue","Wed","Thu","Fri"] # 시간표 thead 에는 filter 거쳐서 한글로 들어가고 value 자체는 cell의 class 값으로 씀
+        days = ["Mon","Tue","Wed","Thu","Fri","Sat"] # 시간표 thead 에는 filter 거쳐서 한글로 들어가고 value 자체는 cell의 class 값으로 씀
         hours = ["09","10","11","12","13","14","15","16","17","18","19","20"]
         minutes = ["00","30"]
         return render(request, "timetable/index.html", {"depts":depts , "all_grade":all_grade , "hours":hours, "minutes":minutes ,"days":days})
