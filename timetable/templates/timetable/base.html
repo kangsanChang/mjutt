@@ -18,16 +18,19 @@
 
   </head>
   <body>
-    <header>
-      MJUTT
-    </header>
+    <div id="header">
+      <div id="logo">
+        <h1>MJUTT</h1>
+        <span>명지대학교 시간표 서비스</span>
+      </div>
+    </div>
     <div class="container">
       {% block content %}
       {% endblock %}
       {% include "timetable/modals.html" %}
     </div>
     <footer>
-      <h3>(c) 2017 kangsan Chang</h3>
+      <h4>(c) 2017 kangsan Chang</h4>
     </footer>
 
     <script>
@@ -36,7 +39,6 @@
       $('.ui.dropdown').dropdown();
       $('.ui.checkbox').checkbox();
       $('.tabular.menu .item').tab();
-      $('.ui.modal').modal();
 
       // Ajax
       $('#submit').click(function(e){

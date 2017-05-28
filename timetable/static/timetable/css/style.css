@@ -1,10 +1,40 @@
+/* Header */
+
+	#header {
+		position: relative;
+		top: 0;
+		left: 0;
+		width: 100%;
+		background: lightskyblue;
+		color: #fff;
+		padding: 1.25em 1.25em 1.25em 1.25em;
+		z-index: 100;
+	}
+
+/* Logo */
+
+#logo {
+	font-size: 1.2em;
+	cursor: default;
+}
+
+#logo h1 {
+	display: inline-block;
+	text-transform: uppercase;
+  margin-right: .3em;
+}
+
+.fields .field {
+  padding: 0.5em !important;
+}
+
 div.body-wrapper {
-  margin: 30px;
+  margin: 2em;
 }
 
 footer{
   height: 70px;
-  background-color: LightSalmon ;
+  margin-top: 100px;
   text-align: center;
 }
 
@@ -22,8 +52,7 @@ div.table_info{
 }
 /* checkbox 사이즈 조정 */
 .checkbox {
-  margin-left:10px;
-  margin-right:0px !important;
+  margin-right:10px !important;
 }
 .checkbox label {
   padding-left: 20px !important;
@@ -112,6 +141,10 @@ div.table_info div.ui.segment{
 /*주황*/
 .classitem_color_f56e3d{
   background-color: #f56e3d !important;
+}
+/*헤이즐넛*/
+.classitem_color_cfb095{
+  background-color: #cfb095 !important;
 }
 /*노랑*/
 .classitem_color_f8d56d{

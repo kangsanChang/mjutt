@@ -2,47 +2,41 @@
 {% block content %}
 {% load start_time end_time korean_day from custom_filters %}
 <div class="body-wrapper">
-  <div class="ui grid">
-    <div class="left floated nine wide column">
+  <div class="two column centered stackable ui grid">
+    <div class="nine wide column">
       <div class="ui fluid container segment" id="search-box">
+
         <div class="search-form">
-          <form class="ui fluid form container segment" id="search-form" method="POST">
-            {%csrf_token%}
-            <div class="inline fields">
-
-              <div class="field">
-                <div style="width: 220px">
-                  <div class="ui fluid search selection dropdown">
-                    <input type="hidden" name="dept" id="id_dropdown">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">학과 선택</div>
-                    <div class="menu">
-                    {% for key, value in depts.items %}
-                    <div class="item" data-value="{{key}}">{{value}}</div>
-                    {% endfor %}
-                    </div>
+          <div class="ui form segment" id="search-form" method="POST">
+            <div class="fields">
+              <div class="four wide field" id="dept_dropdown">
+                <div class="ui fluid search selection dropdown">
+                  <input type="hidden" name="dept" id="id_dropdown">
+                  <i class="dropdown icon"></i>
+                  <div class="default text">학과 선택</div>
+                  <div class="menu">
+                  {% for key, value in depts.items %}
+                  <div class="item" data-value="{{key}}">{{value}}</div>
+                  {% endfor %}
                   </div>
                 </div>
               </div>
-
-              <div class="field">
-                {% for grade in all_grade %}
-                <div class="ui checkbox">
-                  <input name="grade" type="checkbox" value="{{grade}}" id='grade'>
-                  <label>{{grade}}</label>
-                </div>
-                {% endfor %}
-              </div>
-
-              <div class="field">
-                <div style="width: 250px">
-                  <div class="ui fluid search">
-                    <input class="prompt" type="text" id="search" placeholder="강좌명 또는 교수명으로 검색">
-                    <div class="results"></div>
+              <div class="six wide field">
+                <div class="grade_checkbox">
+                  {% for grade in all_grade %}
+                  <div class="ui checkbox">
+                    <input name="grade" type="checkbox" value="{{grade}}" id='grade'>
+                    <label>{{grade}}</label>
                   </div>
+                  {% endfor %}
                 </div>
               </div>
-
+              <div class="four wide field">
+                <div class="ui fluid search">
+                  <input class="prompt" type="text" id="search" placeholder="강좌명 또는 교수명으로 검색">
+                  <div class="results"></div>
+                </div>
+              </div>
               <button class="ui vertical animated large button" type="submit" id="submit">
                 <div class="hidden content">
                   검색
@@ -51,10 +45,10 @@
                   <i class="search icon"></i>
                 </div>
               </button>
-
             </div>
-          </form>
+          </div>
         </div>
+
         <div class="result-box">
           <div class="ui fluid container" id="result-box">
             <table class="ui very very compact blue table" id="class-table">
@@ -79,8 +73,7 @@
         </div>
       </div>
     </div>
-
-    <div class="left floated seven wide column">
+    <div class="seven wide column">
       <div class="class-timetable">
         <div class="table_info">
           <div class="ui menu">

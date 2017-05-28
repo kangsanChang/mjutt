@@ -6,58 +6,11 @@
 used_colors = [];
 class_items = [];
 class_elems = [];
-full_colors = ["ec555a","c65353","ffccce","f56e3d","f8d56d","cfe19d","34a26b","28bdbd","4280d7","e39dfb"];
+full_colors = ["ec555a","c65353","f56e3d","ffccce","cfb095","f8d56d","cfe19d","34a26b","28bdbd","4280d7","e39dfb"];
 
 // 재사용 함수들
-function random_pop(arr){
-  rand_idx = Math.floor(Math.random() * arr.length);
-  return arr.splice(rand_idx, 1)[0]; //object 로 리턴하기 떄문에 0으로 접근
-}
 
-function target_pop(arr, t){
-  target_idx = arr.indexOf(t);
-  return arr.splice(target_idx, 1)[0]; //object 로 리턴하기 떄문에 0으로 접근
-}
-
-function get_matched_color_in_arr(code){
-  //return matched object's color in class_elems
-  // class_item에는 color는 모르니까 같은 classcode로 elem 조회해서 해당 color 얻어냄
-  $.each(class_elems, function(i, val){
-   if(val.classcode === code){
-     ret = val.elem_color;
-     return false; // for breaking each loop
-   }
- });
- return ret;
-}
-
-function get_matched_object_in_arr(arr, code){
-  // param과 동일한 classcode를 가진 object 찾아서 return
-  // 일치하는 것을 찾으면 바로 break 후 리턴하므로, 사실상 하나만 return 하므로 class_items에만 써야함.
-  var ret=[];
-  $.each(arr, function(i, val){
-   if(val.classcode === code){
-     ret.push(val); // for breaking each loop
-   }
- });
- return ret;
-}
-
-function get_matched_prop_removed_array(arr, target_code){
-  // slice 와는 다름! 이건 object 들이 있는 array에서 object 안의 property와 같은게 있을 경우 제거하고 나머지를 리턴
-  ret = [];
-  ret = arr.filter(function(obj){
-    return obj.classcode !== target_code;
-  });
-  // object.classcode과 target_code가 일치하는 것을 제외하고 모아서 만든 배열 : ret
-  return ret;
-}
-
-function check_same_value_in_array(arr, val, key) {
-  // arr[key]의 값과 내가 준 val 과 같으면 true 없으면 false
-  return arr.some(arrVal => val[key] === arrVal[key]);
-}
-
+// switcher (key -> value)
 function day_to_code(day){
   // classtime에서 파싱해서 가져온 한글을 code로 바꿔줌
   switch (day){
@@ -86,16 +39,71 @@ function prop_to_kor(p){
   return ret;
 }
 
+// pop
+function random_pop(arr){
+  var rand_idx = Math.floor(Math.random() * arr.length);
+  return arr.splice(rand_idx, 1)[0]; //object 로 리턴하기 떄문에 0으로 접근
+}
+
+function target_pop(arr, t){
+  var target_idx = arr.indexOf(t);
+  return arr.splice(target_idx, 1)[0]; //object 로 리턴하기 떄문에 0으로 접근
+}
+
+// item getter (getting objects or color)
+function get_matched_color_in_arr(code){
+  //return matched object's color in class_elems
+  // class_item에는 color는 모르니까 같은 classcode로 elem 조회해서 해당 color 얻어냄
+  var ret;
+  $.each(class_elems, function(i, val){
+   if(val.classcode === code){
+     ret = val.elem_color;
+     return false; // for breaking each loop
+   }
+ });
+ return ret;
+}
+
+function get_matched_objects_in_arr(arr, code){
+  // param과 동일한 classcode를 가진 object 찾아서 return
+  // 일치하는 것을 찾으면 바로 break 후 리턴하므로, 사실상 하나만 return 하므로 class_items에만 써야함.
+  var ret=[];
+  $.each(arr, function(i, val){
+   if(val.classcode === code){
+     ret.push(val); // for breaking each loop
+   }
+ });
+ return ret;
+}
+
 function get_random_item_color(){
-  colors = full_colors.slice();
+  var colors = full_colors.slice(); // duplicate
   $.each(used_colors, function(i,val){
     target_pop(colors, val);
   });
-  extracted_color = random_pop(colors);
+  var extracted_color = random_pop(colors);
   used_colors.push(extracted_color);
   return extracted_color;
 }
 
+// item remover
+function get_matched_prop_removed_array(arr, target_code){
+  // slice 와는 다름! 이건 object 들이 있는 array에서 object 안의 property와 같은게 있을 경우 제거하고 나머지를 리턴
+  var ret = [];
+  ret = arr.filter(function(obj){
+    return obj.classcode !== target_code;
+  });
+  // object.classcode과 target_code가 일치하는 것을 제외하고 모아서 만든 배열 : ret
+  return ret;
+}
+
+// item checker
+function check_same_value_in_array(arr, val, key) {
+  // arr[key]의 값과 내가 준 val 과 같으면 true 없으면 false
+  return arr.some(arrVal => val[key] === arrVal[key]);
+}
+
+// parser
 function time_parser(elem){
   var row_dict = {};
   // element는 clicked 인 row이므로 무조건 1개라서 0으로 접근
@@ -229,30 +237,13 @@ ClassElement.prototype.setPosition = function(option){
   }
 };
 
-// initialize용 함수. (refresh 버튼 누를 시)
-function check_timetable_initialize(){
-  if(confirm("시간표를 초기화 하시겠습니까?")){
-    timetable_initialize();
-  }else{
-    return;
-  }
-}
-
-function timetable_initialize(){
-  used_colors = [];
-  class_items = [];
-  class_elems = [];
-  $(".classitems").children().remove();
-  update_total_credit();
-}
-
 // hover event
 function hover_classitem(elem){
-  row = time_parser(elem);
+  var row = time_parser(elem);
   if(row.classtime[0] === "미입력"){return;}
 
   for(i=0 ; i< row.classtime.length ; i++){
-    el = new ClassElement(row,i); // elem 객체 생성
+    var el = new ClassElement(row,i); // elem 객체 생성
     el.create_html();
     el.setPosition("hover");
   }
@@ -261,7 +252,7 @@ function hover_classitem(elem){
 // insert
 function check_insert(){
   if(confirm("추가하시겠습니까?")){
-    check = insert_classitem($(".clicked"));
+    var check = insert_classitem($(".clicked"));
     if("same_value" === check ){
       alert("시간표에 이미 존재하는 수업입니다.");
     }else if("time_info_error"===check){
@@ -277,7 +268,7 @@ function check_insert(){
 
 function insert_classitem(elem){
   // parse row element
-  row = time_parser(elem);
+  var row = time_parser(elem);
 
   // Check empty value
   if(row.classtime[0] === "미입력"){
@@ -286,7 +277,7 @@ function insert_classitem(elem){
   }
 
   // Make object
-  object = new ClassItem(row);
+  var object = new ClassItem(row);
 
   // Check same value
   if(check_same_value_in_array(class_items, object, 'classcode')){
@@ -303,7 +294,7 @@ function insert_classitem(elem){
   // Push item to array(class_items)
   class_items.push(object);
   // Set background color (all element in one item has same color)
-  bg_color = get_random_item_color();
+  var bg_color = get_random_item_color();
   // Create each element in item and set position.
   for(i=0 ; i< row.classtime.length ; i++){
     el = new ClassElement(row,i); // Create element
@@ -314,28 +305,6 @@ function insert_classitem(elem){
   }
   // remove hover
   elem.removeClass("hover");
-}
-
-function create_virtual_row(){
-  // Object {classname: "자료구조", prof: "한승철", credit: "3", classtime: Array(2), classcode: "1133"…}
-  //   classcode:"1133"
-  //   classname:"자료구조"
-  //   classrooms:Array(2)
-  //   classtime:Array(2)
-  //   credit:"3"
-  //   days:Array(2)
-  //   prof:"한승철"
-  //   times:Array(2)
-  var v_row = {};
-}
-
-function update_total_credit(){
-  result = 0;
-  $.each(class_items, function(i, val){
-	result+=parseInt(val.credit);
-  });
-  $("#total_credit").empty();
-  $("#total_credit").append(result);
 }
 
 function check_overlap(el){
@@ -355,11 +324,13 @@ function check_overlap(el){
   // 2.의 경우 기존 elem 의 bot 이 insert_top 보다 작거나 같고 (위에있거나 경계선이 딱 맞고) , (&&) insert_bot 보다 작다 (위에 있다)
   // (elem_bot <= insert_top) && (elem_bot < insert_bot)
 
+
+  // 시간, 분으로 비교하는게 좀 더 나을듯...
   if(el.day === insert_el.day){
     // 같은 요일일 때
 
-    insert_el_bot = insert_el.pos_top + insert_el.elem_height;
-    el_bot = el.pos_top + el.elem_height;
+    var insert_el_bot = insert_el.pos_top + insert_el.elem_height;
+    var el_bot = el.pos_top + el.elem_height;
 
     if((el.pos_top == insert_el.pos_top) && (el_bot == insert_el_bot)){
       // 시작시간과 끝나는 시간이 아에 똑 같은 경우 => 겹침
@@ -398,10 +369,58 @@ function check_time_overlapping(row){
   }
 }
 
+// function in table_info
+
+// -*- set total credit
+function update_total_credit(){
+  result = 0;
+  $.each(class_items, function(i, val){
+	result+=parseInt(val.credit);
+  });
+  $("#total_credit").empty();
+  $("#total_credit").append(result);
+}
+
+// -*- add custom schedule
+function create_virtual_row(){
+  // Object {classname: "자료구조", prof: "한승철", credit: "3", classtime: Array(2), classcode: "1133"…}
+  //   classcode:"1133"
+  //   classname:"자료구조"
+  //   classrooms:Array(2)
+  //   classtime:Array(2)
+  //   credit:"3"
+  //   days:Array(2)
+  //   prof:"한승철"
+  //   times:Array(2)
+  var v_item = new ClassItem();
+
+}
+
+// -*- initializer (refresh button)
+function check_timetable_initialize(){
+  if(confirm("시간표를 초기화 하시겠습니까?")){
+    timetable_initialize();
+  }else{
+    return;
+  }
+}
+
+function timetable_initialize(){
+  used_colors = [];
+  class_items = [];
+  class_elems = [];
+  $(".classitems").children().remove();
+  update_total_credit();
+}
+
+// modals
+// -*- detail view modal
 function detail_view(item){
   detail_item = item; // change_color에서 쓰기 위해 전역변수로 넘김
   //init
-  $('.ui.modal#detail').modal('show');
+  $('.ui.modal#detail').modal({
+    blurring: true
+  }).modal('show');
   $('div.class_info').html("");
 
   // append html
@@ -415,8 +434,9 @@ function detail_view(item){
   color_list ="";
   $.each(full_colors, function(i,val){
     color_list += '<div class="ui button color-box classitem_color_'+val+'" id="'+val+'"\
-    onclick="change_color('+val+')"></div>';
+    onclick="change_color(\''+val+'\')"></div>';
   });
+  html += "<li class='message'> <strong>색상 변경</strong> </li>";
   html += "<li class='color'>"+color_list+"</li>";
   html += "</ul>";
   $('div.class_info').html(html); // input in .class_info's children
@@ -425,26 +445,19 @@ function detail_view(item){
   $(".actions .button").filter("#remove_btn").attr("onclick", "remove_classitem('"+detail_item.classcode+"')");
 }
 
-function change_color(c){
-  color = '\"'+c+'\"';
-  var current_color = get_matched_color_in_arr("'"+detail_item.classcode+"'");
+function change_color(color){
+  var current_color = get_matched_color_in_arr(detail_item.classcode);
   target_pop(used_colors, current_color);
   used_colors.push(color);
 
   // change in object
-  objs = get_matched_object_in_arr(class_elems,detail_item.classcode);
+  objs = get_matched_objects_in_arr(class_elems,detail_item.classcode);
   $.each(objs, function(i,val){
     val.elem_color = color;
   });
   // change in html
   $(".classitem").filter("."+detail_item.classcode).removeClass("classitem_color_"+current_color);
   $(".classitem").filter("."+detail_item.classcode).addClass("classitem_color_"+color);
-}
-
-function resize_classitem(){
-  $.each(class_elems, function(i, val){
-    val.setPosition("resize");
-  });
 }
 
 function remove_classitem(code){
@@ -459,4 +472,15 @@ function remove_classitem(code){
   $('.ui.modal#detail').modal('hide');
 
   update_total_credit();
+}
+
+function exit_modal(){
+  $('.ui.modal').modal('hide');
+}
+
+// resizer
+function resize_classitem(){
+  $.each(class_elems, function(i, val){
+    val.setPosition("resize");
+  });
 }

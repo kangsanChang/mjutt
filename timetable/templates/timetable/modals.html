@@ -1,7 +1,7 @@
 <!-- detail view modal -->
 <div class="ui small modal" id="detail">
   <div class="ui icon header">
-    Detail View
+    상세 정보
   </div>
   <div class="content">
     <div class="class_info">
@@ -27,7 +27,7 @@
       <i class="trash outline icon"></i>
       Remove
     </div>
-    <div class="ui close button" id="close_btn">
+    <div class="ui button" id="close_btn" onclick="exit_modal()">
       <i class="delete icon"></i>
       Close
     </div>
@@ -45,95 +45,110 @@
       <div class="field">
         <input type="text" name="" placeholder="">
       </div>
-      <label>교실</label>
-      <div class="field">
-        <input type="text" name="" value="">
-      </div>
       <label>담당 교수</label>
       <div class="field">
         <input type="text" name="" value="">
       </div>
+      <label>교실</label>
+      <div class="field">
+        <input type="text" name="" value="">
+      </div>
+
       <label>수업 시간</label>
       <div class="field">
-        <div class="ui fluid selection dropdown">
-          <input name="gender" value="default" type="hidden">
-          <i class="dropdown icon"></i>
-          <div class="text"></div>
-          <div class="menu">
-            <div class="item" data-value="09">09시</div>
-            <div class="item" data-value="10">10시</div>
-            <div class="item" data-value="11">11시</div>
-            <div class="item" data-value="12">12시</div>
-            <div class="item" data-value="13">13시</div>
-            <div class="item" data-value="14">14시</div>
-            <div class="item" data-value="15">15시</div>
-            <div class="item" data-value="16">16시</div>
-            <div class="item" data-value="17">17시</div>
-            <div class="item" data-value="18">18시</div>
-            <div class="item" data-value="19">19시</div>
-            <div class="item" data-value="20">20시</div>
-            <div class="item" data-value="21">21시</div>
-          </div>
-        </div>
-        <div class="ui fluid selection dropdown">
-          <input name="gender" value="default" type="hidden">
-          <i class="dropdown icon"></i>
-          <div class="text"></div>
-          <div class="menu">
-            <div class="item" data-value="00">00분</div>
-            <div class="item" data-value="05">05분</div>
-            <div class="item" data-value="10">10분</div>
-            <div class="item" data-value="15">15분</div>
-            <div class="item" data-value="20">20분</div>
-            <div class="item" data-value="25">25분</div>
-            <div class="item" data-value="30">30분</div>
-            <div class="item" data-value="35">35분</div>
-            <div class="item" data-value="40">40분</div>
-            <div class="item" data-value="45">45분</div>
-            <div class="item" data-value="50">50분</div>
-            <div class="item" data-value="55">55분</div>
-          </div>
-        </div>
-        <div class="ui fluid selection dropdown">
-          <input name="gender" value="default" type="hidden">
-          <i class="dropdown icon"></i>
-          <div class="text"></div>
-          <div class="menu">
-            <div class="item" data-value="09">09시</div>
-            <div class="item" data-value="10">10시</div>
-            <div class="item" data-value="11">11시</div>
-            <div class="item" data-value="12">12시</div>
-            <div class="item" data-value="13">13시</div>
-            <div class="item" data-value="14">14시</div>
-            <div class="item" data-value="15">15시</div>
-            <div class="item" data-value="16">16시</div>
-            <div class="item" data-value="17">17시</div>
-            <div class="item" data-value="18">18시</div>
-            <div class="item" data-value="19">19시</div>
-            <div class="item" data-value="20">20시</div>
-            <div class="item" data-value="21">21시</div>
-          </div>
-        </div>
-        <div class="ui fluid selection dropdown">
-          <input name="gender" value="default" type="hidden">
-          <i class="dropdown icon"></i>
-          <div class="text"></div>
-          <div class="menu">
-            <div class="item" data-value="00">00분</div>
-            <div class="item" data-value="05">05분</div>
-            <div class="item" data-value="10">10분</div>
-            <div class="item" data-value="15">15분</div>
-            <div class="item" data-value="20">20분</div>
-            <div class="item" data-value="25">25분</div>
-            <div class="item" data-value="30">30분</div>
-            <div class="item" data-value="35">35분</div>
-            <div class="item" data-value="40">40분</div>
-            <div class="item" data-value="45">45분</div>
-            <div class="item" data-value="50">50분</div>
-            <div class="item" data-value="55">55분</div>
-          </div>
-        </div>
+        <div class="ui eight column grid">
+          <div class="row">
+            <div class="column">
+              <div class="ui column compact dropdown">
+                <input name="shour" value="default" type="hidden">
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                  <div class="item" data-value="09">09시</div>
+                  <div class="item" data-value="10">10시</div>
+                  <div class="item" data-value="11">11시</div>
+                  <div class="item" data-value="12">12시</div>
+                  <div class="item" data-value="13">13시</div>
+                  <div class="item" data-value="14">14시</div>
+                  <div class="item" data-value="15">15시</div>
+                  <div class="item" data-value="16">16시</div>
+                  <div class="item" data-value="17">17시</div>
+                  <div class="item" data-value="18">18시</div>
+                  <div class="item" data-value="19">19시</div>
+                  <div class="item" data-value="20">20시</div>
+                  <div class="item" data-value="21">21시</div>
+                </div>
+              </div>
+            </div>
+            :
+            <div class="column">
+              <div class="ui column compact dropdown">
+                <input name="smin" value="default" type="hidden">
+                <i class="dropdown icon"></i>
 
+                <div class="menu">
+                  <div class="item" data-value="00">00분</div>
+                  <div class="item" data-value="05">05분</div>
+                  <div class="item" data-value="10">10분</div>
+                  <div class="item" data-value="15">15분</div>
+                  <div class="item" data-value="20">20분</div>
+                  <div class="item" data-value="25">25분</div>
+                  <div class="item" data-value="30">30분</div>
+                  <div class="item" data-value="35">35분</div>
+                  <div class="item" data-value="40">40분</div>
+                  <div class="item" data-value="45">45분</div>
+                  <div class="item" data-value="50">50분</div>
+                  <div class="item" data-value="55">55분</div>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              ~
+            </div>
+            <div class="column">
+              <div class="ui column compact dropdown">
+                <input name="ehour" value="default" type="hidden">
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                  <div class="item" data-value="09">09시</div>
+                  <div class="item" data-value="10">10시</div>
+                  <div class="item" data-value="11">11시</div>
+                  <div class="item" data-value="12">12시</div>
+                  <div class="item" data-value="13">13시</div>
+                  <div class="item" data-value="14">14시</div>
+                  <div class="item" data-value="15">15시</div>
+                  <div class="item" data-value="16">16시</div>
+                  <div class="item" data-value="17">17시</div>
+                  <div class="item" data-value="18">18시</div>
+                  <div class="item" data-value="19">19시</div>
+                  <div class="item" data-value="20">20시</div>
+                  <div class="item" data-value="21">21시</div>
+                </div>
+              </div>
+            </div>
+            :
+            <div class="column">
+              <div class="ui column compact dropdown">
+                <input name="emin" value="default" type="hidden">
+                <i class="dropdown icon"></i>
+
+                <div class="menu">
+                  <div class="item" data-value="00">00분</div>
+                  <div class="item" data-value="05">05분</div>
+                  <div class="item" data-value="10">10분</div>
+                  <div class="item" data-value="15">15분</div>
+                  <div class="item" data-value="20">20분</div>
+                  <div class="item" data-value="25">25분</div>
+                  <div class="item" data-value="30">30분</div>
+                  <div class="item" data-value="35">35분</div>
+                  <div class="item" data-value="40">40분</div>
+                  <div class="item" data-value="45">45분</div>
+                  <div class="item" data-value="50">50분</div>
+                  <div class="item" data-value="55">55분</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </div>
