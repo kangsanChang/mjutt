@@ -499,3 +499,8 @@ function check_content_overflow(){
     }
   });
 }
+
+// run setting modal
+function setting_modal(){
+  $('.ui.modal#setting').modal('show');
+}

@@ -7,7 +7,7 @@
 		width: 100%;
 		background: lightskyblue;
 		color: #fff;
-		padding: 1.25em 1.25em 1.25em 1.25em;
+		padding: 0.8em 1.25em 0.8em 1.25em;
 		z-index: 100;
 	}
 
@@ -24,14 +24,21 @@
   margin-right: .3em;
 }
 
-.fields .field {
-  padding: 0.5em !important;
-}
+/*body*/
 
 div.body-wrapper {
   margin: 2em;
 }
 
+div.search-form{
+	padding-bottom: 1em;
+}
+
+#search-form>.fields>.field{
+	padding-bottom: 1em;
+}
+
+/*footer*/
 footer{
   height: 70px;
   margin-top: 100px;
@@ -47,7 +54,7 @@ div.table_info{
 }
 /* 결과 창 크기 제한, overflow 시 자동 스크롤 */
 .result-box {
-  height: 800px;
+  height: 815px;
   overflow:auto;
 }
 /* checkbox 사이즈 조정 */
