@@ -2,125 +2,55 @@
 {% block content %}
 {% load start_time end_time korean_day from custom_filters %}
 <div class="body-wrapper">
-  <div class="two column centered stackable ui grid">
-    <div class="nine wide computer only column row">
+  <div class="two column centered stackable ui grid computer only">
+    <div class="nine wide column">
       <div class="ui fluid container segment" id="search-box">
-
         <div class="search-form">
           <div class="ui form segment" id="search-form" method="POST">
-            <div class="inline fields">
-              <div class="four wide field" id="dept_dropdown">
-                <div class="ui fluid search selection dropdown">
-                  <input type="hidden" name="dept" id="id_dropdown">
-                  <i class="dropdown icon"></i>
-                  <div class="default text">학과 선택</div>
-                  <div class="menu">
-                  {% for key, value in depts.items %}
-                  <div class="item" data-value="{{key}}">{{value}}</div>
-                  {% endfor %}
-                  </div>
-                </div>
-              </div>
-              <div class="six wide field">
-                <div class="grade_checkbox">
-                  {% for grade in all_grade %}
-                  <div class="ui checkbox">
-                    <input name="grade" type="checkbox" value="{{grade}}" id='grade'>
-                    <label>{{grade}}</label>
-                  </div>
-                  {% endfor %}
-                </div>
-              </div>
-              <div class="four wide field">
-                <div class="ui fluid search">
-                  <input class="prompt" type="text" id="search" placeholder="강좌명 또는 교수명">
-                  <div class="results"></div>
-                </div>
-              </div>
-              <button class="ui vertical animated large button" type="submit" id="submit">
-                <div class="hidden content">
-                  검색
-                </div>
-                <div class="visible content">
-                  <i class="search icon"></i>
-                </div>
-              </button>
-            </div>
 
-          </div>
-        </div>
-
-        <div class="result-box">
-          <div class="ui fluid container" id="result-box">
-            <table class="ui very very compact blue table" id="class-table">
-              <thead>
-                <tr>
-                  <th class="one wide">학년</th>
-                  <th class="two wide">교과목명</th>
-                  <th class="one wide">학점</th>
-                  <th class="one wide">시간</th>
-                  <th class="one wide">담당교수</th>
-                  <th class="one wide">강좌번호</th>
-                  <th class="one wide">제한인원</th>
-                  <th class="three wide">시간(강의실)</th>
-                  <th class="three wide">비 고</th>
-                  <th class="one wide">check</th>
-                </tr>
-              </thead>
-              <tbody id="table-body">
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="tablet only column">
-      <div class="ui fluid container segment" id="search-box">
-
-        <div class="search-form">
-          <div class="ui form segment" id="search-form" method="POST">
-            <div class="fields">
-              <div class="four wide field" id="dept_dropdown">
-                <div class="ui fluid search selection dropdown">
-                  <input type="hidden" name="dept" id="id_dropdown">
-                  <i class="dropdown icon"></i>
-                  <div class="default text">학과 선택</div>
-                  <div class="menu">
-                  {% for key, value in depts.items %}
-                  <div class="item" data-value="{{key}}">{{value}}</div>
-                  {% endfor %}
+            <div class="ui fluid form">
+              <div class="three fields">
+                <div class="field">
+                  <div class="ui fluid search selection dropdown">
+                    <input type="hidden" name="dept" id="id_dropdown">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">학과 선택</div>
+                    <div class="menu">
+                    {% for key, value in depts.items %}
+                    <div class="item" data-value="{{key}}">{{value}}</div>
+                    {% endfor %}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="six wide field">
-                <div class="grade_checkbox">
-                  {% for grade in all_grade %}
-                  <div class="ui checkbox">
-                    <input name="grade" type="checkbox" value="{{grade}}" id='grade'>
-                    <label>{{grade}}</label>
+                <div class="field">
+                  <div class="grade_checkbox">
+                    {% for grade in all_grade %}
+                    <div class="ui checkbox">
+                      <input name="grade" type="checkbox" value="{{grade}}" id='grade'>
+                      <label>{{grade}}</label>
+                    </div>
+                    {% endfor %}
                   </div>
-                  {% endfor %}
                 </div>
+                <div class="field">
+                  <div class="ui fluid search">
+                    <input class="prompt" type="text" id="search" placeholder="강좌명 또는 교수명">
+                    <div class="results"></div>
+                  </div>
+                </div>
+                <button class="ui vertical animated large button" type="submit" id="submit">
+                  <div class="hidden content">
+                    검색
+                  </div>
+                  <div class="visible content">
+                    <i class="search icon"></i>
+                  </div>
+                </button>
               </div>
-              <div class="four wide field">
-                <div class="ui fluid search">
-                  <input class="prompt" type="text" id="search" placeholder="강좌명 또는 교수명">
-                  <div class="results"></div>
-                </div>
-              </div>
-              <button class="ui vertical animated large button" type="submit" id="submit">
-                <div class="hidden content">
-                  검색
-                </div>
-                <div class="visible content">
-                  <i class="search icon"></i>
-                </div>
-              </button>
             </div>
           </div>
         </div>
-
-        <div class="result-box">
+        <div class="result-box desktop">
           <div class="ui fluid container" id="result-box">
             <table class="ui very very compact blue table" id="class-table">
               <thead>
@@ -248,6 +178,188 @@
       </div>
     </div>
   </div>
+
+  <!-- row로 해야하는건 맞는데 같은 content 였으면 좋겠음. 정 안되면 모든 사이즈에 content를 띄어야지 뭐... -->
+  
+  <div class="ui grid mobile tablet only">
+    <div class="row">
+      <div class="ui fluid container segment" id="search-box">
+        <div class="search-form">
+          <div class="ui form segment" id="search-form" method="POST">
+
+            <div class="ui fluid form">
+              <div class="three fields">
+                <div class="field">
+                  <div class="ui fluid search selection dropdown">
+                    <input type="hidden" name="dept" id="id_dropdown">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">학과 선택</div>
+                    <div class="menu">
+                    {% for key, value in depts.items %}
+                    <div class="item" data-value="{{key}}">{{value}}</div>
+                    {% endfor %}
+                    </div>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="grade_checkbox">
+                    {% for grade in all_grade %}
+                    <div class="ui checkbox">
+                      <input name="grade" type="checkbox" value="{{grade}}" id='grade'>
+                      <label>{{grade}}</label>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="ui fluid search">
+                    <input class="prompt" type="text" id="search" placeholder="강좌명 또는 교수명">
+                    <div class="results"></div>
+                  </div>
+                </div>
+                <button class="ui vertical animated large button" type="submit" id="submit">
+                  <div class="hidden content">
+                    검색
+                  </div>
+                  <div class="visible content">
+                    <i class="search icon"></i>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="result-box desktop">
+          <div class="ui fluid container" id="result-box">
+            <table class="ui very very compact blue table" id="class-table">
+              <thead>
+                <tr>
+                  <th class="one wide">학년</th>
+                  <th class="two wide">교과목명</th>
+                  <th class="one wide">학점</th>
+                  <th class="one wide">시간</th>
+                  <th class="one wide">담당교수</th>
+                  <th class="one wide">강좌번호</th>
+                  <th class="one wide">제한인원</th>
+                  <th class="three wide">시간(강의실)</th>
+                  <th class="three wide">비 고</th>
+                  <th class="one wide">check</th>
+                </tr>
+              </thead>
+              <tbody id="table-body">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="class-timetable">
+        <div class="table_info">
+          <div class="ui menu">
+            <div class="item">
+              <h3> 신청 학점 :  <strong id="total_credit"></strong></h3>
+            </div>
+            <div class="right item">
+
+              <div class="ui buttons">
+
+                <button class="ui vertical animated basic button" onclick="check_timetable_initialize()" id="init">
+                  <div class="hidden content">
+                    초기화
+                  </div>
+                  <div class="visible content">
+                    <i class="refresh icon"></i>
+                  </div>
+                </button>
+
+                <button class="ui vertical animated basic button" onclick="" id="save">
+                  <div class="hidden content">
+                    저장
+                  </div>
+                  <div class="visible content">
+                    <i class="download icon"></i>
+                  </div>
+                </button>
+
+                <button class="ui basic button" onclick="" id="share">
+                  <i class="share alternate icon"></i>
+                </button>
+
+                <div class="ui icon dropdown basic button" id="timetable_setting">
+                  <i class="settings icon"></i>
+                  <i class="dropdown icon"></i>
+                  <div class="menu">
+                    <div class="ui dropdown link item">
+                     <i class="left dropdown icon"></i>
+                      토요일 수업
+                      <div class="left menu">
+                        <div class="item" onclick="set_saturday(true)"><i class="unhide icon"></i><i class="unhide icon"></i></div>
+                        <div class="item" onclick="set_saturday(false)"><i class="hide icon"></i><i class="hide icon"></i></div>
+                      </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="ui dropdown link item">
+                     <i class="left dropdown icon"></i>
+                      수업 시간
+                     <div class="left menu">
+                       <div class="item" onclick="set_period(9)">9교시 (~18:00)</div>
+                       <div class="item" onclick="set_period(10)">10교시 (~19:00)</div>
+                       <div class="item" onclick="set_period(11)">11교시 (~20:00)</div>
+                       <div class="item" onclick="set_period(12)">12교시 (~21:00)</div>
+                       <div class="item" onclick="set_period(13)">13교시 (~22:00)</div>
+                       <div class="item" onclick="set_period(14)">14교시 (~23:00)</div>
+                       <div class="item" onclick="set_period(15)">15교시 (~24:00)</div>
+                     </div>
+                   </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table">
+          <!-- table의 row 생성 -->
+          {% for hour in hours %}
+
+          {% if forloop.first %}
+          <div class="table-row thead">
+            <div class="cell period thead">
+              <p> / </p>
+            </div>
+            {% for day in days %}
+            <div class="cell thead {{day}}">
+              <p>{{days|korean_day:forloop.counter0}}</p>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          <div class="table-row p{{forloop.counter}}">
+
+            {% for day in days %}
+            {% if forloop.first %}
+            <div class="cell period p{{forloop.parentloop.counter}}">
+              <p><span class="period-text">{{forloop.parentloop.counter}}교시</span><br>
+              <span class="period-time">{{hours|start_time:forloop.parentloop.counter0}}:00 ~ {{hours|end_time:forloop.parentloop.counter0}}:00</span></p>
+
+            </div>
+            {% endif %}
+            <div class="cell time-cell p{{forloop.parentloop.counter}} {{hour}} {{day}}">
+            </div>
+            {% endfor %}
+          </div>
+          {% endfor %}
+          <div class="classitems"></div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
 </div>
 
 {% endblock content %}
