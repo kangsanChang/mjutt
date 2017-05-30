@@ -8,7 +8,7 @@
 
         <div class="search-form">
           <div class="ui form segment" id="search-form" method="POST">
-            <div class="fields">
+            <div class="inline fields">
               <div class="four wide field" id="dept_dropdown">
                 <div class="ui fluid search selection dropdown">
                   <input type="hidden" name="dept" id="id_dropdown">
@@ -46,6 +46,7 @@
                 </div>
               </button>
             </div>
+
           </div>
         </div>
 
@@ -151,42 +152,8 @@
               <h3> 신청 학점 :  <strong id="total_credit"></strong></h3>
             </div>
             <div class="right item">
+
               <div class="ui buttons">
-
-                <div class="ui button popupup">Show flowing popup</div>
-                <div class="ui flowing popup top left transition hidden">
-                  <div class="ui three column divided center aligned grid">
-                    <div class="column">
-                      <h4 class="ui header">Basic Plan</h4>
-                      <p><b>2</b> projects, $10 a month</p>
-                      <div class="ui button">Choose</div>
-                    </div>
-                    <div class="column">
-                      <h4 class="ui header">Business Plan</h4>
-                      <p><b>5</b> projects, $20 a month</p>
-                      <div class="ui button">Choose</div>
-                    </div>
-                    <div class="column">
-                      <h4 class="ui header">Premium Plan</h4>
-                      <p><b>8</b> projects, $25 a month</p>
-                      <div class="ui button">Choose</div>
-                    </div>
-                    <div class="column">
-                      <h4 class="ui header">토요일 추가</h4>
-                      <p><b>2</b> projects, $10 a month</p>
-                      <div class="ui button">Choose</div>
-                    </div>
-                  </div>
-                </div>
-
-                <button class="ui vertical animated basic button" onclick="setting_modal()" id="setting">
-                  <div class="hidden content">
-                    설정
-                  </div>
-                  <div class="visible content">
-                    <i class="settings icon"></i>
-                  </div>
-                </button>
 
                 <button class="ui vertical animated basic button" onclick="check_timetable_initialize()" id="init">
                   <div class="hidden content">
@@ -210,6 +177,35 @@
                   <i class="share alternate icon"></i>
                 </button>
 
+                <div class="ui icon dropdown basic button" id="timetable_setting">
+                  <i class="settings icon"></i>
+                  <i class="dropdown icon"></i>
+                  <div class="menu">
+                    <div class="ui dropdown link item">
+                     <i class="left dropdown icon"></i>
+                      토요일 수업
+                      <div class="left menu">
+                        <div class="item" onclick="set_saturday(true)"><i class="unhide icon"></i><i class="unhide icon"></i></div>
+                        <div class="item" onclick="set_saturday(false)"><i class="hide icon"></i><i class="hide icon"></i></div>
+                      </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="ui dropdown link item">
+                     <i class="left dropdown icon"></i>
+                      수업 시간
+                     <div class="left menu">
+                       <div class="item" onclick="set_period(9)">9교시 (~18:00)</div>
+                       <div class="item" onclick="set_period(10)">10교시 (~19:00)</div>
+                       <div class="item" onclick="set_period(11)">11교시 (~20:00)</div>
+                       <div class="item" onclick="set_period(12)">12교시 (~21:00)</div>
+                       <div class="item" onclick="set_period(13)">13교시 (~22:00)</div>
+                       <div class="item" onclick="set_period(14)">14교시 (~23:00)</div>
+                       <div class="item" onclick="set_period(15)">15교시 (~24:00)</div>
+                     </div>
+                   </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -224,14 +220,14 @@
               <p> / </p>
             </div>
             {% for day in days %}
-            <div class="cell thead">
+            <div class="cell thead {{day}}">
               <p>{{days|korean_day:forloop.counter0}}</p>
             </div>
             {% endfor %}
           </div>
           {% endif %}
 
-          <div class="table-row">
+          <div class="table-row p{{forloop.counter}}">
 
             {% for day in days %}
             {% if forloop.first %}
@@ -241,7 +237,7 @@
 
             </div>
             {% endif %}
-            <div class="cell time-cell {{hour}} {{day}}">
+            <div class="cell time-cell p{{forloop.parentloop.counter}} {{hour}} {{day}}">
             </div>
             {% endfor %}
           </div>

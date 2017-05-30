@@ -61,4 +61,9 @@ $(document).ready(function(){
   $(document).on("click", "div.ui.cancel.button", function(){
     $("#custom_form").form('reset'); // form('reset') 은 default value 상태로, form(clear) 는 깨끗히 폼 다 비움
   });
+
+  $(document).on("click", '.ui.button#setting', function(){
+    $('.ui.button#setting').popup();
+  });
+
 });

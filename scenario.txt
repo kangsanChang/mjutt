@@ -1,11 +1,12 @@
-0. Custom 시간표 생성, Custom 시간표는 drag and drop 으로 빈 시간에 이동할 수 있게
+!!! Responsive Design!
+폰으로 갈끔한 UI layout 안나오면 망함. 아무도 안쓴다
 
-1. 토요일 처리해야 함
+1. Custom 시간표 생성, Custom 시간표는 drag and drop 으로 빈 시간에 이동할 수 있게
+
+2. 학기 적어줘야 함
 
 3. empty일 경우 -> 시간 직접입력 or pass or 기타란에 넣기
 
 (희망사항) 시간표 이미지로 저장하고 싶은 경우 -> export 네이버 캘린더
 
 - FB, KAKAO 공유
-
-4. element 삭제하고 싶은 경우 -> table 위의 div(html)삭제 후 class_items, class_elems에서 삭제

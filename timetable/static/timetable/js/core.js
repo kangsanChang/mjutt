@@ -500,7 +500,34 @@ function check_content_overflow(){
   });
 }
 
-// run setting modal
-function setting_modal(){
-  $('.ui.modal#setting').modal('show');
+// Saturday view setting
+function set_saturday(op){
+  if(op===true){
+    $('.cell.Sat').removeClass("hidden").show();
+  }else if(op===false){
+    $('.cell.Sat').addClass("hidden").hide();
+  }else{
+    console.log("error!");
+    return;
+  }
+  resize_classitem();
+}
+
+// Period view setting
+function set_period(end){
+  if(0<end && end<16){
+    var end_idx = end+1;
+    for(var i=1;i<end_idx;i++){
+      $('.table-row.p'+i).removeClass("hidden").show();
+    }
+    if(end_idx !== 16){
+      for(end_idx; end_idx<16; end_idx++){
+        $('.table-row.p'+end_idx).addClass("hidden").hide();
+      }
+    }
+  }else{
+    console.log("value error!");
+    return;
+  }
+  resize_classitem();
 }
