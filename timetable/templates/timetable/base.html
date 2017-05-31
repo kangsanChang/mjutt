@@ -6,7 +6,6 @@
     <title>MJUTT - Time to MJU</title>
     <link rel="stylesheet" type="text/css" href="{% static 'timetable/semantic/semantic.css'%}">
     <link rel="stylesheet" type="text/css" href="{% static 'timetable/css/style.css' %}">
-    <link rel="stylesheet" type="" href="{% static 'timetable/css/style.css' %}">
     <!-- use semantic.min.css <- deploy -->
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -15,7 +14,6 @@
     <script type="text/javascript" src="{% static 'timetable/js/core.js'%}"></script>
     <script type="text/javascript" src="{% static 'timetable/js/runtime_script.js'%}"></script>
     <script src="{% static 'timetable/semantic/semantic.js'%}"></script>
-
   </head>
   <body>
     <div id="header">
@@ -79,7 +77,8 @@
                 <td>'+rowdata[i].fields.time+'</td>\
                 <td>'+rowdata[i].fields.note+'</td>\
                 <td id="check"></td>\
-                </tr>')
+                </tr>\
+                ')
               );
             });
           // loading
