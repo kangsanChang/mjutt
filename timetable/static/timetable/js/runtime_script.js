@@ -40,7 +40,7 @@ $(document).ready(function(){
 
   // .time-cell click event
   $('.time-cell').click(function(e){
-    $('.ui.modal#custom').modal().modal('show');
+    custom_input_modal(this);
   });
 
   // .classitem hover event (using box-shadow)

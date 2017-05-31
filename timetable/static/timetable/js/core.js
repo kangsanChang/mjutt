@@ -7,11 +7,12 @@ used_colors = [];
 class_items = [];
 class_elems = [];
 full_colors = ["ec555a","c65353","f56e3d","ffccce","cfb095","f8d56d","cfe19d","34a26b","28bdbd","4280d7","e39dfb"];
+num_of_custom = 0;
 
 // 재사용 함수들
 
 // switcher (key -> value)
-function day_to_code(day){
+function day_code_toggler(day){
   // classtime에서 파싱해서 가져온 한글을 code로 바꿔줌
   switch (day){
     case '월' : ret = 'Mon'; break;
@@ -20,6 +21,12 @@ function day_to_code(day){
     case '목' : ret = 'Thu'; break;
     case '금' : ret = 'Fri'; break;
     case '토' : ret = "Sat"; break;
+    case 'Mon' : ret = '월'; break;
+    case 'Tue' : ret = '화'; break;
+    case 'Wed' : ret = '수'; break;
+    case 'Thu' : ret = '목'; break;
+    case 'Fri' : ret = '금'; break;
+    case 'Sat' : ret = "토"; break;
   }
   return ret;
 }
@@ -173,7 +180,7 @@ function ClassElement(item, i){
   this.classcode = item.classcode;
   this.classroom = item.classrooms[i];
   this.credit = item.credit;
-  this.day = day_to_code(item.days[i]); // 월 -> Mon
+  this.day = day_code_toggler(item.days[i]); // 월 -> Mon
   this.shour = item.times[i][0].split(":")[0]; // start hour
   this.smin = item.times[i][0].split(":")[1]; // start min
   this.ehour = item.times[i][1].split(":")[0]; // end hour
@@ -255,7 +262,7 @@ function check_insert(){
   if(confirm("추가하시겠습니까?")){
     var check = insert_classitem($(".clicked"));
     if("same_value" === check ){
-      alert("시간표에 이미 존재하는 수업입니다.");
+      alert("이미 같은 수업이 존재합니다.");
     }else if("time_info_error"===check){
       alert("시간 정보가 없습니다.");
     }else if("time_overlap"===check){
@@ -415,6 +422,63 @@ function timetable_initialize(){
 }
 
 // modals
+// -*- Custom Item modal
+function custom_input_modal(cell_info){
+  $('.ui.modal#custom').modal('show');
+  var day = cell_info.getAttribute("day");
+  var shour = cell_info.getAttribute("hour");
+
+  // content init
+  $('#custom_input_classname').val("");
+  $('#custom_input_prof').val("");
+  $('#custom_input_classroom').val("");
+  $('#custom_input_note').val("");
+
+  // set label and inner css
+  $('#classtime_label').text(day_code_toggler(day) + "요일");
+  $("#custom_input_classtime").css("margin-top", "10px");
+
+  $("#custom_input_classtime").attr("day", day);
+  $('.ui.dropdown#shour').dropdown('set selected', shour);
+  $('.ui.dropdown#smin').dropdown('set selected', "00");
+  $('.ui.dropdown#ehour').dropdown('set selected', shour);
+  $('.ui.dropdown#emin').dropdown('set selected', "50");
+
+}
+
+function create_custom_elem(){
+  var classname = $('#custom_input_classname').val();
+  var prof = $('#custom_input_prof').val();
+  var classroom = $('#custom_input_classroom').val();
+  var note = $('#custom_input_note').val();
+  var day = $('#custom_input_classtime').attr("day"); // 가져올떄 a.placeholder 하면 바로 뜸
+  var shour = $("#shour input").attr("value");
+  var smin = $("#smin input").attr("value");
+  var ehour = $("#ehour input").attr("value");
+  var emin = $("#emin input").attr("value");
+
+  var input_dict = {};
+
+  input_dict.classname = classname;
+  input_dict.prof = prof;
+  input_dict.classcode = "custom";
+  input_dict.classroom = classroom;
+  // input_dict.credit = item.credit;
+  input_dict.day = day;
+  input_dict.shour = shour;
+  input_dict.smin = smin;
+  input_dict.ehour = ehour;
+  input_dict.emin = emin;
+  // input_dict.interval_minute = (parseInt(this.ehour) - parseInt(this.shour))*60 + (parseInt(this.emin) - parseInt(this.smin));
+  input_dict.pos_top = "";
+  input_dict.pos_left = "";
+  input_dict.elem_width = "";
+  input_dict.elem_height = "";
+  input_dict.elem_color = "";
+
+  console.log(input_dict);
+}
+
 // -*- detail view modal
 function detail_view(item){
   detail_item = item; // change_color에서 쓰기 위해 전역변수로 넘김

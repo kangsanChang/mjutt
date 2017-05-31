@@ -37,127 +37,138 @@
 <!-- custom schedule modal -->
 <div class="ui small modal" id="custom">
   <div class="ui icon header">
-    Custom schedule
+    Custom Schedule
   </div>
   <div class="content">
     <form class="ui form" id="custom_form">
       <label>과목 이름</label>
       <div class="field">
-        <input type="text" name="" placeholder="">
+        <input type="text" id="custom_input_classname">
       </div>
       <label>담당 교수</label>
       <div class="field">
-        <input type="text" name="" value="">
+        <input type="text" id="custom_input_prof">
       </div>
-      <label>교실</label>
+      <label>강의실</label>
       <div class="field">
-        <input type="text" name="" value="">
+        <input type="text" id="custom_input_classroom">
       </div>
 
-      <label>수업 시간</label>
-      <div class="field">
-        <div class="ui eight column grid">
-          <div class="row">
-            <div class="column">
-              <div class="ui column compact dropdown">
-                <input name="shour" value="default" type="hidden">
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                  <div class="item" data-value="09">09시</div>
-                  <div class="item" data-value="10">10시</div>
-                  <div class="item" data-value="11">11시</div>
-                  <div class="item" data-value="12">12시</div>
-                  <div class="item" data-value="13">13시</div>
-                  <div class="item" data-value="14">14시</div>
-                  <div class="item" data-value="15">15시</div>
-                  <div class="item" data-value="16">16시</div>
-                  <div class="item" data-value="17">17시</div>
-                  <div class="item" data-value="18">18시</div>
-                  <div class="item" data-value="19">19시</div>
-                  <div class="item" data-value="20">20시</div>
-                  <div class="item" data-value="21">21시</div>
-                </div>
-              </div>
+      <div class="ui teal ribbon large label" id="classtime_label"></div>
+      <label> 수업 시간</label>
+      <span class="ui four fields" id="custom_input_classtime" day="">
+        <div class="field">
+          <div class="ui selection compact dropdown" id="shour">
+            <input type="hidden" name="shour">
+            <div class="default text">시작 시간</div>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <div class="item" data-value="09">09</div>
+              <div class="item" data-value="10">10</div>
+              <div class="item" data-value="11">11</div>
+              <div class="item" data-value="12">12</div>
+              <div class="item" data-value="13">13</div>
+              <div class="item" data-value="14">14</div>
+              <div class="item" data-value="15">15</div>
+              <div class="item" data-value="16">16</div>
+              <div class="item" data-value="17">17</div>
+              <div class="item" data-value="18">18</div>
+              <div class="item" data-value="19">19</div>
+              <div class="item" data-value="20">20</div>
+              <div class="item" data-value="21">21</div>
+              <div class="item" data-value="22">22</div>
+              <div class="item" data-value="23">23</div>
             </div>
-            :
-            <div class="column">
-              <div class="ui column compact dropdown">
-                <input name="smin" value="default" type="hidden">
-                <i class="dropdown icon"></i>
-
-                <div class="menu">
-                  <div class="item" data-value="00">00분</div>
-                  <div class="item" data-value="05">05분</div>
-                  <div class="item" data-value="10">10분</div>
-                  <div class="item" data-value="15">15분</div>
-                  <div class="item" data-value="20">20분</div>
-                  <div class="item" data-value="25">25분</div>
-                  <div class="item" data-value="30">30분</div>
-                  <div class="item" data-value="35">35분</div>
-                  <div class="item" data-value="40">40분</div>
-                  <div class="item" data-value="45">45분</div>
-                  <div class="item" data-value="50">50분</div>
-                  <div class="item" data-value="55">55분</div>
-                </div>
-              </div>
-            </div>
-            <div class="column">
-              ~
-            </div>
-            <div class="column">
-              <div class="ui column compact dropdown">
-                <input name="ehour" value="default" type="hidden">
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                  <div class="item" data-value="09">09시</div>
-                  <div class="item" data-value="10">10시</div>
-                  <div class="item" data-value="11">11시</div>
-                  <div class="item" data-value="12">12시</div>
-                  <div class="item" data-value="13">13시</div>
-                  <div class="item" data-value="14">14시</div>
-                  <div class="item" data-value="15">15시</div>
-                  <div class="item" data-value="16">16시</div>
-                  <div class="item" data-value="17">17시</div>
-                  <div class="item" data-value="18">18시</div>
-                  <div class="item" data-value="19">19시</div>
-                  <div class="item" data-value="20">20시</div>
-                  <div class="item" data-value="21">21시</div>
-                </div>
-              </div>
-            </div>
-            :
-            <div class="column">
-              <div class="ui column compact dropdown">
-                <input name="emin" value="default" type="hidden">
-                <i class="dropdown icon"></i>
-
-                <div class="menu">
-                  <div class="item" data-value="00">00분</div>
-                  <div class="item" data-value="05">05분</div>
-                  <div class="item" data-value="10">10분</div>
-                  <div class="item" data-value="15">15분</div>
-                  <div class="item" data-value="20">20분</div>
-                  <div class="item" data-value="25">25분</div>
-                  <div class="item" data-value="30">30분</div>
-                  <div class="item" data-value="35">35분</div>
-                  <div class="item" data-value="40">40분</div>
-                  <div class="item" data-value="45">45분</div>
-                  <div class="item" data-value="50">50분</div>
-                  <div class="item" data-value="55">55분</div>
-                </div>
-              </div>
-            </div>
+            <label for="shour">시</label>
           </div>
         </div>
+        <div class="field">
+          <div class="ui selection compact dropdown" id="smin">
+            <input type="hidden" name="smin">
+            <div class="default text">시작 분</div>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <div class="item" data-value="00">00</div>
+              <div class="item" data-value="05">05</div>
+              <div class="item" data-value="10">10</div>
+              <div class="item" data-value="15">15</div>
+              <div class="item" data-value="20">20</div>
+              <div class="item" data-value="25">25</div>
+              <div class="item" data-value="30">30</div>
+              <div class="item" data-value="35">35</div>
+              <div class="item" data-value="40">40</div>
+              <div class="item" data-value="45">45</div>
+              <div class="item" data-value="50">50</div>
+              <div class="item" data-value="55">55</div>
+            </div>
+            <label for="smin">분</label>
+          </div>
+        </div>
+        <div class="divider">
+          ~
+        </div>
+        <div class="field">
+          <div class="ui selection compact dropdown" id="ehour">
+            <input type="hidden" name="ehour">
+            <div class="default text">끝 시간</div>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <div class="item" data-value="09">09</div>
+              <div class="item" data-value="10">10</div>
+              <div class="item" data-value="11">11</div>
+              <div class="item" data-value="12">12</div>
+              <div class="item" data-value="13">13</div>
+              <div class="item" data-value="14">14</div>
+              <div class="item" data-value="15">15</div>
+              <div class="item" data-value="16">16</div>
+              <div class="item" data-value="17">17</div>
+              <div class="item" data-value="18">18</div>
+              <div class="item" data-value="19">19</div>
+              <div class="item" data-value="20">20</div>
+              <div class="item" data-value="21">21</div>
+              <div class="item" data-value="22">22</div>
+              <div class="item" data-value="23">23</div>
+            </div>
+            <label for="ehour">시</label>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui selection compact dropdown" id="emin">
+            <input type="hidden" name="emin">
+            <div class="default text">끝 분</div>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <div class="item" data-value="00">00</div>
+              <div class="item" data-value="05">05</div>
+              <div class="item" data-value="10">10</div>
+              <div class="item" data-value="15">15</div>
+              <div class="item" data-value="20">20</div>
+              <div class="item" data-value="25">25</div>
+              <div class="item" data-value="30">30</div>
+              <div class="item" data-value="35">35</div>
+              <div class="item" data-value="40">40</div>
+              <div class="item" data-value="45">45</div>
+              <div class="item" data-value="50">50</div>
+              <div class="item" data-value="55">55</div>
+            </div>
+            <label for="emin">분</label>
+          </div>
+        </div>
+      </span>
+
+
+      <label>비고</label>
+      <div class="field">
+        <input type="text" id="custom_input_note" value="">
       </div>
     </form>
   </div>
   <div class="actions">
-    <div class="ui red cancel inverted button">
+    <div class="ui red cancel inverted button" onclick="exit_modal()">
       <i class="delete icon"></i>
       Cancel
     </div>
-    <div class="ui green ok inverted button">
+    <div class="ui green ok inverted button" onclick="create_custom_elem()">
       <i class="checkmark icon"></i>
       Add
     </div>
