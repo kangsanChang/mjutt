@@ -170,6 +170,7 @@ function ClassItem(item){
   this.limit = item.limit;
   this.classtime = item.classtime; // array
   this.note = item.note;
+  this.is_custom = false;
 }
 
 function ClassElement(item, i){
@@ -191,6 +192,7 @@ function ClassElement(item, i){
   this.elem_width = "";
   this.elem_height = "";
   this.elem_color = "";
+  this.is_custom = false;
 
   this.getItemCode = function(){
     return "."+this.classcode;
@@ -437,7 +439,14 @@ function custom_input_modal(cell_info){
 }
 
 function create_custom_code(){
-  return "custom"+num_of_custom;
+  var custom_items = class_elems.slice(); // duplicate to custom_items
+  for (var i = custom_items.length - 1; i > -1; i--) {
+    if (custom_items[i].is_custom === false)
+        custom_items.splice(i, 1); // custom 아닌건 삭제함
+  }
+
+  var cnt = class_elems.length;
+  return "custom"+cnt;
 }
 
 function create_custom_row(){
@@ -452,64 +461,63 @@ function create_custom_row(){
   var ehour = $("#ehour input").attr("value");
   var emin = $("#emin input").attr("value");
 
+  var classrooms = [];
+  var classtime = [];
+  var days =[];
+  var times =[];
+  var start =[];
+
+  classrooms.push(classroom);
+  classtime.push(day_code_toggler(day)+shour+":"+smin +"-"+ehour+":"+emin);
+  days.push(day_code_toggler(day));
+  start.push(shour+":"+smin);
+  start.push(ehour+":"+emin);
+  times.push(start);
+
   var input_dict = {};
+  input_dict.grade = "";
+  input_dict.timeperweek ="";
+  input_dict.limit = "";
   input_dict.classname = classname;
   input_dict.prof = prof;
   input_dict.classcode = create_custom_code();
-  input_dict.classroom = classroom;
   input_dict.note = note;
   input_dict.credit = credit;
-  input_dict.day = day;
-  input_dict.shour = shour;
-  input_dict.smin = smin;
-  input_dict.ehour = ehour;
-  input_dict.emin = emin;
+  input_dict.classrooms = classrooms;
+  input_dict.classtime = classtime;
+  input_dict.days = days;
+  input_dict.times = times;
+  input_dict.note = note;
 
   return input_dict;
 }
 
 function insert_custom_item(){
-  var row = create_custom_row();
+  var row = create_custom_row(); // create virtual row_dict
+  var custom_elem = new ClassElement(row,0); // create classElement
 
-  var custom_elem = Object.create(ClassElement);
-  custom_elem.classname = row.classname;
-  custom_elem.prof = row.prof;
-  custom_elem.classcode = row.classcode;
-  custom_elem.classroom = row.classroom;
-  custom_elem.credit = row.credit;
-  custom_elem.day = row.day;
-  custom_elem.shour = row.shour;
-  custom_elem.smin = row.smin;
-  custom_elem.ehour = row.ehour;
-  custom_elem.emin = row.emin;
-  custom_elem.interval_minute= (parseInt(custom_elem.ehour) - parseInt(custom_elem.shour))*60 + (parseInt(custom_elem.emin) - parseInt(custom_elem.smin));
-
-  console.log(custom_elem);
-  custom_elem.setPosition();
-  insert_el = custom_elem;
-  insert_el.setPosition();
-
+  insert_el = custom_elem; // for checking overlap
+  // check overlap
   if(class_elems !== []){
     if (class_elems.some(check_overlap)){
-      // overlapped case
       alert("시간표에 있는 수업과 시간이 겹칩니다.");
       return;
     }
   }
 
-  var custom_item = new ClassItem();
-  custom_item.grade = "";
-  custom_item.classname = row.classname;
-  custom_item.credit = row.credit;
-  custom_item.timeperweek = "";
-  custom_item.prof = row.prof;
-  custom_item.classcode = row.classcode;
-  custom_item.limit = "";
-  custom_item.classtime = "("+day_code_toggler(row.day)+"요일) "+row.shour+":"+row.smin +" ~ "+row.ehour+":"+row.emin; // array
-  custom_item.note = row.note;
+  custom_elem.setPosition();
+  custom_elem.elem_color = get_random_item_color();
+  custom_elem.is_custom = true;
 
-  console.log(custom_item, custom_elem);
+  var custom_item = new ClassItem(row);
+  custom_item.is_custom = true;
 
+  class_items.push(custom_item);
+  class_elems.push(custom_elem);
+  custom_elem.create_html();
+  custom_elem.setPosition("create");
+
+  resize_classitem();
 }
 
 // -*- detail view modal
