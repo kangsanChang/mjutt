@@ -41,21 +41,44 @@
   </div>
   <div class="content">
     <form class="ui form" id="custom_form">
-      <label>과목 이름</label>
       <div class="field">
+        <label>과목 이름</label>
         <input type="text" id="custom_input_classname">
       </div>
-      <label>담당 교수</label>
+
       <div class="field">
+        <label>담당 교수</label>
         <input type="text" id="custom_input_prof">
       </div>
-      <label>강의실</label>
-      <div class="field">
-        <input type="text" id="custom_input_classroom">
+
+      <div class="two fields">
+        <div class="field">
+          <label>강의실</label>
+          <input type="text" id="custom_input_classroom">
+        </div>
+
+        <div class="field">
+          <label>학점</label>
+          <div class="ui selection compact dropdown" id="custom_input_credit">
+            <input type="hidden" name="custom_input_credit">
+            <div class="default text"></div>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <div class="item" data-value="0">0</div>
+              <div class="item" data-value="1">1</div>
+              <div class="item" data-value="2">2</div>
+              <div class="item" data-value="3">3</div>
+              <div class="item" data-value="4">4</div>
+              <div class="item" data-value="5">5</div>
+              <div class="item" data-value="6">6</div>
+            </div>
+            <label for="shour">학점</label>
+          </div>
+        </div>
       </div>
 
       <div class="ui teal ribbon large label" id="classtime_label"></div>
-      <label> 수업 시간</label>
+      <label><b> 수업 시간</b></label>
       <span class="ui four fields" id="custom_input_classtime" day="">
         <div class="field">
           <div class="ui selection compact dropdown" id="shour">
@@ -157,8 +180,8 @@
       </span>
 
 
-      <label>비고</label>
       <div class="field">
+        <label>비고</label>
         <input type="text" id="custom_input_note" value="">
       </div>
     </form>
@@ -168,7 +191,7 @@
       <i class="delete icon"></i>
       Cancel
     </div>
-    <div class="ui green ok inverted button" onclick="create_custom_elem()">
+    <div class="ui green ok inverted button" onclick="insert_custom_item()">
       <i class="checkmark icon"></i>
       Add
     </div>

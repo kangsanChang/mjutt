@@ -404,24 +404,11 @@ function create_virtual_row(){
 
 }
 
-// -*- initializer (refresh button)
-function check_timetable_initialize(){
-  if(confirm("시간표를 초기화 하시겠습니까?")){
-    timetable_initialize();
-  }else{
-    return;
-  }
-}
 
-function timetable_initialize(){
-  used_colors = [];
-  class_items = [];
-  class_elems = [];
-  $(".classitems").children().remove();
-  update_total_credit();
-}
+//***************************************//
+//*********** modals function ***********//
+//***************************************//
 
-// modals
 // -*- Custom Item modal
 function custom_input_modal(cell_info){
   $('.ui.modal#custom').modal('show');
@@ -438,7 +425,10 @@ function custom_input_modal(cell_info){
   $('#classtime_label').text(day_code_toggler(day) + "요일");
   $("#custom_input_classtime").css("margin-top", "10px");
 
+  // set default value to each input
+
   $("#custom_input_classtime").attr("day", day);
+  $('.ui.dropdown#custom_input_credit').dropdown('set selected', "0");
   $('.ui.dropdown#shour').dropdown('set selected', shour);
   $('.ui.dropdown#smin').dropdown('set selected', "00");
   $('.ui.dropdown#ehour').dropdown('set selected', shour);
@@ -446,37 +436,80 @@ function custom_input_modal(cell_info){
 
 }
 
-function create_custom_elem(){
+function create_custom_code(){
+  return "custom"+num_of_custom;
+}
+
+function create_custom_row(){
   var classname = $('#custom_input_classname').val();
   var prof = $('#custom_input_prof').val();
   var classroom = $('#custom_input_classroom').val();
   var note = $('#custom_input_note').val();
   var day = $('#custom_input_classtime').attr("day"); // 가져올떄 a.placeholder 하면 바로 뜸
+  var credit = $('#custom_input_credit input').attr("value");
   var shour = $("#shour input").attr("value");
   var smin = $("#smin input").attr("value");
   var ehour = $("#ehour input").attr("value");
   var emin = $("#emin input").attr("value");
 
   var input_dict = {};
-
   input_dict.classname = classname;
   input_dict.prof = prof;
-  input_dict.classcode = "custom";
+  input_dict.classcode = create_custom_code();
   input_dict.classroom = classroom;
-  // input_dict.credit = item.credit;
+  input_dict.note = note;
+  input_dict.credit = credit;
   input_dict.day = day;
   input_dict.shour = shour;
   input_dict.smin = smin;
   input_dict.ehour = ehour;
   input_dict.emin = emin;
-  // input_dict.interval_minute = (parseInt(this.ehour) - parseInt(this.shour))*60 + (parseInt(this.emin) - parseInt(this.smin));
-  input_dict.pos_top = "";
-  input_dict.pos_left = "";
-  input_dict.elem_width = "";
-  input_dict.elem_height = "";
-  input_dict.elem_color = "";
 
-  console.log(input_dict);
+  return input_dict;
+}
+
+function insert_custom_item(){
+  var row = create_custom_row();
+
+  var custom_elem = Object.create(ClassElement);
+  custom_elem.classname = row.classname;
+  custom_elem.prof = row.prof;
+  custom_elem.classcode = row.classcode;
+  custom_elem.classroom = row.classroom;
+  custom_elem.credit = row.credit;
+  custom_elem.day = row.day;
+  custom_elem.shour = row.shour;
+  custom_elem.smin = row.smin;
+  custom_elem.ehour = row.ehour;
+  custom_elem.emin = row.emin;
+  custom_elem.interval_minute= (parseInt(custom_elem.ehour) - parseInt(custom_elem.shour))*60 + (parseInt(custom_elem.emin) - parseInt(custom_elem.smin));
+
+  console.log(custom_elem);
+  custom_elem.setPosition();
+  insert_el = custom_elem;
+  insert_el.setPosition();
+
+  if(class_elems !== []){
+    if (class_elems.some(check_overlap)){
+      // overlapped case
+      alert("시간표에 있는 수업과 시간이 겹칩니다.");
+      return;
+    }
+  }
+
+  var custom_item = new ClassItem();
+  custom_item.grade = "";
+  custom_item.classname = row.classname;
+  custom_item.credit = row.credit;
+  custom_item.timeperweek = "";
+  custom_item.prof = row.prof;
+  custom_item.classcode = row.classcode;
+  custom_item.limit = "";
+  custom_item.classtime = "("+day_code_toggler(row.day)+"요일) "+row.shour+":"+row.smin +" ~ "+row.ehour+":"+row.emin; // array
+  custom_item.note = row.note;
+
+  console.log(custom_item, custom_elem);
+
 }
 
 // -*- detail view modal
@@ -543,7 +576,10 @@ function exit_modal(){
   $('.ui.modal').modal('hide');
 }
 
-// Timetable view function.
+//***************************************//
+//******* Timetable view function *******//
+//***************************************//
+
 // resizer
 function resize_classitem(){
   $.each(class_elems, function(i, val){
@@ -562,6 +598,23 @@ function check_content_overflow(){
       $(val).find("br").replaceWith("/");
     }
   });
+}
+
+// initializer (refresh button)
+function check_timetable_initialize(){
+  if(confirm("시간표를 초기화 하시겠습니까?")){
+    timetable_initialize();
+  }else{
+    return;
+  }
+}
+
+function timetable_initialize(){
+  used_colors = [];
+  class_items = [];
+  class_elems = [];
+  $(".classitems").children().remove();
+  update_total_credit();
 }
 
 // Saturday view setting
