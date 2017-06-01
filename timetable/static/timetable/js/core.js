@@ -7,7 +7,7 @@ used_colors = [];
 class_items = [];
 class_elems = [];
 full_colors = ["ec555a","c65353","f56e3d","ffccce","cfb095","f8d56d","cfe19d","34a26b","28bdbd","4280d7","e39dfb"];
-num_of_custom = 0;
+custom_item_call = 0;
 
 // 재사용 함수들
 
@@ -146,7 +146,7 @@ function time_parser(elem){
       days.push(day[0]); // push() method : new value to array, append()는 html에 추가할때 사용, day가 array라서 index붙임
       times.push(time);
       if(classroom === null){
-        classrooms.push("empty");
+        classrooms.push("");
       }else{
         classrooms.push(classroom[0]);
       }
@@ -257,6 +257,7 @@ function hover_classitem(elem){
     el.create_html();
     el.setPosition("hover");
   }
+  resize_classitem();
 }
 
 // insert
@@ -266,7 +267,7 @@ function check_insert(){
     if("same_value" === check ){
       alert("이미 같은 수업이 존재합니다.");
     }else if("time_info_error"===check){
-      alert("시간 정보가 없습니다.");
+      alert("시간 정보가 없습니다. \n시간표를 눌러 직접 추가 해주세요.");
     }else if("time_overlap"===check){
       alert("시간표에 있는 수업과 시간이 겹칩니다.");
     }
@@ -315,6 +316,7 @@ function insert_classitem(elem){
   }
   // remove hover
   elem.removeClass("hover");
+  resize_classitem();
 }
 
 function check_overlap(el){
@@ -391,22 +393,6 @@ function update_total_credit(){
   $("#total_credit").append(result);
 }
 
-// -*- add custom schedule
-function create_virtual_row(){
-  // Object {classname: "자료구조", prof: "한승철", credit: "3", classtime: Array(2), classcode: "1133"…}
-  //   classcode:"1133"
-  //   classname:"자료구조"
-  //   classrooms:Array(2)
-  //   classtime:Array(2)
-  //   credit:"3"
-  //   days:Array(2)
-  //   prof:"한승철"
-  //   times:Array(2)
-  var v_item = new ClassItem();
-
-}
-
-
 //***************************************//
 //*********** modals function ***********//
 //***************************************//
@@ -438,15 +424,34 @@ function custom_input_modal(cell_info){
 
 }
 
-function create_custom_code(){
-  var custom_items = class_elems.slice(); // duplicate to custom_items
-  for (var i = custom_items.length - 1; i > -1; i--) {
-    if (custom_items[i].is_custom === false)
-        custom_items.splice(i, 1); // custom 아닌건 삭제함
-  }
+function time_validation(){
+  var shour = $("#shour input").attr("value");
+  var smin = $("#smin input").attr("value");
+  var ehour = $("#ehour input").attr("value");
+  var emin = $("#emin input").attr("value");
 
-  var cnt = class_elems.length;
-  return "custom"+cnt;
+  console.log(shour, smin, ehour, emin);
+
+  if(shour > ehour){
+    // 시작 시간이 끝 시간보다 큰 경우
+    return false;
+  }else if(shour == ehour){
+    // 시작 시간과 끝 시간이 같을 때
+    if(smin < emin){
+      // 끝나는 분이 시작 분보다 큰 경우 참
+      return true;
+    }else{
+      // 끝나는 분이 시작 분과 같거나 작다면 거짓
+      return false;
+    }
+  }else{
+    // 시작 시간이 끝 시간보다 작은 경우 (정상)
+    return true;
+  }
+}
+
+function create_custom_code(){
+  return "custom_"+custom_item_call++;
 }
 
 function create_custom_row(){
@@ -468,7 +473,7 @@ function create_custom_row(){
   var start =[];
 
   classrooms.push(classroom);
-  classtime.push(day_code_toggler(day)+shour+":"+smin +"-"+ehour+":"+emin);
+  classtime.push(day_code_toggler(day)+shour+":"+smin +"-"+ehour+":"+emin+" ("+classroom+")");
   days.push(day_code_toggler(day));
   start.push(shour+":"+smin);
   start.push(ehour+":"+emin);
@@ -493,6 +498,11 @@ function create_custom_row(){
 }
 
 function insert_custom_item(){
+  if(time_validation() === false){
+    alert("잘못된 시간 설정입니다.");
+    exit_modal();
+    return;
+  }
   var row = create_custom_row(); // create virtual row_dict
   var custom_elem = new ClassElement(row,0); // create classElement
 
@@ -518,6 +528,7 @@ function insert_custom_item(){
   custom_elem.setPosition("create");
 
   resize_classitem();
+  exit_modal();
 }
 
 // -*- detail view modal
@@ -533,7 +544,10 @@ function detail_view(item){
   html ="<ul>";
   for (var i in detail_item) {
     if (detail_item.hasOwnProperty(i)) {
-      html += "<li class='"+i+"''>"+prop_to_kor(i)+" : "+detail_item[i]+"</li>";
+      if (i==="is_custom") {
+        continue;
+      }
+      html += '<li class='+i+'>'+prop_to_kor(i)+' : '+detail_item[i]+'</li>';
     }
   }
 

@@ -11,6 +11,9 @@
 		z-index: 100;
 	}
 
+div #semester {
+	float: right;
+}
 /* Logo */
 
 #logo {
@@ -18,7 +21,7 @@
 	cursor: default;
 }
 
-#logo h1 {
+#logo h1, #logo h4 {
 	display: inline-block;
 	text-transform: uppercase;
   margin-right: .3em;
