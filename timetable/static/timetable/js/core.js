@@ -321,7 +321,7 @@ function insert_classitem(elem){
 
 function check_overlap(el){
   // 한 수업의 각 요일(class_elems)에 대한 순회
-  // el은 순회 시 각 요소 값.
+  // el은 some()을 이용한 순회 시 각 요소 값.
   // some() 을 쓰는 배열 자체
   // insert_el은 넣을 시간, el은 class_elems에 있는 기존 시간들의 요소
 
@@ -335,7 +335,6 @@ function check_overlap(el){
   // (elem_top > insert_top) && (elem_top >= insert_bot)
   // 2.의 경우 기존 elem 의 bot 이 insert_top 보다 작거나 같고 (위에있거나 경계선이 딱 맞고) , (&&) insert_bot 보다 작다 (위에 있다)
   // (elem_bot <= insert_top) && (elem_bot < insert_bot)
-
 
   // 시간, 분으로 비교하는게 좀 더 나을듯...
   if(el.day === insert_el.day){
@@ -430,8 +429,6 @@ function time_validation(){
   var ehour = $("#ehour input").attr("value");
   var emin = $("#emin input").attr("value");
 
-  console.log(shour, smin, ehour, emin);
-
   if(shour > ehour){
     // 시작 시간이 끝 시간보다 큰 경우
     return false;
@@ -505,6 +502,7 @@ function insert_custom_item(){
   }
   var row = create_custom_row(); // create virtual row_dict
   var custom_elem = new ClassElement(row,0); // create classElement
+  custom_elem.setPosition(); // set position of element
 
   insert_el = custom_elem; // for checking overlap
   // check overlap
@@ -601,7 +599,15 @@ function exit_modal(){
 //***************************************//
 //******* Timetable view function *******//
 //***************************************//
-
+// html2canvas
+function save_to_img(){
+  resize_classitem();
+  html2canvas($("#classitem_table"), {
+        onrendered: function(canvas){
+          Canvas2Image.saveAsPNG(canvas,"Timetable");
+        }
+  });
+}
 // resizer
 function resize_classitem(){
   $.each(class_elems, function(i, val){

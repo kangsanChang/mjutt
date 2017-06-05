@@ -27,6 +27,10 @@ div #semester {
   margin-right: .3em;
 }
 
+#logo h1 a {
+	color: #fff;
+}
+
 /*body*/
 
 div.body-wrapper {
@@ -84,6 +88,7 @@ div.table_info{
     width: 100%;
     border-collapse: collapse;
     text-align: center;
+		background-color: #fff;
 }
 
 /*

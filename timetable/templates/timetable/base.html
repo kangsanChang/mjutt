@@ -13,14 +13,16 @@
       crossorigin="anonymous"></script>
     <script type="text/javascript" src="{% static 'timetable/js/core.js'%}"></script>
     <script type="text/javascript" src="{% static 'timetable/js/html2canvas.js'%}"></script>
+    <script type="text/javascript" src="{% static 'timetable/js/canvas2image.js'%}"></script>
     <script type="text/javascript" src="{% static 'timetable/js/runtime_script.js'%}"></script>
     <script src="{% static 'timetable/semantic/semantic.js'%}"></script>
   </head>
   <body>
     <div id="header">
       <div id="logo">
-        <h1>MJUTT</h1>
-        <span>명지대학교 시간표 서비스 <div class="ui blue big label" id="semester">2017년 1학기</div> </span>
+        <h1><a href="/">MJUTT</a></h1>
+        <span>명지대학교 시간표 서비스 </span>
+        <div class="ui blue big label" id="semester">2017년 1학기</div>
       </div>
     </div>
     <div class="container">

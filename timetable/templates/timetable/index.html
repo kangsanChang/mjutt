@@ -93,7 +93,7 @@
                   </div>
                 </button>
 
-                <button class="ui vertical animated basic button" onclick="" id="save">
+                <button class="ui vertical animated basic button" onclick="save_to_img()" id="save">
                   <div class="hidden content">
                     저장
                   </div>
@@ -139,7 +139,7 @@
             </div>
           </div>
         </div>
-        <div class="table">
+        <div class="table" id="classitem_table">
           <!-- table의 row 생성 -->
           {% for hour in hours %}
 

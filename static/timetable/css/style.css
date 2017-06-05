@@ -1,19 +1,72 @@
+/* Header */
 
-body {
-  padding:10px;
+	#header {
+		position: relative;
+		top: 0;
+		left: 0;
+		width: 100%;
+		background: lightskyblue;
+		color: #fff;
+		padding: 1em 1.25em 0.8em 1.25em;
+		z-index: 100;
+	}
+
+div #semester {
+	float: right;
 }
-header,footer {
-  height: 30px;
+/* Logo */
+
+#logo {
+	font-size: 1.2em;
+	cursor: default;
+}
+
+#logo h1, #logo h4 {
+	display: inline-block;
+	text-transform: uppercase;
+  margin-right: .3em;
+}
+
+#logo h1 a {
+	color: #fff;
+}
+
+/*body*/
+
+div.body-wrapper {
+  margin: 1em;
+}
+
+div.search-form{
+	padding-bottom: 1em;
+}
+
+#search-form>.fields>.field{
+	padding-bottom: 1em;
+}
+
+/*footer*/
+footer{
+  height: 70px;
+  margin-top: 100px;
+  text-align: center;
+}
+
+ul {
+  list-style-type: none;
+}
+
+div.table_info{
+  margin-bottom: 10px;
 }
 /* 결과 창 크기 제한, overflow 시 자동 스크롤 */
 .result-box {
-  height: 800px;
+  height: 815px;
   overflow:auto;
 }
 /* checkbox 사이즈 조정 */
 .checkbox {
-  margin-left:10px;
-  margin-right:0px !important;
+  margin-right:10px !important;
 }
 .checkbox label {
   padding-left: 20px !important;
@@ -35,6 +88,7 @@ header,footer {
     width: 100%;
     border-collapse: collapse;
     text-align: center;
+		background-color: #fff;
 }
 
 /*
@@ -45,27 +99,104 @@ collapse : 서로 이웃하는 테이블이나 셀의 테두리선을 겹쳐서 
 separate : 기본값으로 서로 이웃하는 테이블이나 셀의 테두리선을 분리시켜 표현 합니다.
 */
 
+.ui.container.segment{
+  margin-bottom: 10px;
+}
+
 div.table{
   position: relative; /*absoulte 로 classitem div 넣기 위함*/
 }
 
 
 div.classitem {
-  background-color: lightblue;
+  border-color: inherit;
   position: absolute;
+  text-align: center;
+  z-index: 5;
+}
+
+div.classitem.hover{
+  box-shadow:inset 0px 0px 0px 2px #f00;
+  opacity: 0.7;
+}
+
+div.classitem.box-shadow{
+  border-radius: 3px;
+  box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.2);
   z-index: 10;
+}
+
+div.classitem>div.content{
+  display: inline-block;
+  vertical-align: middle;
+}
+div.classitem>div.content>p{
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+div.table_info div.ui.segment{
+  display: inline-block;
+}
+
+/* colors */
+/*빨강*/
+.classitem_color_ec555a{
+  background-color: #ec555a !important;
+}
+/*밤색친구*/
+.classitem_color_c65353{
+  background-color: #c65353 !important;
+}
+/*핑크*/
+.classitem_color_ffccce{
+  background-color: #ffccce !important;
+}
+/*주황*/
+.classitem_color_f56e3d{
+  background-color: #f56e3d !important;
+}
+/*헤이즐넛*/
+.classitem_color_cfb095{
+  background-color: #cfb095 !important;
+}
+/*노랑*/
+.classitem_color_f8d56d{
+  background-color: #f8d56d !important;
+}
+/*연초록*/
+.classitem_color_cfe19d{
+  background-color: #cfe19d !important;
+}
+/*초록*/
+.classitem_color_34a26b{
+  background-color: #34a26b !important;
+}
+/*조금어두운하늘*/
+.classitem_color_28bdbd{
+  background-color: #28bdbd !important;
+}
+/*파랑*/
+.classitem_color_4280d7{
+  background-color: #4280d7 !important;
+}
+/*보라*/
+.classitem_color_e39dfb{
+  background-color: #e39dfb !important;
 }
 
 .table-row {
     display: table-row;
     border-collapse: collapse;
+    border: 1px solid #000;
 }
 
 .cell {
   display: table-cell;
   border-collapse: collapse;
   vertical-align:middle;
-  border: 1px solid black;
+  border: 1px solid grey;
   height: 70px;
 }
 
@@ -81,4 +212,91 @@ div.classitem {
 span.period-time {
   color:gray;
   font-size: 7pt;
+}
+
+/*detail view*/
+.color-box{
+  float: left !important;
+  width: 15px !important;
+  height: 15px !important;
+  padding: 10px !important;
+  margin: 5px 10px 5px 0px !important; /* t,b = 5px , l=0 , r=10 */
+  border: 1px solid rgba(0,0,0, .2) !important;
+}
+
+div.text.menu{
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}
+
+/*responsive helper classes*/
+
+/*
+// Semantic UI has these classes, however they're only applicable to
+// grids, containers, rows and columns.
+// plus, there isn't any `mobile hidden`, `X hidden` class.
+// this snippet is using the same class names and same approach
+// plus a bit more but to all elements.
+//
+// see https://github.com/Semantic-Org/Semantic-UI/issues/1114
+*/
+
+/* Mobile */
+@media only screen and (max-width: 767px) {
+  [class*="mobile hidden"],
+  [class*="tablet only"]:not(.mobile),
+  [class*="computer only"]:not(.mobile),
+  [class*="large screen only"]:not(.mobile),
+  [class*="widescreen only"]:not(.mobile),
+  [class*="or lower hidden"] {
+    display: none !important;
+  }
+}
+
+/* Tablet / iPad Portrait */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  [class*="mobile only"]:not(.tablet),
+  [class*="tablet hidden"],
+  [class*="computer only"]:not(.tablet),
+  [class*="large screen only"]:not(.tablet),
+  [class*="widescreen only"]:not(.tablet),
+  [class*="or lower hidden"]:not(.mobile) {
+    display: none !important;
+  }
+}
+
+/* Computer / Desktop / iPad Landscape */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  [class*="mobile only"]:not(.computer),
+  [class*="tablet only"]:not(.computer),
+  [class*="computer hidden"],
+  [class*="large screen only"]:not(.computer),
+  [class*="widescreen only"]:not(.computer),
+  [class*="or lower hidden"]:not(.tablet):not(.mobile) {
+    display: none !important;
+  }
+}
+
+/* Large Monitor */
+@media only screen and (min-width: 1200px) and (max-width: 1919px) {
+  [class*="mobile only"]:not([class*="large screen"]),
+  [class*="tablet only"]:not([class*="large screen"]),
+  [class*="computer only"]:not([class*="large screen"]),
+  [class*="large screen hidden"],
+  [class*="widescreen only"]:not([class*="large screen"]),
+  [class*="or lower hidden"]:not(.computer):not(.tablet):not(.mobile) {
+    display: none !important;
+  }
+}
+
+/* Widescreen Monitor */
+@media only screen and (min-width: 1920px) {
+  [class*="mobile only"]:not([class*="widescreen"]),
+  [class*="tablet only"]:not([class*="widescreen"]),
+  [class*="computer only"]:not([class*="widescreen"]),
+  [class*="large screen only"]:not([class*="widescreen"]),
+  [class*="widescreen hidden"],
+  [class*="widescreen or lower hidden"] {
+    display: none !important;
+  }
 }
