@@ -4,7 +4,6 @@
  */
 
 var Canvas2Image = function () {
-
 	// check if support sth.
 	var $support = function () {
 		var canvas = document.createElement('canvas'),

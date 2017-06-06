@@ -107,7 +107,6 @@ div.table{
   position: relative; /*absoulte 로 classitem div 넣기 위함*/
 }
 
-
 div.classitem {
   border-color: inherit;
   position: absolute;

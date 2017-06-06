@@ -599,15 +599,25 @@ function exit_modal(){
 //***************************************//
 //******* Timetable view function *******//
 //***************************************//
-// html2canvas
+// make print size
+function set_print_size(){
+
+}
+
+// save image using html2canvas
 function save_to_img(){
   resize_classitem();
+  setTimeout(download_canvas, 1000);
+}
+
+function download_canvas(){
   html2canvas($("#classitem_table"), {
-        onrendered: function(canvas){
-          Canvas2Image.saveAsPNG(canvas,"Timetable");
-        }
+      onrendered: function(canvas){
+        Canvas2Image.saveAsPNG(canvas,"Timetable","700","870");
+      }
   });
 }
+
 // resizer
 function resize_classitem(){
   $.each(class_elems, function(i, val){

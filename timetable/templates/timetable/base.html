@@ -18,12 +18,12 @@
     <script src="{% static 'timetable/semantic/semantic.js'%}"></script>
   </head>
   <body>
-    <div id="header">
+    <div class="ui top fixed stackable menu"id="header">
       <div id="logo">
         <h1><a href="/">MJUTT</a></h1>
         <span>명지대학교 시간표 서비스 </span>
-        <div class="ui blue big label" id="semester">2017년 1학기</div>
       </div>
+      <div class="ui blue big label right item" id="semester">2017년 1학기</div>
     </div>
     <div class="container">
       {% block content %}
