@@ -25,7 +25,6 @@ def login(driver):
     WebDriverWait(driver, 15).until(EC.alert_is_present())  # alert 나올 시간 기다리기
     accept_alert(driver)
 
-
 # accept alert when attempt to login
 def accept_alert(driver):
     try:
@@ -35,7 +34,6 @@ def accept_alert(driver):
         print("alert accepted")
     except:
         print("no alert")
-
 
 # Connect to DB & Insert to DB
 def insert_to_DB(data):
@@ -62,7 +60,6 @@ def insert_to_DB(data):
     conn.commit()
 
 # Crawl grade info
-
 def crawl_grade(driver):
     driver.get("http://myiweb.mju.ac.kr/servlet/su/suh/suh03/Suh03Svl02studentGradeList")
 
@@ -75,7 +72,6 @@ def crawl_grade(driver):
     grade = driver.find_elementsl_by_xpath("//div[@class='tab tab-1']/div/table/tbody")
     for i in range(len(grade)):
         print(grade[i].text)
-
 
 # Resize to crawl
 def resize_page(driver):
@@ -94,12 +90,10 @@ def create_item():
     dictionary.update(addlist)  # add list
     return dictionary
 
-
 def init_height():
     seq = ['limit', 'note']
     dictionary = dict.fromkeys(seq, '')
     return dictionary
-
 
 def item_to_list(item, dept):
     item['dept'] = dept # 과 정보는 db에 넣기 전 여기서 넣고 바로 list로 보냄
@@ -111,7 +105,7 @@ def item_to_list(item, dept):
     return itemlist
 
 
-# Global variables
+# Global variables (type : Dict.)
 item = create_item()
 page_lastitem = create_item()
 item_height = init_height()
@@ -157,6 +151,11 @@ def crawling_page(driver, dept, end=None):
                 continue
         else:
             fill_item(driver, dept, pos, text, option)
+
+        if(i == len(context)-5):
+            # page last elem (end of for loop)
+            # excepted last 4 elem is not in table row
+            page_lastitem = item
 
     # 마지막 페이지 마지막 item 일 경우 : Insert to  Database
     if end:
@@ -298,7 +297,6 @@ def fill_item(driver, dept, pos, text, option):
             # note 는 time처럼 append 시키면안되므로 비워줌
             page_lastitem['time'].append(text)
             item = page_lastitem
-            item['time'].append(text)
             item['note'] = []
             option['append_on'] = '0'
             page_lastitem = create_item()  # 초기화 해야 elif section == 'classcode' 에서 오류 안남
@@ -443,10 +441,12 @@ if __name__ == "__main__":
     # 16400 : 사회과학대학, 12370: 환경생명공학과 , 12611: 컴퓨터소프트웨어학과, 12831: 정보공학과
     # 12832 : 통신공학과, 13720: 의상디자인학과, 18015: 공간디자인학과, 16615:경영학부 경영학전공
     # 16620 : 경영학부 경영정보전공, 16430: 북한학과
-    #
+
+    # for test
+    # crawl_timetable(driver,"2017","10","10000")
+
     for i in deptlist:
         crawl_timetable(driver,"2017","10",i)
-
 
     print(" Crawling completed. ")
     logout(driver)
