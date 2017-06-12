@@ -164,6 +164,7 @@ def crawling_page(driver, dept, end=None):
 
     # init
     item = create_item()  # init when page finished
+    page_lastitem = create_item() # init when page finished
     item_height = init_height()
 
 def compare_stack(height, option):
@@ -399,7 +400,7 @@ def crawl_timetable(driver, send_year, semester, dept):
         #     next_page.click()
 
         if i == endpage - 1:
-            crawling_page(driver, dept, True)
+            crawling_page(driver, dept, True) # set end page option
         else:
             crawling_page(driver, dept)
             # Go to the next page
@@ -443,7 +444,7 @@ if __name__ == "__main__":
     # 16620 : 경영학부 경영정보전공, 16430: 북한학과
 
     # for test
-    # crawl_timetable(driver,"2017","10","10000")
+    # crawl_timetable(driver,"2017","10","12913")
 
     for i in deptlist:
         crawl_timetable(driver,"2017","10",i)

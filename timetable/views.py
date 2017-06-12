@@ -17,13 +17,13 @@ def index(request):
             results = Classitem.objects
 
             if dept != "":
-                results = results.filter(dept=dept)
+                results = results.filter(dept=dept).order_by('id')
 
             if grades != []:
-                results = results.filter(grade__in=grades)
+                results = results.filter(grade__in=grades).order_by('id')
 
             if(searchtext != ''):
-                results = results.filter(Q(classname__icontains=searchtext) | Q(prof__icontains=searchtext))
+                results = results.filter(Q(classname__icontains=searchtext) | Q(prof__icontains=searchtext)).order_by('id')
 
             if(results == []):
                 #학과나 검색어중 하나도 없는 경우(아무것도 없거나 학년만 체크) -> 에러처리

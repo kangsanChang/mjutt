@@ -23,4 +23,4 @@ class Classitem(models.Model):
 
 
     def __str__(self):
-        return self.dept + " / " + self.classname + " / " + self.prof +  " / " + self.classcode
+        return str(self.id)+" / "+ self.dept + " / " + self.classname + " / " + self.prof +  " / " + self.classcode
