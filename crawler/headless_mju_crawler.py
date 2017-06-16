@@ -10,21 +10,6 @@ import psycopg2  # for CRUD to DB
 import os
 from switcher import *  # name to code
 
-# login
-def login(driver):
-    inputElement = driver.find_element_by_name("userID")
-    inputElement.send_keys(os.environ['crawler_id'])
-    inputElement = driver.find_element_by_name("userPW")
-    inputElement.send_keys(os.environ['crawler_pw'])
-    inputElement = driver.find_element_by_name("userPW")
-    #  submit() didn't working
-    # inputElement.submit()
-    submit = driver.find_element_by_xpath('//*[@id="myiweb"]/div[1]/div/div[2]/div[3]/div[1]/div/div[2]/div[1]/form/p[1]/input')
-    submit.click()
-
-    WebDriverWait(driver, 15).until(EC.alert_is_present())  # alert 나올 시간 기다리기
-    accept_alert(driver)
-
 # accept alert when attempt to login
 def accept_alert(driver):
     try:
@@ -35,7 +20,7 @@ def accept_alert(driver):
     except:
         print("no alert")
 
-# Connect to DB & Insert to DB
+# Connect to DB & t to DB
 def insert_to_DB(data):
     try:
         connect_str="dbname='{}' user='{}' host='{}' password='{}'".format(
@@ -55,9 +40,9 @@ def insert_to_DB(data):
           "time, note, dept) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
     # testcode
     # print("DB 저장하는 query")
-    # print(data)
-    cur.execute(SQL, data)
-    conn.commit()
+    print(data)
+    # cur.execute(SQL, data)
+    # conn.commit()
 
 # Resize to crawl
 def resize_page(driver):
@@ -90,12 +75,10 @@ def item_to_list(item, dept):
 
     return itemlist
 
-
 # Global variables (type : Dict.)
 item = create_item()
 page_lastitem = create_item()
 item_height = init_height()
-
 
 # page_lastitem랑 첫 시작일 때 code랑  비교하기 위해서 따로 저장
 
@@ -173,7 +156,6 @@ def compare_stack(height, option):
         # print(item['classname'] + " / " + ''.join(item['prof']) + " / " + item['classcode'])
         # print(option['note_stack'])
         # print(item['prof'])
-
 
 def fill_item(driver, dept, pos, text, option):
     global item, item_height, page_lastitem
@@ -337,7 +319,6 @@ def fill_item(driver, dept, pos, text, option):
         item[section] = text
         option['prev'] = section
 
-
 def check_empty(driver):
     try:
         # 비어있는 페이지일 경우 viewer 안에 빈 페이지임을 알려주는 inneralert 이 생성됨
@@ -351,12 +332,10 @@ def check_empty(driver):
         print("비어있는 페이지 입니다.")
         return 'EXIT'
 
-
 # Crawl Timetable
 def crawl_timetable(driver, send_year, semester, dept):
     # Set table
     print("{} / {} / {} ".format(send_year, semester, switch_to_deptname(dept)))
-    driver.get("https://myiweb.mju.ac.kr/servlet/MyLocationPage?link=/su/sue/sue01/w_sue337pr.jsp")
     year = driver.find_element_by_name("year")
     year.send_keys(send_year)
     Select(driver.find_element_by_name("smt")).select_by_value(semester)
@@ -393,11 +372,9 @@ def crawl_timetable(driver, send_year, semester, dept):
             next_page = driver.find_element_by_xpath('//li[@id="crownix-toolbar-next"]/a')
             next_page.click()
 
-
 # logout
 def logout(driver):
     driver.get("https://myiweb.mju.ac.kr")
-    WebDriverWait(driver, 10).until(EC.alert_is_present())  # alert 나올 시간 기다리기
     accept_alert(driver)
 
     # logout javascript function located in "Top" frame
@@ -406,14 +383,27 @@ def logout(driver):
     time.sleep(2)
     return driver.quit()
 
-
 if __name__ == "__main__":
     st = time.time()
-    # set driver (default : Chrome), firefox need geckodriver
-    driver = webdriver.Chrome()
-    # driver = webdriver.Firefox()
+    # set driver (headless mode)
+    options = webdriver.ChromeOptions()
+    options.binary_location='/usr/bin/google-chrome-unstable'
+    options.add_argument('headless')
+    options.add_argument('window-size=1200x600')
+    driver = webdriver.Chrome(chrome_options=options)
     driver.get("http://myiweb.mju.ac.kr")
-    login(driver)
+
+    # login(driver)
+    mju_id = driver.find_element_by_id('userID')
+    mju_pw = driver.find_element_by_id('userPW')
+    mju_id.send_keys(os.environ['crawler_id'])
+    mju_pw.send_keys(os.environ['crawler_pw'])
+    driver.execute_script('CheckSubmit()')
+    accept_alert(driver)
+    print('success login')
+
+    # move to timetable
+    driver.get("https://myiweb.mju.ac.kr/servlet/MyLocationPage?link=/su/sue/sue01/w_sue337pr.jsp")
 
     deptlist = ['10000', '20000', '12000', '16600', '11910', '11915', '11920',
                 '11940', '11960', '12250', '12361', '12371', '12450', '12500',
@@ -424,16 +414,11 @@ if __name__ == "__main__":
                 '14240', '14250', '16610', '16410', '16420', '16425', '16440',
                 '16640', '16650', '16660', '16810', '18510', '18520']
 
-    # 제외명단 ( 2017. 02 기준 없는학과)
-    # 16400 : 사회과학대학, 12370: 환경생명공학과 , 12611: 컴퓨터소프트웨어학과, 12831: 정보공학과
-    # 12832 : 통신공학과, 13720: 의상디자인학과, 18015: 공간디자인학과, 16615:경영학부 경영학전공
-    # 16620 : 경영학부 경영정보전공, 16430: 북한학과
+    for i in deptlist:
+        crawl_timetable(driver,"2017","10",i)
 
     # for test
     # crawl_timetable(driver,"2017","10","12913")
-
-    for i in deptlist:
-        crawl_timetable(driver,"2017","10",i)
 
     print(" Crawling completed. ")
     logout(driver)
