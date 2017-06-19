@@ -22,27 +22,27 @@ def accept_alert(driver):
 
 # Connect to DB & t to DB
 def insert_to_DB(data):
-    # try:
-    #     connect_str="dbname='{}' user='{}' host='{}' password='{}'".format(
-    #         os.environ['MJUTT_NAME'],
-    #         os.environ['MJUTT_USER'],
-    #         os.environ['MJUTT_HOST'],
-    #         os.environ['MJUTT_PW']
-    #     )
-    #     conn = psycopg2.connect(connect_str)
-    #
-    # except psycopg2.Error as e:
-    #     print("Unable to connect to the database")
-    #     print(e)
+     try:
+         connect_str="dbname='{}' user='{}' host='{}' password='{}'".format(
+             os.environ['MJUTT_NAME'],
+             os.environ['MJUTT_USER'],
+             os.environ['MJUTT_HOST'],
+             os.environ['MJUTT_PW']
+         )
+         conn = psycopg2.connect(connect_str)
+    
+     except psycopg2.Error as e:
+         print("Unable to connect to the database")
+         print(e)
 
-    # cur = conn.cursor()
-    SQL = "INSERT INTO classitem (grade, classname, krcode, credit, timeperweek, prof, classcode, limitstud, " \
+     cur = conn.cursor()
+     SQL = "INSERT INTO classitem (grade, classname, krcode, credit, timeperweek, prof, classcode, limitstud, " \
           "time, note, dept) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
     # testcode
     # print("DB 저장하는 query")
-    print(data)
-    # cur.execute(SQL, data)
-    # conn.commit()
+    # print(data)
+     cur.execute(SQL, data)
+     conn.commit()
 
 # Resize to crawl
 def resize_page(driver):
@@ -388,8 +388,8 @@ if __name__ == "__main__":
     driver.implicitly_wait(10)
 
     # login(driver)
-    driver.execute_script('document.getElementById("userID").value=""')
-    driver.execute_script('document.getElementById("userPW").value=""')
+    driver.execute_script('document.getElementById("userID").value="'+os.environ["crawler_id"]+'"')
+    driver.execute_script('document.getElementById("userPW").value="'+os.environ["crawler_pw"]+'"')
     driver.execute_script('CheckSubmit()')
     driver.implicitly_wait(10)
     accept_alert(driver)
@@ -406,11 +406,11 @@ if __name__ == "__main__":
                 '14240', '14250', '16610', '16410', '16420', '16425', '16440',
                 '16640', '16650', '16660', '16810', '18510', '18520']
 
-    # for i in deptlist:
-        # crawl_timetable(driver,"2017","10",i)
+    for i in deptlist:
+        crawl_timetable(driver,"2017","10",i)
 
     # for test
-    crawl_timetable(driver,"2017","10","12913")
+    # crawl_timetable(driver,"2017","10","12913")
 
     print(" Crawling completed. ")
     logout(driver)
