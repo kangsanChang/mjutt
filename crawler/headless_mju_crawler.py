@@ -22,20 +22,20 @@ def accept_alert(driver):
 
 # Connect to DB & t to DB
 def insert_to_DB(data):
-    try:
-        connect_str="dbname='{}' user='{}' host='{}' password='{}'".format(
-            os.environ['MJUTT_NAME'],
-            os.environ['MJUTT_USER'],
-            os.environ['MJUTT_HOST'],
-            os.environ['MJUTT_PW']
-        )
-        conn = psycopg2.connect(connect_str)
-        # print("Insert to DATABASE!")
-    except psycopg2.Error as e:
-        print("Unable to connect to the database")
-        print(e)
+    # try:
+    #     connect_str="dbname='{}' user='{}' host='{}' password='{}'".format(
+    #         os.environ['MJUTT_NAME'],
+    #         os.environ['MJUTT_USER'],
+    #         os.environ['MJUTT_HOST'],
+    #         os.environ['MJUTT_PW']
+    #     )
+    #     conn = psycopg2.connect(connect_str)
+    #
+    # except psycopg2.Error as e:
+    #     print("Unable to connect to the database")
+    #     print(e)
 
-    cur = conn.cursor()
+    # cur = conn.cursor()
     SQL = "INSERT INTO classitem (grade, classname, krcode, credit, timeperweek, prof, classcode, limitstud, " \
           "time, note, dept) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
     # testcode
@@ -336,8 +336,8 @@ def check_empty(driver):
 def crawl_timetable(driver, send_year, semester, dept):
     # Set table
     print("{} / {} / {} ".format(send_year, semester, switch_to_deptname(dept)))
-    year = driver.find_element_by_name("year")
-    year.send_keys(send_year)
+    # year = driver.find_element_by_name("year")
+    # year.send_keys(send_year)
     Select(driver.find_element_by_name("smt")).select_by_value(semester)
     Select(driver.find_element_by_name("dept_cd")).select_by_value(dept)
 
@@ -394,14 +394,12 @@ if __name__ == "__main__":
     driver.get("http://myiweb.mju.ac.kr")
 
     # login(driver)
-    mju_id = driver.find_element_by_id('userID')
-    mju_pw = driver.find_element_by_id('userPW')
-    mju_id.send_keys(os.environ['crawler_id'])
-    mju_pw.send_keys(os.environ['crawler_pw'])
+    driver.execute_script('document.getElementById("userID").value=""')
+    driver.execute_script('document.getElementById("userPW").value=""')
     driver.execute_script('CheckSubmit()')
-    accept_alert(driver)
+    # accept_alert(driver)
     print('success login')
-
+    driver.implicitly_wait(10)
     # move to timetable
     driver.get("https://myiweb.mju.ac.kr/servlet/MyLocationPage?link=/su/sue/sue01/w_sue337pr.jsp")
 
