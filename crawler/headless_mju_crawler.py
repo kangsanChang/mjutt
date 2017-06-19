@@ -338,6 +338,7 @@ def crawl_timetable(driver, send_year, semester, dept):
     print("{} / {} / {} ".format(send_year, semester, switch_to_deptname(dept)))
     # year = driver.find_element_by_name("year")
     # year.send_keys(send_year)
+    driver.implicitly_wait(10)
     Select(driver.find_element_by_name("smt")).select_by_value(semester)
     Select(driver.find_element_by_name("dept_cd")).select_by_value(dept)
 
@@ -356,19 +357,10 @@ def crawl_timetable(driver, send_year, semester, dept):
     endpage = int(find_end.text.split(" ")[2])
     # Crawling!start
     for i in range(endpage):
-
-        # 특정 page만 디버깅 해볼 경우
-        # if i in (11,12,13):
-        #     crawling_page(driver, dept)
-        # else:
-        #     next_page = driver.find_element_by_xpath('//li[@id="crownix-toolbar-next"]/a')
-        #     next_page.click()
-
         if i == endpage - 1:
             crawling_page(driver, dept, True) # set end page option
         else:
             crawling_page(driver, dept)
-            # Go to the next page
             next_page = driver.find_element_by_xpath('//li[@id="crownix-toolbar-next"]/a')
             next_page.click()
 
@@ -393,13 +385,15 @@ if __name__ == "__main__":
     driver = webdriver.Chrome(chrome_options=options)
     driver.get("http://myiweb.mju.ac.kr")
 
+    driver.implicitly_wait(10)
+
     # login(driver)
     driver.execute_script('document.getElementById("userID").value=""')
     driver.execute_script('document.getElementById("userPW").value=""')
     driver.execute_script('CheckSubmit()')
-    # accept_alert(driver)
-    print('success login')
     driver.implicitly_wait(10)
+    accept_alert(driver)
+    print('success login')
     # move to timetable
     driver.get("https://myiweb.mju.ac.kr/servlet/MyLocationPage?link=/su/sue/sue01/w_sue337pr.jsp")
 
@@ -412,11 +406,11 @@ if __name__ == "__main__":
                 '14240', '14250', '16610', '16410', '16420', '16425', '16440',
                 '16640', '16650', '16660', '16810', '18510', '18520']
 
-    for i in deptlist:
-        crawl_timetable(driver,"2017","10",i)
+    # for i in deptlist:
+        # crawl_timetable(driver,"2017","10",i)
 
     # for test
-    # crawl_timetable(driver,"2017","10","12913")
+    crawl_timetable(driver,"2017","10","12913")
 
     print(" Crawling completed. ")
     logout(driver)
