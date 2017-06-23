@@ -25,7 +25,7 @@ SECRET_KEY = os.environ['MJUTT_SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['45.77.29.163']
 
 
 # Application definition
